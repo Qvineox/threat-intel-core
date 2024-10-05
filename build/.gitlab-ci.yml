@@ -15,13 +15,13 @@ stages:
       - go.sum
 
 .dind_build_setup:
-  image: docker/docker:24.0.5
+  image: docker:24.0.5
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
   services:
-    - name: docker/docker:24.0.5-dind
+    - name: docker:24.0.5-dind
       alias: docker
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -36,7 +36,7 @@ include:
 
 unit tests:
   stage: test
-  image: docker/golang:1.22.5
+  image: golang:1.22.5
   environment:
     name: Test
   extends:
