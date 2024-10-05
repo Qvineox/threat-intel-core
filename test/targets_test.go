@@ -182,7 +182,7 @@ func TestTargets(t *testing.T) {
 		require.NotNil(t, queue.Targets[1].Domain)
 	})
 
-	t.Run("scan target queue creation with mixed hosts", func(t *testing.T) {
+	t.Run("scan target queue creation with mixed nodes", func(t *testing.T) {
 		hosts := []string{
 			"https://yandex.ru",
 			"212.122.32.12/32",
@@ -200,7 +200,7 @@ func TestTargets(t *testing.T) {
 		require.NotNil(t, queue.Targets[3].Mailbox)
 	})
 
-	t.Run("scan target queue creation with mixed hosts and errors", func(t *testing.T) {
+	t.Run("scan target queue creation with mixed nodes and errors", func(t *testing.T) {
 		hosts := []string{
 			"https://yandex.ru",
 			"212.122.32.12",
