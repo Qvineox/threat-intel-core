@@ -53,10 +53,10 @@ unit tests:
       junit: report.xml
     expire_in: 2 days
     when: always
-    only:
-      refs:
-        - main
-        - test
+  only:
+    refs:
+      - main
+      - test
 
 sast:
   stage: test
