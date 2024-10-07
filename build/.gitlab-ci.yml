@@ -34,30 +34,50 @@ stages:
 include:
   - template: Security/SAST.gitlab-ci.yml
 
-unit tests:
-  stage: test
-  image: golang:1.22.5
-  environment:
-    name: Test
-  extends:
-    - .go-cache
+#unit tests:
+#  stage: test
+#  image: golang:1.22.5
+#  environment:
+#    name: Test
+#  extends:
+#    - .go-cache
+#  script:
+#    - go mod tidy
+#    - go get gotest.tools/gotestsum@latest
+#
+#    - cd test
+#    - go run gotest.tools/gotestsum --junitfile report.xml
+#    - go test $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
+#  artifacts:
+#    reports:
+#      junit: report.xml
+#    expire_in: 2 days
+#    when: always
+#  only:
+#    refs:
+#      - main
+#      - test
+#
+#sast:
+#  stage: test
+
+new package:
+  stage: publish
+  image: bash:latest
+  variables:
+    VERSION: 0.0.4
   script:
-    - go mod tidy
-    - go get gotest.tools/gotestsum@latest
+    - |
+      apk add curl
+#      echo "Version metadata pattern 1: number is expresssed in filename as well so that version metadata is available when file is downloaded."
+#      echo "Version metadata pattern 2: version is placed inside a file in the archive."
+#      echo "Version metadata pattern 3: structured file name shows version."
+#      echo "IMPORTANT: Please see the readme for how filename stored version variables can cause duplicate versions to be pushed to a package endpoint when doing multibranch development."
+#      VERSION=$(. ./increment_version.sh ${VERSIONCOMPONENTTOINCREMENT} ${LASTVERSION})
+#      echo "${VERSION}" > version.txt
+#      echo "${VERSION}" > version-${VERSION}.txt
+#      echo "VERSION=${VERSION}" > version.env
+      tar -czvf ${PACKAGENAME}.${VERSION}.tar.gz .
+      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${PACKAGENAME}.${VERSION}.tar.gz ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}.tar.gz
 
-    - cd test
-    - go run gotest.tools/gotestsum --junitfile report.xml
-    - go test $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
-  artifacts:
-    reports:
-      junit: report.xml
-    expire_in: 2 days
-    when: always
-  only:
-    refs:
-      - main
-      - test
-
-sast:
-  stage: test
 

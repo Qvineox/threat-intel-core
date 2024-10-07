@@ -9,3 +9,6 @@ git config --global url."https://${user}:${personal_access_token}@gitlab.qvineox
 
 Also, configure your machine using [official](https://docs.gitlab.com/ee/user/project/use_project_as_go_package.html)
 manuals.
+
+https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Go.gitlab-ci.yml
+https://gitlab.com/guided-explorations/cfg-data/write-ci-cd-variables-in-pipeline
