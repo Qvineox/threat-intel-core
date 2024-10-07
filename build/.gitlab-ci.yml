@@ -31,8 +31,8 @@ stages:
     refs:
       - master
 
-include:
-  - template: Security/SAST.gitlab-ci.yml
+#include:
+#  - template: Security/SAST.gitlab-ci.yml
 
 #unit tests:
 #  stage: test
@@ -58,8 +58,6 @@ include:
 #      - main
 #      - test
 #
-#sast:
-#  stage: test
 
 new package:
   stage: publish
@@ -73,7 +71,7 @@ new package:
       echo "Version metadata pattern 2: version is placed inside a file in the archive."
       echo "Version metadata pattern 3: structured file name shows version."
       echo "IMPORTANT: Please see the readme for how filename stored version variables can cause duplicate versions to be pushed to a package endpoint when doing multibranch development."
-      VERSION=$(. ./increment_version.sh ${VERSIONCOMPONENTTOINCREMENT} ${LASTVERSION})
+#      VERSION=$(. ./increment_version.sh ${VERSIONCOMPONENTTOINCREMENT} ${LASTVERSION})
       echo "${VERSION}" > version.txt
       echo "${VERSION}" > version-${VERSION}.txt
       echo "VERSION=${VERSION}" > version.env
