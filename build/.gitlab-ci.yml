@@ -63,7 +63,7 @@ publish package:
   stage: publish
   image: bash:latest
   variables:
-    PACKAGENAME: 'threat-intel-core'
+    PACKAGENAME: 'gitlab.qvineox.ru/domsnail/threat-intel-core'
     VERSION: '0.0.4'
   script:
     - |
