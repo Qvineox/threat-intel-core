@@ -63,6 +63,7 @@ new package:
   stage: publish
   image: bash:latest
   variables:
+    PACKAGENAME: gitlab.qvineox.ru/domsnail/threat-intel-core
     VERSION: 0.0.4
   script:
     - |
