@@ -64,7 +64,7 @@ publish package:
   image: alpine/curl:latest
   variables:
     PACKAGE_NAME: 'threat-intel-core'
-    VERSION: 'v0.0.5'
+    VERSION: '0.0.5'
   script:
     - |
       tar -czvf ${PACKAGE_NAME}.${VERSION}.tar.gz .
