@@ -63,7 +63,7 @@ publish package:
   stage: publish
   image: bash:latest
   variables:
-    PACKAGENAME: 'gitlab.qvineox.ru/domsnail/threat-intel-core'
+    PACKAGE_PATH: 'gitlab.qvineox.ru/domsnail/threat-intel-core'
     VERSION: '0.0.4'
   script:
     - |
@@ -72,6 +72,6 @@ publish package:
       echo "${VERSION}" > version-${VERSION}.txt
       echo "VERSION=${VERSION}" > version.env
       tar -czvf ${PACKAGENAME}.${VERSION}.tar.gz .
-      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${PACKAGENAME}.${VERSION}.tar.gz ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}.tar.gz
+      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${PACKAGENAME}.${VERSION}.tar.gz ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_PATH}/${VERSION}/${PACKAGENAME}.${VERSION}.tar.gz
 
 
