@@ -61,13 +61,12 @@ stages:
 
 publish package:
   stage: publish
-  image: bash:latest
+  image: curl:latest
   variables:
     PACKAGE_NAME: 'threat-intel-core'
     VERSION: '0.0.5'
   script:
     - |
-      apk add curl
       tar -czvf ${PACKAGENAME}.${VERSION}.tar.gz .
       curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${PACKAGENAME}.${VERSION}.tar.gz ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${VERSION}/${PACKAGENAME}.${VERSION}.tar.gz
 
