@@ -61,7 +61,7 @@ stages:
 
 publish package:
   stage: publish
-  image: curl:latest
+  image: alpine/curl:latest
   variables:
     PACKAGE_NAME: 'threat-intel-core'
     VERSION: '0.0.5'
