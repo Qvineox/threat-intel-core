@@ -84,16 +84,12 @@ publish package:
   only:
     refs:
       - tags
-  #  rules:
-  #    - if: '$CI_COMMIT_TAG'
-  #      when: on_success
   needs:
     - job: unit tests for release
   variables:
     PACKAGE_NAME: 'threat-intel-core'
     VERSION: ${CI_COMMIT_TAG:1}
   script:
-    - echo 'preparing to release package version ${CI_COMMIT_TAG:1}...'
     - |
       tar -czf ${PACKAGE_NAME}.${VERSION}.tar.gz .
       curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${PACKAGE_NAME}.${VERSION}.tar.gz ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${VERSION}/${PACKAGE_NAME}.${VERSION}.tar.gz
