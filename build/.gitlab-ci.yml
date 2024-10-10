@@ -1,9 +1,3 @@
-workflow:
-  rules:
-    - if: $CI_COMMIT_MESSAGE =~ /-draft$/
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "push"
-
 stages:
   - build
   - test
@@ -33,9 +27,6 @@ stages:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   tags:
     - docker-in-docker
-  only:
-    refs:
-      - main
 
 include:
   - template: Security/SAST.gitlab-ci.yml
@@ -43,6 +34,11 @@ include:
 unit tests:
   stage: test
   image: golang:1.22.5
+  only:
+    refs:
+      - main
+      - test
+      - tags
   environment:
     name: Test
   extends:
@@ -59,18 +55,17 @@ unit tests:
       junit: report.xml
     expire_in: 2 days
     when: always
-  only:
-    refs:
-      - main
-      - test
 
 # publishing only tagged builds
 publish package:
   stage: publish
   image: alpine/curl:latest
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: on_success
+  only:
+    refs:
+      - tags
+#  rules:
+#    - if: '$CI_COMMIT_TAG'
+#      when: on_success
   variables:
     PACKAGE_NAME: 'threat-intel-core'
     VERSION: ${CI_COMMIT_TAG:1}
