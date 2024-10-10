@@ -89,11 +89,13 @@ publish package:
   variables:
     PACKAGE_NAME: 'threat-intel-core'
     VERSION: ${CI_COMMIT_TAG:1}
-    FILE_NAME: $PACKAGE_NAME.$VERSION.tar.gz
+    FILE_NAME: $PACKAGE_NAME.${CI_COMMIT_TAG:1}.tar.gz
   script:
     - echo ${CI_COMMIT_TAG:1}
     - echo $FILE_NAME
     - echo ${FILE_NAME}
+    - echo $VERSION
+    - echo ${VERSION}
     - tar -czvf $FILE_NAME .
     - ls
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME.$VERSION.tar.gz $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$PACKAGE_NAME/$VERSION/$FILE_NAME'
