@@ -30,6 +30,7 @@ stages:
 
 include:
   - template: Security/SAST.gitlab-ci.yml
+  - template: Secret-Detection.gitlab-ci.yml
 
 unit tests:
   stage: test
