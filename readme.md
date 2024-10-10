@@ -12,3 +12,9 @@ manuals.
 
 https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Go.gitlab-ci.yml
 https://gitlab.com/guided-explorations/cfg-data/write-ci-cd-variables-in-pipeline
+
+## Release policy
+
+```shell
+git tag -a v0.1.4 -m 'version 0.1.4'
+```
