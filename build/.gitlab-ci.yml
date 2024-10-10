@@ -38,6 +38,8 @@ unit tests:
     refs:
       - main
       - test
+  except:
+    - tags
   environment:
     name: Test
   extends:
@@ -55,12 +57,17 @@ unit tests:
     expire_in: 2 days
     when: always
 
+# tests for releasing version
 unit tests for release:
   stage: test
   image: golang:1.22.5
   only:
     refs:
       - tags
+  except:
+    refs:
+      - main
+      - test
   environment:
     name: Test
   extends:
