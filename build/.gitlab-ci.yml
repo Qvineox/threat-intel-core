@@ -29,36 +29,36 @@ stages:
     - docker-in-docker
   only:
     refs:
-      - master
+      - main
 
-#include:
-#  - template: Security/SAST.gitlab-ci.yml
+include:
+  - template: Security/SAST.gitlab-ci.yml
 
-#unit tests:
-#  stage: test
-#  image: golang:1.22.5
-#  environment:
-#    name: Test
-#  extends:
-#    - .go-cache
-#  script:
-#    - go mod tidy
-#    - go get gotest.tools/gotestsum@latest
-#
-#    - cd test
-#    - go run gotest.tools/gotestsum --junitfile report.xml
-#    - go test $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
-#  artifacts:
-#    reports:
-#      junit: report.xml
-#    expire_in: 2 days
-#    when: always
-#  only:
-#    refs:
-#      - main
-#      - test
-#
+unit tests:
+  stage: test
+  image: golang:1.22.5
+  environment:
+    name: Test
+  extends:
+    - .go-cache
+  script:
+    - go mod tidy
+    - go get gotest.tools/gotestsum@latest
 
+    - cd test
+    - go run gotest.tools/gotestsum --junitfile report.xml
+    - go test $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
+  artifacts:
+    reports:
+      junit: report.xml
+    expire_in: 2 days
+    when: always
+  only:
+    refs:
+      - main
+      - test
+
+# publishing only tagged builds
 publish package:
   stage: publish
   image: alpine/curl:latest
