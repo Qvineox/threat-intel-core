@@ -67,8 +67,9 @@ publish package:
       when: on_success
   variables:
     PACKAGE_NAME: 'threat-intel-core'
-    VERSION: $CI_COMMIT_TAG
+    VERSION: ${CI_COMMIT_TAG:1}
   script:
+    - echo ${CI_COMMIT_TAG:1}
     - |
       tar -czvf ${PACKAGE_NAME}.${VERSION}.tar.gz .
       curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${PACKAGE_NAME}.${VERSION}.tar.gz ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${VERSION}/${PACKAGE_NAME}.${VERSION}.tar.gz
