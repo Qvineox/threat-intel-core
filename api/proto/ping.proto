@@ -1,0 +1,40 @@
+syntax = "proto3";
+package proto;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "timings.proto";
+
+option go_package = "threat-intel-core/api/proto/services";
+
+// protoc --go_out=../services --go_opt=paths=source_relative --go-grpc_out=../services --go-grpc_opt=paths=source_relative ping.proto
+
+service PingBot {
+  rpc StartScan(Options) returns (google.protobuf.Empty);
+}
+
+message Options {
+  repeated string targets = 1;
+  Timings timings = 2;
+}
+
+message PingResult {
+  string Target = 1;
+  ResponseType Response = 2;
+
+  optional uint64 Latency = 3;
+  optional string ResolvedName = 4;
+}
+
+enum ResponseType {
+  RT_HOST_UNKNOWN = 0;
+  RT_HOST_UNREACHABLE = 1;
+  RT_FAILED = 2;
+  RT_TIMEOUT = 3;
+  RT_SUCCEEDED = 4;
+}
+
+
+
+
+

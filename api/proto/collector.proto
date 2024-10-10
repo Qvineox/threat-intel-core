@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "ping.proto";
+
+option go_package = "threat-intel-core/api/proto/services";
+
+// protoc --go_out=../services --go_opt=paths=source_relative --go-grpc_out=../services --go-grpc_opt=paths=source_relative collector.proto
+
+service Collector {
+  // collector methods to received data from various bots
+  rpc PingResponse(PingResult) returns (google.protobuf.Empty);
+
+  // methods to manage collector
+  rpc Status(google.protobuf.Empty) returns (CollectorStatus);
+}
+
+// CollectorStatus is used to monitor collectors state
+message CollectorStatus {
+  string Identity = 1;
+
+  uint64 MessageQueue = 2;
+  uint64 LoadPercentage = 3;
+}
