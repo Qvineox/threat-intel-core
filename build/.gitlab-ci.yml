@@ -38,7 +38,6 @@ unit tests:
     refs:
       - main
       - test
-      - tags
   environment:
     name: Test
   extends:
@@ -56,6 +55,27 @@ unit tests:
     expire_in: 2 days
     when: always
 
+unit tests for release:
+  stage: test
+  image: golang:1.22.5
+  only:
+    refs:
+      - tags
+  environment:
+    name: Test
+  extends:
+    - .go-cache
+  script:
+    - go mod tidy
+    - go get gotest.tools/gotestsum@latest
+    - cd test
+    - go run gotest.tools/gotestsum --junitfile report.xml
+  artifacts:
+    reports:
+      junit: report.xml
+    expire_in: 2 days
+    when: always
+
 # publishing only tagged builds
 publish package:
   stage: publish
@@ -66,6 +86,8 @@ publish package:
   #  rules:
   #    - if: '$CI_COMMIT_TAG'
   #      when: on_success
+  needs:
+    - job: unit tests for release
   variables:
     PACKAGE_NAME: 'threat-intel-core'
     VERSION: ${CI_COMMIT_TAG:1}
