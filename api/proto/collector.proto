@@ -20,7 +20,12 @@ service Collector {
 // CollectorStatus is used to monitor collectors state
 message CollectorStatus {
   string Identity = 1;
+  uint64 LoadPercentage = 2;
 
-  uint64 MessageQueue = 2;
-  uint64 LoadPercentage = 3;
+  CollectorQueueState Queue = 3;
+}
+
+message CollectorQueueState {
+  int32 Cap = 1;
+  int32 Len = 2;
 }

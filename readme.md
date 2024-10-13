@@ -13,6 +13,8 @@ manuals.
 https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Go.gitlab-ci.yml
 https://gitlab.com/guided-explorations/cfg-data/write-ci-cd-variables-in-pipeline
 
+## Interfaces
+
 ## Release policy
 
 ```shell

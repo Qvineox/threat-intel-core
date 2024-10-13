@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "threat-intel-core/api/proto/services";
+
+message PingOptions {
+  Options Default = 1;
+
+  bool ResolveName = 2; // defines if should use -A on ping command
+}
+
+message Options {
+  repeated string targets = 1;
+  Timings timings = 2;
+}
+
+message Timings {
+  uint64 timeout = 1;
+  uint64 delay = 2;
+  uint64 retries = 3;
+}
