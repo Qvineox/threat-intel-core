@@ -6,7 +6,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
 	"gitlab.qvineox.ru/domsnail/threat-intel-core/api/services"
-	"net"
 	"time"
 )
 
@@ -36,14 +35,15 @@ func NewPingResultFromProto(r *services.PingResult) (*PingResult, error) {
 		return nil, err
 	}
 
-	ip_ := net.ParseIP(r.GetIP())
-	if ip_ == nil {
+	ip_ := pgtype.Inet{}
+	err = ip_.Set(r.GetIP())
+	if err != nil {
 		return nil, errors.New("received invalid ip address")
 	}
 
 	return &PingResult{
 		UUID:         &uuidV7,
-		IP:           pgtype.Inet{IPNet: &net.IPNet{IP: ip_, Mask: net.IPv4Mask(255, 255, 255, 255)}},
+		IP:           ip_,
 		ResponseType: r.GetResponse(),
 		ResolvedName: r.ResolvedName,
 		PacketsSent:  r.PacketsSent,
