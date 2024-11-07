@@ -16,20 +16,23 @@ type PingResult struct {
 	IP           pgtype.Inet `json:"IP" gorm:"column:ip;not_null;type:inet;index"`
 	ResolvedName *string     `json:"ResolvedName" gorm:"column:resolved_name;index"`
 
-	ResponseType services.ResponseType `json:"ResponseType" gorm:"column:response_type;not_null;index'"`
+	ResponseType uint64 `json:"ResponseType" gorm:"column:response_type;not_null;type:smallint;index"`
 
-	PacketsSent uint32  `json:"PacketsSent" gorm:"column:packets_sent"`
-	PacketsLoss float32 `json:"PacketsLoss" gorm:"column:packets_loss"`
+	PacketsSent uint32  `json:"PacketsSent" gorm:"column:packets_sent;type:smallint"`
+	PacketsLoss float32 `json:"PacketsLoss" gorm:"column:packets_loss;type:numeric(2)"`
 
-	MinRtt *float32 `json:"MinRtt" gorm:"column:min_rtt"`
-	MaxRtt *float32 `json:"MaxRtt" gorm:"column:max_rtt"`
-	AvgRtt *float32 `json:"AvgRtt" gorm:"column:avg_rtt"`
+	MinRtt *float32 `json:"MinRtt" gorm:"column:min_rtt;type:numeric(2)"`
+	MaxRtt *float32 `json:"MaxRtt" gorm:"column:max_rtt;type:numeric(2)"`
+	AvgRtt *float32 `json:"AvgRtt" gorm:"column:avg_rtt;type:numeric(2)"`
 
 	// CreatedAt date of data collection
 	CreatedAt time.Time `json:"CreatedAt" gorm:"column:created_at;index:,sort:desc"`
+
+	// CreatedBy is the identity of a bot
+	CreatedBy *string `json:"CreatedBy" gorm:"column:created_by;index"`
 }
 
-func NewPingResultFromProto(r *services.PingResult) (*PingResult, error) {
+func NewPingResultFromProto(r *services.PingResult, createdBy *string) (*PingResult, error) {
 	uuidV7, err := uuid.NewV7()
 	if err != nil {
 		return nil, err
@@ -44,7 +47,7 @@ func NewPingResultFromProto(r *services.PingResult) (*PingResult, error) {
 	return &PingResult{
 		UUID:         &uuidV7,
 		IP:           ip_,
-		ResponseType: r.GetResponse(),
+		ResponseType: uint64(r.GetResponse()),
 		ResolvedName: r.ResolvedName,
 		PacketsSent:  r.PacketsSent,
 		PacketsLoss:  r.PacketsLoss,
@@ -52,6 +55,7 @@ func NewPingResultFromProto(r *services.PingResult) (*PingResult, error) {
 		MaxRtt:       r.MaxRtt,
 		AvgRtt:       r.AvgRtt,
 		CreatedAt:    time.Now(),
+		CreatedBy:    createdBy,
 	}, nil
 }
 
