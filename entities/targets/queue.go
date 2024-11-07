@@ -123,7 +123,6 @@ func (queue *ScanTargetQueue) Output(outputChan chan string) {
 	}
 
 	queue.Unlock()
-	close(outputChan)
 }
 
 func (queue *ScanTargetQueue) produceIPs(network net.IPNet, outputChan chan string, allowReserved bool) error {
