@@ -8,13 +8,10 @@ option go_package = "threat-intel-core/api/proto/services";
 
 message PingOptions {
   Options Default = 1;
-
-  bool ResolveName = 2; // defines if should use -A on ping command
 }
 
 message Options {
   repeated string targets = 1;
-  Timings timings = 2;
 }
 
 message Timings {

@@ -11,14 +11,20 @@ option go_package = "threat-intel-core/api/proto/services";
 
 service PingBot {
   rpc StartScan(PingOptions) returns (google.protobuf.Empty);
+  rpc SetTimings(Timings) returns (google.protobuf.Empty);
 }
 
 message PingResult {
-  string Target = 1;
-  ResponseType Response = 2;
+  string IP = 1;
+  optional string ResolvedName = 2;
+  ResponseType Response = 3;
 
-  optional uint64 Latency = 3;
-  optional string ResolvedName = 4;
+  uint32 PacketsSent = 4;
+  float PacketsLoss = 5;
+
+  float MinRtt = 6;
+  float MaxRtt = 7;
+  float AvgRtt = 8;
 }
 
 enum ResponseType {
