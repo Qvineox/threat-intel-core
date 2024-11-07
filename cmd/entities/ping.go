@@ -22,9 +22,9 @@ type PingResult struct {
 	PacketsSent uint32  `json:"PacketsSent" gorm:"column:packets_sent"`
 	PacketsLoss float32 `json:"PacketsLoss" gorm:"column:packets_loss"`
 
-	MinRtt float32 `json:"MinRtt" gorm:"column:min_rtt"`
-	MaxRtt float32 `json:"MaxRtt" gorm:"column:max_rtt"`
-	AvgRtt float32 `json:"AvgRtt" gorm:"column:avg_rtt"`
+	MinRtt *float32 `json:"MinRtt" gorm:"column:min_rtt"`
+	MaxRtt *float32 `json:"MaxRtt" gorm:"column:max_rtt"`
+	AvgRtt *float32 `json:"AvgRtt" gorm:"column:avg_rtt"`
 
 	// CreatedAt date of data collection
 	CreatedAt time.Time `json:"CreatedAt" gorm:"column:created_at;index:,sort:desc"`

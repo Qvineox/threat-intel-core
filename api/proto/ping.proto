@@ -22,9 +22,9 @@ message PingResult {
   uint32 PacketsSent = 4;
   float PacketsLoss = 5;
 
-  float MinRtt = 6;
-  float MaxRtt = 7;
-  float AvgRtt = 8;
+  optional float MinRtt = 6;
+  optional float MaxRtt = 7;
+  optional float AvgRtt = 8;
 }
 
 enum ResponseType {
