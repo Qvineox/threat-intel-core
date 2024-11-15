@@ -13,23 +13,23 @@ type PingResult struct {
 	// UUID should use version 7
 	UUID *uuid.UUID `json:"UUID" gorm:"primary_key;type:uuid"`
 
-	IP           pgtype.Inet `json:"IP" gorm:"column:ip;not_null;type:inet;index"`
-	ResolvedName *string     `json:"ResolvedName" gorm:"column:resolved_name;index"`
+	IP           pgtype.Inet `json:"IP" gorm:"column:ip;not_null;type:inet;index;comment:Targeted IP address, can have multiple IP for a single host"`
+	ResolvedName *string     `json:"ResolvedName" gorm:"column:resolved_name;index;comment:Host assigned to resolved IP address"`
 
 	ResponseType uint64 `json:"ResponseType" gorm:"column:response_type;not_null;type:smallint;index"`
 
-	PacketsSent uint32  `json:"PacketsSent" gorm:"column:packets_sent;type:smallint"`
+	PacketsSent uint32  `json:"PacketsSent" gorm:"column:packets_sent;type:smallint;comment:Amount of packets sent in a single ping query"`
 	PacketsLoss float32 `json:"PacketsLoss" gorm:"column:packets_loss;type:numeric(5,2)"`
 
-	MinRttMs *uint64 `json:"MinRtt" gorm:"column:min_rtt;type:numeric(6)"`
-	MaxRttMs *uint64 `json:"MaxRtt" gorm:"column:max_rtt;type:numeric(6)"`
-	AvgRttMs *uint64 `json:"AvgRtt" gorm:"column:avg_rtt;type:numeric(6)"`
+	MinRttMs *uint64 `json:"MinRttMs" gorm:"column:min_rtt_ms;type:numeric(6);comment:Min round trip in milliseconds"`
+	MaxRttMs *uint64 `json:"MaxRttMs" gorm:"column:max_rtt_ms;type:numeric(6);comment:Max round trip in milliseconds"`
+	AvgRttMs *uint64 `json:"AvgRttMs" gorm:"column:avg_rtt_ms;type:numeric(6);comment:Average round trip in milliseconds"`
 
 	// CreatedAt date of data collection
 	CreatedAt time.Time `json:"CreatedAt" gorm:"column:created_at;index:,sort:desc"`
 
 	// CreatedBy is the identity of a bot
-	CreatedBy *string `json:"CreatedBy" gorm:"column:created_by;index"`
+	CreatedBy *string `json:"CreatedBy" gorm:"column:created_by;index;comment:Ping bot identity recovered from response metadata"`
 }
 
 func NewPingResultFromProto(r *services.PingResult, createdBy *string) (*PingResult, error) {
