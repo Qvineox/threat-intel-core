@@ -7,6 +7,8 @@ import "options.proto";
 
 option go_package = "threat-intel-core/api/proto/services";
 
+
+
 // protoc --go_out=../services --go_opt=paths=source_relative --go-grpc_out=../services --go-grpc_opt=paths=source_relative ping.proto
 
 service PingBot {
@@ -22,9 +24,9 @@ message PingResult {
   uint32 PacketsSent = 4;
   float PacketsLoss = 5;
 
-  optional float MinRtt = 6;
-  optional float MaxRtt = 7;
-  optional float AvgRtt = 8;
+  optional uint64 MinRttMs = 6;
+  optional uint64 MaxRttMs = 7;
+  optional uint64 AvgRttMs = 8;
 }
 
 enum ResponseType {

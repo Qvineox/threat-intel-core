@@ -21,9 +21,9 @@ type PingResult struct {
 	PacketsSent uint32  `json:"PacketsSent" gorm:"column:packets_sent;type:smallint"`
 	PacketsLoss float32 `json:"PacketsLoss" gorm:"column:packets_loss;type:numeric(5,2)"`
 
-	MinRtt *float32 `json:"MinRtt" gorm:"column:min_rtt;type:numeric(5,2)"`
-	MaxRtt *float32 `json:"MaxRtt" gorm:"column:max_rtt;type:numeric(5,2)"`
-	AvgRtt *float32 `json:"AvgRtt" gorm:"column:avg_rtt;type:numeric(5,2)"`
+	MinRttMs *uint64 `json:"MinRtt" gorm:"column:min_rtt;type:numeric(6)"`
+	MaxRttMs *uint64 `json:"MaxRtt" gorm:"column:max_rtt;type:numeric(6)"`
+	AvgRttMs *uint64 `json:"AvgRtt" gorm:"column:avg_rtt;type:numeric(6)"`
 
 	// CreatedAt date of data collection
 	CreatedAt time.Time `json:"CreatedAt" gorm:"column:created_at;index:,sort:desc"`
@@ -51,9 +51,9 @@ func NewPingResultFromProto(r *services.PingResult, createdBy *string) (*PingRes
 		ResolvedName: r.ResolvedName,
 		PacketsSent:  r.PacketsSent,
 		PacketsLoss:  r.PacketsLoss,
-		MinRtt:       r.MinRtt,
-		MaxRtt:       r.MaxRtt,
-		AvgRtt:       r.AvgRtt,
+		MinRttMs:     r.MinRttMs,
+		MaxRttMs:     r.MaxRttMs,
+		AvgRttMs:     r.AvgRttMs,
 		CreatedAt:    time.Now(),
 		CreatedBy:    createdBy,
 	}, nil
