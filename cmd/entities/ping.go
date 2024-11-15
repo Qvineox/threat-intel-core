@@ -16,7 +16,8 @@ type PingResult struct {
 	IP           pgtype.Inet `json:"IP" gorm:"column:ip;not_null;type:inet;index;comment:Targeted IP address, can have multiple IP for a single host"`
 	ResolvedName *string     `json:"ResolvedName" gorm:"column:resolved_name;index;comment:Host assigned to resolved IP address"`
 
-	ResponseType uint64 `json:"ResponseType" gorm:"column:response_type;not_null;type:smallint;index"`
+	// ResponseType mirrors proto enums
+	ResponseType uint64 `json:"ResponseType" gorm:"column:response_type;not_null;type:smallint;index;comment:Available response types:\n0 = host unknown\n1 = host unreachable\n2= failed\n3 = timeout\n4 = succeeded"`
 
 	PacketsSent uint32  `json:"PacketsSent" gorm:"column:packets_sent;type:smallint;comment:Amount of packets sent in a single ping query"`
 	PacketsLoss float32 `json:"PacketsLoss" gorm:"column:packets_loss;type:numeric(5,2)"`
