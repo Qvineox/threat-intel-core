@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "fleet.proto";
+import "options.proto";
+
+option go_package = "threat-intel-core/api/proto/services";
+
+// protoc --go_out=../services --go_opt=paths=source_relative --go-grpc_out=../services --go-grpc_opt=paths=source_relative coordinator.proto
+
+service Coordinator {
+  // procedure allows bot to register itself in a system
+  rpc Register(BotRegistrationData) returns (google.protobuf.Empty);
+
+  // procedure established bidirectional connection that allow bot to collect jobs from coordinator
+  rpc Connect(stream BotState) returns (stream Options);
+}
+
+message BotRegistrationData {
+  string Identity = 1;
+  BotType Type = 2;
+}
