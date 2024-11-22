@@ -33,7 +33,7 @@ include:
 
 unit tests:
   stage: test
-  image: golang:1.22.5
+  image: golang:1.23.3
   only:
     refs:
       - main
@@ -58,7 +58,7 @@ unit tests:
 # tests for releasing version
 unit tests for release:
   stage: test
-  image: golang:1.22.5
+  image: golang:1.23.3
   only:
     refs:
       - tags
