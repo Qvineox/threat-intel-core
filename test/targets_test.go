@@ -2,7 +2,7 @@ package test
 
 import (
 	"github.com/stretchr/testify/require"
-	targets2 "gitlab.qvineox.ru/domsnail/threat-intel-core/entities/targets"
+	"gitlab.qvineox.ru/domsnail/threat-intel-core/cmd/entities/targets"
 	"net"
 	"testing"
 )
@@ -23,18 +23,18 @@ func TestTargets(t *testing.T) {
 			"52.2.1.22",
 		}
 
-		require.True(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[0])))
-		require.True(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[1])))
-		require.True(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[2])))
-		require.True(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[3])))
-		require.True(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[4])))
-		require.True(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[5])))
-		require.True(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[6])))
+		require.True(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[0])))
+		require.True(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[1])))
+		require.True(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[2])))
+		require.True(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[3])))
+		require.True(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[4])))
+		require.True(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[5])))
+		require.True(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[6])))
 
-		require.False(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[7])))
-		require.False(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[8])))
-		require.False(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[9])))
-		require.False(t, targets2.CheckIsIPv4Reserved(net.ParseIP(hosts[10])))
+		require.False(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[7])))
+		require.False(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[8])))
+		require.False(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[9])))
+		require.False(t, targets.CheckIsIPv4Reserved(net.ParseIP(hosts[10])))
 	})
 
 	t.Run("scan target queue creation with domains only", func(t *testing.T) {
@@ -46,7 +46,7 @@ func TestTargets(t *testing.T) {
 			"уцаьзфып.вп.r1-u",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 5)
 	})
@@ -57,7 +57,7 @@ func TestTargets(t *testing.T) {
 			"y!a.ru",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.Error(t, err)
 		require.Empty(t, queue.Targets)
 	})
@@ -69,7 +69,7 @@ func TestTargets(t *testing.T) {
 			"2001:4860:4860::8888/32",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 3)
 	})
@@ -81,7 +81,7 @@ func TestTargets(t *testing.T) {
 			"2001:4860:4860::8888",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.Error(t, err)
 		require.Empty(t, queue.Targets)
 	})
@@ -99,7 +99,7 @@ func TestTargets(t *testing.T) {
 			"https://2001:4860:4860::8888/test",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 9)
 	})
@@ -117,7 +117,7 @@ func TestTargets(t *testing.T) {
 			"https://2001:4860:4860::8888/test",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, true, false)
+		queue, err := targets.NewScanTargetQueue(hosts, true, false)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 9)
 
@@ -138,7 +138,7 @@ func TestTargets(t *testing.T) {
 			"/pass@mail.yandex.ru",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.Error(t, err)
 		require.Empty(t, queue.Targets)
 	})
@@ -149,7 +149,7 @@ func TestTargets(t *testing.T) {
 			"yarlrusman@gmail.mail.com",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 2)
 	})
@@ -159,7 +159,7 @@ func TestTargets(t *testing.T) {
 			"test@@mail.ru",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.Error(t, err)
 		require.Empty(t, queue.Targets)
 	})
@@ -170,7 +170,7 @@ func TestTargets(t *testing.T) {
 			"yarlrusman@yandex.mail.ru",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, true, false)
+		queue, err := targets.NewScanTargetQueue(hosts, true, false)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 2)
 
@@ -189,7 +189,7 @@ func TestTargets(t *testing.T) {
 			"yarlrusman@yandex.ru",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 4)
 
@@ -208,7 +208,7 @@ func TestTargets(t *testing.T) {
 			"212.121.122.0",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false)
 		require.Error(t, err)
 		require.Len(t, queue.Targets, 1)
 
@@ -220,7 +220,7 @@ func TestTargets(t *testing.T) {
 			"212.121.122.0",
 		}
 
-		queue, err = targets2.NewScanTargetQueue(hosts, false, false)
+		queue, err = targets.NewScanTargetQueue(hosts, false, false)
 		require.Error(t, err)
 		require.Len(t, queue.Targets, 2)
 	})
@@ -233,7 +233,7 @@ func TestTargets(t *testing.T) {
 			"ya.ru",
 		}
 
-		queue, err := targets2.NewScanTargetQueue(hosts, true, false)
+		queue, err := targets.NewScanTargetQueue(hosts, true, false)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 4)
 
