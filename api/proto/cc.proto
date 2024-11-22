@@ -1,6 +1,11 @@
 syntax = "proto3";
 package proto;
 
+import "google/protobuf/api.proto";
+import "google/api/annotations.proto";
+
+// C:\Program Files\protoc-25.3-win64\include\google\api
+
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "options.proto";
@@ -9,9 +14,52 @@ import "fleet.proto";
 option go_package = "threat-intel-core/api/proto/services";
 
 // protoc --go_out=../services --go_opt=paths=source_relative --go-grpc_out=../services --go-grpc_opt=paths=source_relative cc.proto
+// protoc --grpc-gateway_out=../services --grpc-gateway_opt=paths=source_relative --grpc-gateway_opt=generate_unbound_methods=true cc.proto
+// protoc --openapiv2_out=../openapi cc.proto
 
 service ControlCenter {
-  rpc GetFleet(FleetQueryFilter) returns (Fleet);
+  rpc GetFleet(FleetQueryFilter) returns (Fleet) {
+    option (google.api.http) = {
+      get: "/v1/fleet"
+    };
+  };
 
-  rpc CreatePingJob(PingOptions) returns (google.protobuf.Empty);
+  rpc CreatePingJob(PingOptions) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/jobs/ping"
+      body: "*"
+    };
+  };
+
+  rpc GetJobs(google.protobuf.Empty) returns (Jobs) {
+    option (google.api.http) = {
+      get: "/v1/jobs"
+    };
+  };
+}
+
+
+message Jobs {
+  repeated Job Jobs = 1;
+}
+
+message Job {
+  optional uint64 ID = 1;
+
+  // Type described in entities package
+  // can be one of the following: P (ping)
+  string Type = 2;
+
+  // State described in entities package
+  // can be one of the following: queued, started, completed, error
+  string State = 3;
+
+  // Full job parameters and targets as requested in job, stored as JSON binary
+  repeated bytes Options = 4;
+
+  optional string ErrorText = 5;
+  optional uint64 CreatedBy = 6;
+
+  google.protobuf.Timestamp CreatedAt = 7;
+  google.protobuf.Timestamp UpdatedAt = 8;
 }

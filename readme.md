@@ -15,6 +15,10 @@ https://gitlab.com/guided-explorations/cfg-data/write-ci-cd-variables-in-pipelin
 
 ## Interfaces
 
+Generating protocol buffers:
+
+https://github.com/grpc-ecosystem/grpc-gateway?tab=readme-ov-file
+
 ## Release policy
 
 ```shell
