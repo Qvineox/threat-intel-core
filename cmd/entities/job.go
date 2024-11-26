@@ -42,7 +42,7 @@ func (j *Job) String() string {
 	return fmt.Sprintf("JOB-%d (%s)", *j.ID, j.Type)
 }
 
-func NewPingJob(desc *services.PingOptions, createdBy *uint64) (*Job, error) {
+func NewPingJobFromProto(desc *services.PingOptions, createdBy *uint64) (*Job, error) {
 	if desc == nil || desc.Default == nil || desc.Default.Targets == nil {
 		return nil, fmt.Errorf("targets not found")
 	}

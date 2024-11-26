@@ -14,7 +14,13 @@ service Coordinator {
   rpc Register(BotRegistrationData) returns (google.protobuf.Empty);
 
   // procedure established bidirectional connection that allow bot to collect jobs from coordinator
-  rpc Connect(stream BotState) returns (stream Options);
+  rpc Connect(stream BotState) returns (stream JobStream);
+}
+
+message JobStream {
+  oneof Options {
+    PingOptions Ping = 1;
+  }
 }
 
 message BotRegistrationData {

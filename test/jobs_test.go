@@ -13,12 +13,12 @@ func TestJobs(t *testing.T) {
 	t.Run("jobs creation", func(t *testing.T) {
 		opt := &services.PingOptions{Default: &services.Options{Targets: nil}}
 
-		job, err := entities.NewPingJob(opt, nil)
+		job, err := entities.NewPingJobFromProto(opt, nil)
 		require.Error(t, err)
 		require.Nil(t, job)
 
 		opt = &services.PingOptions{Default: &services.Options{Targets: make([]string, 0)}}
-		job, err = entities.NewPingJob(opt, nil)
+		job, err = entities.NewPingJobFromProto(opt, nil)
 		require.NoError(t, err)
 		require.NotNil(t, job)
 
@@ -30,7 +30,7 @@ func TestJobs(t *testing.T) {
 		var userID uint64 = 1
 
 		opt = &services.PingOptions{Default: &services.Options{Targets: []string{"ya.ru", "192.168.31.0/24"}}}
-		job, err = entities.NewPingJob(opt, &userID)
+		job, err = entities.NewPingJobFromProto(opt, &userID)
 		require.NoError(t, err)
 		require.NotNil(t, job)
 
@@ -47,7 +47,7 @@ func TestJobs(t *testing.T) {
 		opt := &services.PingOptions{Default: &services.Options{Targets: []string{"ya.ru", "192.168.31.0/24"}}}
 		var userID uint64 = 1
 
-		job, err := entities.NewPingJob(opt, &userID)
+		job, err := entities.NewPingJobFromProto(opt, &userID)
 		require.NoError(t, err)
 		require.NotNil(t, job)
 
@@ -69,7 +69,7 @@ func TestJobs(t *testing.T) {
 		opt := &services.PingOptions{Default: &services.Options{Targets: []string{"ya.ru", "192.168.31.0/24"}}}
 		var userID uint64 = 1
 
-		job, err := entities.NewPingJob(opt, &userID)
+		job, err := entities.NewPingJobFromProto(opt, &userID)
 		require.NoError(t, err)
 		require.NotNil(t, job)
 

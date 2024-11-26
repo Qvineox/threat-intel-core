@@ -31,7 +31,7 @@ type CoordinatorClient interface {
 	// procedure allows bot to register itself in a system
 	Register(ctx context.Context, in *BotRegistrationData, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// procedure established bidirectional connection that allow bot to collect jobs from coordinator
-	Connect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BotState, Options], error)
+	Connect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BotState, JobStream], error)
 }
 
 type coordinatorClient struct {
@@ -52,18 +52,18 @@ func (c *coordinatorClient) Register(ctx context.Context, in *BotRegistrationDat
 	return out, nil
 }
 
-func (c *coordinatorClient) Connect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BotState, Options], error) {
+func (c *coordinatorClient) Connect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BotState, JobStream], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &Coordinator_ServiceDesc.Streams[0], Coordinator_Connect_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[BotState, Options]{ClientStream: stream}
+	x := &grpc.GenericClientStream[BotState, JobStream]{ClientStream: stream}
 	return x, nil
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type Coordinator_ConnectClient = grpc.BidiStreamingClient[BotState, Options]
+type Coordinator_ConnectClient = grpc.BidiStreamingClient[BotState, JobStream]
 
 // CoordinatorServer is the server API for Coordinator service.
 // All implementations must embed UnimplementedCoordinatorServer
@@ -72,7 +72,7 @@ type CoordinatorServer interface {
 	// procedure allows bot to register itself in a system
 	Register(context.Context, *BotRegistrationData) (*emptypb.Empty, error)
 	// procedure established bidirectional connection that allow bot to collect jobs from coordinator
-	Connect(grpc.BidiStreamingServer[BotState, Options]) error
+	Connect(grpc.BidiStreamingServer[BotState, JobStream]) error
 	mustEmbedUnimplementedCoordinatorServer()
 }
 
@@ -86,7 +86,7 @@ type UnimplementedCoordinatorServer struct{}
 func (UnimplementedCoordinatorServer) Register(context.Context, *BotRegistrationData) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
-func (UnimplementedCoordinatorServer) Connect(grpc.BidiStreamingServer[BotState, Options]) error {
+func (UnimplementedCoordinatorServer) Connect(grpc.BidiStreamingServer[BotState, JobStream]) error {
 	return status.Errorf(codes.Unimplemented, "method Connect not implemented")
 }
 func (UnimplementedCoordinatorServer) mustEmbedUnimplementedCoordinatorServer() {}
@@ -129,11 +129,11 @@ func _Coordinator_Register_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _Coordinator_Connect_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(CoordinatorServer).Connect(&grpc.GenericServerStream[BotState, Options]{ServerStream: stream})
+	return srv.(CoordinatorServer).Connect(&grpc.GenericServerStream[BotState, JobStream]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type Coordinator_ConnectServer = grpc.BidiStreamingServer[BotState, Options]
+type Coordinator_ConnectServer = grpc.BidiStreamingServer[BotState, JobStream]
 
 // Coordinator_ServiceDesc is the grpc.ServiceDesc for Coordinator service.
 // It's only intended for direct use with grpc.RegisterService,
