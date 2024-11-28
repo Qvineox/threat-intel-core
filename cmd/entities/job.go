@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jackc/pgtype"
 	"gitlab.qvineox.ru/domsnail/threat-intel-core/api/services"
+	"gorm.io/datatypes"
 	"time"
 )
 
@@ -29,8 +30,8 @@ type Job struct {
 	Type  JobType  `json:"Type" gorm:"column:type;index;not null;type:varchar(1);comment:Job type"`
 	State JobState `json:"State" gorm:"column:state;not null;type:varchar(10);comment:Current job state"`
 
-	Options   *pgtype.JSONB `json:"Options" gorm:"column:options;type:jsonb;comment:Full job parameters and targets as requested in job"`
-	ErrorText *string       `json:"ErrorText" gorm:"column:error_text;type:text;comment:Job error message"`
+	Options   *datatypes.JSON `json:"Options" gorm:"column:options;type:jsonb;default:{};comment:Full job parameters and targets as requested in job"`
+	ErrorText *string         `json:"ErrorText" gorm:"column:error_text;type:text;comment:Job error message"`
 
 	// CreatedBy is the identity of a user
 	CreatedBy *uint64 `json:"CreatedBy" gorm:"column:created_by;index;comment:Job author's user ID"`
