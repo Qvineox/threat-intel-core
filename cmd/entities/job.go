@@ -2,7 +2,6 @@ package entities
 
 import (
 	"fmt"
-	"github.com/jackc/pgtype"
 	"gitlab.qvineox.ru/domsnail/threat-intel-core/api/services"
 	"gorm.io/datatypes"
 	"time"
@@ -49,8 +48,8 @@ func NewPingJobFromProto(desc *services.PingOptions, createdBy *uint64) (*Job, e
 		return nil, fmt.Errorf("targets not found")
 	}
 
-	var options = &pgtype.JSONB{}
-	err := options.Set(desc.Default.Targets)
+	options := &datatypes.JSON{}
+	err := options.Scan(desc)
 	if err != nil {
 		return nil, err
 	}
