@@ -7,15 +7,16 @@ import (
 	"time"
 )
 
-type JobType string
+type JobType uint64
 
 const (
-	JOB_TYPE_PING JobType = "P"
+	JOB_TYPE_PING JobType = 0
 )
 
 type JobState string
 
 const (
+	JOB_STATE_CREATED   JobState = "created"
 	JOB_STATE_QUEUED    JobState = "queued"
 	JOB_STATE_STARTED   JobState = "started"
 	JOB_STATE_COMPLETED JobState = "completed"
@@ -39,7 +40,7 @@ type Job struct {
 }
 
 func (j *Job) String() string {
-	return fmt.Sprintf("JOB-%d (%s)", *j.ID, j.Type)
+	return fmt.Sprintf("JOB-%d (%d)", *j.ID, j.Type)
 }
 
 func NewPingJobFromProto(desc *services.PingOptions, createdBy *uint64) (*Job, error) {
@@ -55,7 +56,7 @@ func NewPingJobFromProto(desc *services.PingOptions, createdBy *uint64) (*Job, e
 
 	return &Job{
 		Type:      JOB_TYPE_PING,
-		State:     JOB_STATE_QUEUED,
+		State:     JOB_STATE_CREATED,
 		Options:   options,
 		CreatedBy: createdBy,
 		CreatedAt: time.Now(),
@@ -64,6 +65,10 @@ func NewPingJobFromProto(desc *services.PingOptions, createdBy *uint64) (*Job, e
 
 func (j *Job) NextState() (isCompleted bool) {
 	switch j.State {
+	case JOB_STATE_CREATED:
+		j.State = JOB_STATE_QUEUED
+
+		return false
 	case JOB_STATE_QUEUED:
 		j.State = JOB_STATE_STARTED
 

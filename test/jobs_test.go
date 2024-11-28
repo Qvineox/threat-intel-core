@@ -22,7 +22,7 @@ func TestJobs(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, job)
 
-		require.EqualValues(t, entities.JOB_STATE_QUEUED, job.State)
+		require.EqualValues(t, entities.JOB_STATE_CREATED, job.State)
 		require.EqualValues(t, entities.JOB_TYPE_PING, job.Type)
 		require.NotZero(t, job.CreatedAt)
 		require.Nil(t, job.CreatedBy)
@@ -52,12 +52,12 @@ func TestJobs(t *testing.T) {
 		require.NotNil(t, job)
 
 		completed := job.NextState()
-		require.EqualValues(t, entities.JOB_STATE_STARTED, job.State)
+		require.EqualValues(t, entities.JOB_STATE_QUEUED, job.State)
 		require.False(t, completed)
 
 		completed = job.NextState()
-		require.EqualValues(t, entities.JOB_STATE_COMPLETED, job.State)
-		require.True(t, completed)
+		require.EqualValues(t, entities.JOB_STATE_STARTED, job.State)
+		require.False(t, completed)
 
 		completed = job.NextState()
 		require.EqualValues(t, entities.JOB_STATE_COMPLETED, job.State)
@@ -74,7 +74,7 @@ func TestJobs(t *testing.T) {
 		require.NotNil(t, job)
 
 		completed := job.NextState()
-		require.EqualValues(t, entities.JOB_STATE_STARTED, job.State)
+		require.EqualValues(t, entities.JOB_STATE_QUEUED, job.State)
 		require.False(t, completed)
 
 		job.Error(errors.New("test error"))
