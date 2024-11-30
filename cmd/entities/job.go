@@ -17,7 +17,7 @@ const (
 // Job represents minimal system task provided by user
 type Job struct {
 	ID   *uint64 `json:"ID" gorm:"primary_key"`
-	Type JobType `json:"Type" gorm:"column:type;index;not null;type:varchar(1);comment:Job type"`
+	Type JobType `json:"Type" gorm:"column:type;index;not null;comment:Job type"`
 	//State JobState `json:"State" gorm:"column:state;not null;type:varchar(10);comment:Current job state"`
 	IsSent bool `json:"IsSent" gorm:"column:is_sent;type:boolean;not null;default:false;comment:Is job sent to processing unit"`
 
