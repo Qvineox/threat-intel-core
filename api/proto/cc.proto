@@ -53,7 +53,7 @@ message Job {
   bool IsSent = 3;
 
   // Full job parameters and targets as requested in job, stored as JSON binary
-  repeated bytes Options = 4;
+  bytes Options = 4;
 
   optional string ErrorText = 5;
   optional uint64 CreatedBy = 6;
@@ -71,6 +71,9 @@ message JobsQueryFilter {
 
   optional google.protobuf.Timestamp CreatedAfter = 5;
   optional google.protobuf.Timestamp CreatedBefore = 6;
+
+  uint64 Limit = 7;
+  uint64 Offset = 8;
 }
 
 enum JobType {
