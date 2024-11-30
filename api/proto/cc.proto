@@ -31,7 +31,7 @@ service ControlCenter {
     };
   };
 
-  rpc GetJobs(google.protobuf.Empty) returns (Jobs) {
+  rpc GetJobs(JobsQueryFilter) returns (Jobs) {
     option (google.api.http) = {
       get: "/v1/jobs"
     };
@@ -47,12 +47,10 @@ message Job {
   optional uint64 ID = 1;
 
   // Type described in entities package
-  // can be one of the following: P (ping)
-  string Type = 2;
+  JobType Type = 2;
 
-  // State described in entities package
-  // can be one of the following: queued, started, completed, error
-  string State = 3;
+  // IsSent defines if job has been sent to processing
+  bool IsSent = 3;
 
   // Full job parameters and targets as requested in job, stored as JSON binary
   repeated bytes Options = 4;
@@ -62,4 +60,19 @@ message Job {
 
   google.protobuf.Timestamp CreatedAt = 7;
   google.protobuf.Timestamp UpdatedAt = 8;
+}
+
+message JobsQueryFilter {
+  repeated JobType Types = 1;
+  optional bool IsSent = 2;
+
+  optional uint64 CreatedBy = 3;
+  optional string ErrorText = 4;
+
+  optional google.protobuf.Timestamp CreatedAfter = 5;
+  optional google.protobuf.Timestamp CreatedBefore = 6;
+}
+
+enum JobType {
+  JOB_TYPE_PING = 0;
 }

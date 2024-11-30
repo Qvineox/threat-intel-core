@@ -76,6 +76,54 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "Types",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "JOB_TYPE_PING"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "IsSent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "CreatedBy",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "ErrorText",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "CreatedAfter",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "CreatedBefore",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
         "tags": [
           "ControlCenter"
         ]
@@ -198,12 +246,12 @@
           "format": "uint64"
         },
         "Type": {
-          "type": "string",
-          "title": "Type described in entities package\ncan be one of the following: P (ping)"
+          "$ref": "#/definitions/protoJobType",
+          "title": "Type described in entities package"
         },
-        "State": {
-          "type": "string",
-          "title": "State described in entities package\ncan be one of the following: queued, started, completed, error"
+        "IsSent": {
+          "type": "boolean",
+          "title": "IsSent defines if job has been sent to processing"
         },
         "Options": {
           "type": "array",
@@ -229,6 +277,13 @@
           "format": "date-time"
         }
       }
+    },
+    "protoJobType": {
+      "type": "string",
+      "enum": [
+        "JOB_TYPE_PING"
+      ],
+      "default": "JOB_TYPE_PING"
     },
     "protoJobs": {
       "type": "object",

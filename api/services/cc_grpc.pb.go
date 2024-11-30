@@ -31,7 +31,7 @@ const (
 type ControlCenterClient interface {
 	GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error)
 	CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetJobs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Jobs, error)
+	GetJobs(ctx context.Context, in *JobsQueryFilter, opts ...grpc.CallOption) (*Jobs, error)
 }
 
 type controlCenterClient struct {
@@ -62,7 +62,7 @@ func (c *controlCenterClient) CreatePingJob(ctx context.Context, in *PingOptions
 	return out, nil
 }
 
-func (c *controlCenterClient) GetJobs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Jobs, error) {
+func (c *controlCenterClient) GetJobs(ctx context.Context, in *JobsQueryFilter, opts ...grpc.CallOption) (*Jobs, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Jobs)
 	err := c.cc.Invoke(ctx, ControlCenter_GetJobs_FullMethodName, in, out, cOpts...)
@@ -78,7 +78,7 @@ func (c *controlCenterClient) GetJobs(ctx context.Context, in *emptypb.Empty, op
 type ControlCenterServer interface {
 	GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error)
 	CreatePingJob(context.Context, *PingOptions) (*emptypb.Empty, error)
-	GetJobs(context.Context, *emptypb.Empty) (*Jobs, error)
+	GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error)
 	mustEmbedUnimplementedControlCenterServer()
 }
 
@@ -95,7 +95,7 @@ func (UnimplementedControlCenterServer) GetFleet(context.Context, *FleetQueryFil
 func (UnimplementedControlCenterServer) CreatePingJob(context.Context, *PingOptions) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePingJob not implemented")
 }
-func (UnimplementedControlCenterServer) GetJobs(context.Context, *emptypb.Empty) (*Jobs, error) {
+func (UnimplementedControlCenterServer) GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetJobs not implemented")
 }
 func (UnimplementedControlCenterServer) mustEmbedUnimplementedControlCenterServer() {}
@@ -156,7 +156,7 @@ func _ControlCenter_CreatePingJob_Handler(srv interface{}, ctx context.Context, 
 }
 
 func _ControlCenter_GetJobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(JobsQueryFilter)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -168,7 +168,7 @@ func _ControlCenter_GetJobs_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: ControlCenter_GetJobs_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ControlCenterServer).GetJobs(ctx, req.(*emptypb.Empty))
+		return srv.(ControlCenterServer).GetJobs(ctx, req.(*JobsQueryFilter))
 	}
 	return interceptor(ctx, in, info, handler)
 }
