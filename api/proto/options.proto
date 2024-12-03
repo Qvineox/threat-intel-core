@@ -11,6 +11,11 @@ message PingOptions {
 
 message Options {
   repeated string targets = 1;
+
+  Priority priority = 2;
+  AssignmentMode assignmentMode = 3;
+
+  bool shuffle = 4;
 }
 
 message Timings {
@@ -18,3 +23,17 @@ message Timings {
   uint64 delay = 2;
   uint64 retries = 3;
 }
+
+enum Priority {
+  P_LOW = 0;
+  P_MEDIUM = 1;
+  P_HIGH = 2;
+  P_CRITICAL = 3;
+}
+
+enum AssignmentMode {
+  BM_LEAST_TASKS = 0; // assign all tasks to the bot with lowest task count
+  BM_EVEN = 1; // distribute tasks evenly between all available bots
+  BM_NON_BUSY = 2; // wait for the first bot to be released
+}
+
