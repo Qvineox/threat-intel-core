@@ -33,6 +33,8 @@ message BotState {
   bool IsBusy = 2;
 
   optional string CurrentScanOption = 3;
+
+  uint64 TasksLeft = 4;
 }
 
 enum BotType {
