@@ -74,6 +74,7 @@ func NewPingJobFromProto(desc *services.PingOptions, createdBy *uint64, p servic
 		Options:   body,
 		ErrorText: nil,
 		CreatedBy: createdBy,
+		CreatedAt: time.Now(),
 	}, nil
 }
 
