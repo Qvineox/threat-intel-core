@@ -6,22 +6,25 @@ option go_package = "threat-intel-core/api/proto/services";
 // protoc --go_out=../services --go_opt=paths=source_relative --go-grpc_out=../services --go-grpc_opt=paths=source_relative options.proto
 
 message PingOptions {
-  Options Default = 1;
+  Options default = 1;
+  Labels labels = 2;
 }
 
 message Options {
   repeated string targets = 1;
-
-  Priority priority = 2;
-  AssignmentMode assignmentMode = 3;
-
-  bool shuffle = 4;
 }
 
 message Timings {
   uint64 timeout = 1;
   uint64 delay = 2;
   uint64 retries = 3;
+}
+
+message Labels {
+  Priority priority = 1;
+  AssignmentMode assignmentMode = 2;
+
+  bool shuffle = 3;
 }
 
 enum Priority {
