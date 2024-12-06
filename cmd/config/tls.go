@@ -35,7 +35,7 @@ func NewTLSConfigFromEnv() (config TLS) {
 
 func (config TLS) String() string {
 	return fmt.Sprintf(
-		"\n---\nEncryption configuration:\n\tUsing Security: %t",
+		"\n---\nTransport security configuration:\n\tTLS enabled: %t",
 		config.IsEnabled)
 }
 

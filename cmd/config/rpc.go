@@ -9,6 +9,8 @@ import (
 type RPC struct {
 	Host string
 	Port uint64
+
+	ReflectionEnabled bool
 }
 
 func NewRPCConfigFromEnv() (config RPC) {
@@ -29,12 +31,18 @@ func NewRPCConfigFromEnv() (config RPC) {
 		config.Host = host
 	}
 
+	reflect, ok := os.LookupEnv("RPC_REFLECTION_ENABLED")
+	if ok && reflect == "true" {
+		config.ReflectionEnabled = true
+	}
+
 	return
 }
 
 func (config RPC) String() string {
 	return fmt.Sprintf(
-		"\n---\nRPC server configuration:\n\tHost: %s\n\tPort: %d",
+		"\n---\nRPC server configuration:\n\tHost: %s\n\tPort: %d\n\tReflection: %t",
 		config.Host,
-		config.Port)
+		config.Port,
+		config.ReflectionEnabled)
 }
