@@ -12,7 +12,7 @@ type Logging struct {
 
 func (config Logging) String() string {
 	return fmt.Sprintf(
-		"\n---\nLogging configuration:\n\tRemote address: %s\n",
+		"\n---\nLogging configuration:\n\tLogging server URL: %s\n",
 		config.URL)
 }
 

@@ -8,10 +8,11 @@ type Config struct {
 	RemoteProcedures   RPC
 	Security           TLS
 	ServiceDiscovery   Services
+	Logging            Logging
 }
 
 func (config Config) String() string {
-	return config.DatabaseConnection.String() + config.REST.String() + config.RemoteProcedures.String() + config.Security.String() + config.ServiceDiscovery.String() + "---"
+	return config.DatabaseConnection.String() + config.REST.String() + config.RemoteProcedures.String() + config.Security.String() + config.ServiceDiscovery.String() + config.Logging.String() + "---"
 
 }
 
@@ -22,5 +23,6 @@ func NewConfigFromEnv() (config Config) {
 		RemoteProcedures:   NewRPCConfigFromEnv(),
 		Security:           NewTLSConfigFromEnv(),
 		ServiceDiscovery:   NewServicesConfigFromEnv(),
+		Logging:            NewLoggingConfigFromEnv(),
 	}
 }
