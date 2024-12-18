@@ -2,7 +2,7 @@ package test
 
 import (
 	"github.com/stretchr/testify/require"
-	"gitlab.qvineox.ru/domsnail/threat-intel-core/cmd/entities/targets"
+	"gitlab.domsnail.ru/domsnail/threat-intel-core/cmd/entities/targets"
 	"net"
 	"testing"
 )

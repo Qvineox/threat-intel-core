@@ -3,7 +3,7 @@ package entities
 import (
 	"encoding/json"
 	"fmt"
-	"gitlab.qvineox.ru/domsnail/threat-intel-core/api/services"
+	"gitlab.domsnail.ru/domsnail/threat-intel-core/api/services"
 	"gorm.io/datatypes"
 	"sort"
 	"time"

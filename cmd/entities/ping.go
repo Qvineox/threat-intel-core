@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/jackc/pgtype"
-	"gitlab.qvineox.ru/domsnail/threat-intel-core/api/services"
+	"gitlab.domsnail.ru/domsnail/threat-intel-core/api/services"
 	"time"
 )
 

@@ -3,7 +3,7 @@ package test
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gitlab.qvineox.ru/domsnail/threat-intel-core/cmd/config"
+	"gitlab.domsnail.ru/domsnail/threat-intel-core/cmd/config"
 	"log/slog"
 	"os"
 	"testing"

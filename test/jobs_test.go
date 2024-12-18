@@ -3,8 +3,8 @@ package test
 import (
 	"encoding/json"
 	"github.com/stretchr/testify/require"
-	"gitlab.qvineox.ru/domsnail/threat-intel-core/api/services"
-	"gitlab.qvineox.ru/domsnail/threat-intel-core/cmd/entities"
+	"gitlab.domsnail.ru/domsnail/threat-intel-core/api/services"
+	"gitlab.domsnail.ru/domsnail/threat-intel-core/cmd/entities"
 	"testing"
 )
 
