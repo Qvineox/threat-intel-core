@@ -36,5 +36,6 @@ func (config REST) String() string {
 	return fmt.Sprintf(
 		"\n---\nREST server configuration:\n\tHost: %s\n\tPort: %d",
 		config.Host,
-		config.Port)
+		config.Port,
+	)
 }

@@ -22,5 +22,8 @@ func NewServicesConfigFromEnv() (config Services) {
 func (config Services) String() string {
 	return fmt.Sprintf(
 		"\n---\nService grid configuration:\n\tControl center URL: %s\n\tCoordinator URL: %s\n\tCollector URL: %s\n",
-		config.ControlCenterURL, config.CoordinatorURL, config.CollectorURL)
+		config.ControlCenterURL,
+		config.CoordinatorURL,
+		config.CollectorURL,
+	)
 }

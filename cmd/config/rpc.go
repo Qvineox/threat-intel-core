@@ -44,5 +44,6 @@ func (config RPC) String() string {
 		"\n---\nRPC server configuration:\n\tHost: %s\n\tPort: %d\n\tReflection: %t",
 		config.Host,
 		config.Port,
-		config.ReflectionEnabled)
+		config.ReflectionEnabled,
+	)
 }

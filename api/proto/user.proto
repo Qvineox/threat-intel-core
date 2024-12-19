@@ -1,0 +1,56 @@
+syntax = "proto3";
+package proto;
+
+import "google/protobuf/api.proto";
+import "google/api/annotations.proto";
+
+import "google/protobuf/empty.proto";
+option go_package = "threat-intel-core/api/proto/services";
+
+// protoc --go_out=../services --go_opt=paths=source_relative --go-grpc_out=../services --go-grpc_opt=paths=source_relative user.proto
+// protoc --grpc-gateway_out=../services --grpc-gateway_opt=paths=source_relative --grpc-gateway_opt=generate_unbound_methods=true user.proto
+// protoc --openapiv2_out=../openapi user.proto
+
+service UserService {
+  rpc GetUsers(UsersQueryFilter) returns (Users) {
+    option (google.api.http) = {
+      get: "/v1/users"
+    };
+  };
+
+  rpc CreateUser(User) returns (User) {
+    option (google.api.http) = {
+      put: "/v1/user"
+    };
+  };
+
+  rpc UpdateUser(User) returns (User) {
+    option (google.api.http) = {
+      patch: "/v1/user"
+    };
+  };
+
+  rpc DeleteUser(User) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/user"
+    };
+  };
+}
+
+message UsersQueryFilter {
+  uint64 Username = 1;
+  uint64 Fullname = 2;
+  uint64 Email = 3;
+}
+
+message User {
+  string UUID = 1;
+  uint64 Username = 2;
+
+  optional string Fullname = 3;
+  optional string Email = 4;
+}
+
+message Users {
+  repeated User Users = 1;
+}

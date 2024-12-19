@@ -59,5 +59,6 @@ func (config Database) String() string {
 		"\n---\nDatabase configuration:\n\tRemote address: %s\n\tRemote port: %d\n\tUser: %s",
 		config.Host,
 		config.Port,
-		config.User)
+		config.User,
+	)
 }
