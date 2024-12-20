@@ -78,6 +78,13 @@
         },
         "parameters": [
           {
+            "name": "ID",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
             "name": "Types",
             "in": "query",
             "required": false,
@@ -122,6 +129,52 @@
             "required": false,
             "type": "string",
             "format": "date-time"
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "Offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ControlCenter"
+        ]
+      }
+    },
+    "/v1/jobs/evaluate": {
+      "post": {
+        "operationId": "ControlCenter_EvaluateJobs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoTargetsEvaluationResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoTargetsEvaluationMessage"
+            }
           }
         ],
         "tags": [
@@ -161,9 +214,41 @@
           "ControlCenter"
         ]
       }
+    },
+    "/v1/uuid": {
+      "get": {
+        "operationId": "ControlCenter_GetNewUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoUUID"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ControlCenter"
+        ]
+      }
     }
   },
   "definitions": {
+    "protoAssignmentMode": {
+      "type": "string",
+      "enum": [
+        "BM_LEAST_TASKS",
+        "BM_EVEN",
+        "BM_NON_BUSY"
+      ],
+      "default": "BM_LEAST_TASKS",
+      "title": "- BM_LEAST_TASKS: assign all tasks to the bot with lowest task count\n - BM_EVEN: distribute tasks evenly between all available bots\n - BM_NON_BUSY: wait for the first bot to be released"
+    },
     "protoBot": {
       "type": "object",
       "properties": {
@@ -197,6 +282,10 @@
         },
         "CurrentScanOption": {
           "type": "string"
+        },
+        "TasksLeft": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
@@ -254,11 +343,8 @@
           "title": "IsSent defines if job has been sent to processing"
         },
         "Options": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "byte"
-          },
+          "type": "string",
+          "format": "byte",
           "title": "Full job parameters and targets as requested in job, stored as JSON binary"
         },
         "ErrorText": {
@@ -297,6 +383,20 @@
         }
       }
     },
+    "protoLabels": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "$ref": "#/definitions/protoPriority"
+        },
+        "assignmentMode": {
+          "$ref": "#/definitions/protoAssignmentMode"
+        },
+        "shuffle": {
+          "type": "boolean"
+        }
+      }
+    },
     "protoOptions": {
       "type": "object",
       "properties": {
@@ -311,8 +411,72 @@
     "protoPingOptions": {
       "type": "object",
       "properties": {
-        "Default": {
+        "default": {
           "$ref": "#/definitions/protoOptions"
+        },
+        "labels": {
+          "$ref": "#/definitions/protoLabels"
+        }
+      }
+    },
+    "protoPriority": {
+      "type": "string",
+      "enum": [
+        "P_LOW",
+        "P_MEDIUM",
+        "P_HIGH",
+        "P_CRITICAL"
+      ],
+      "default": "P_LOW"
+    },
+    "protoTargetsEvaluationMessage": {
+      "type": "object",
+      "properties": {
+        "Body": {
+          "type": "string"
+        }
+      }
+    },
+    "protoTargetsEvaluationResult": {
+      "type": "object",
+      "properties": {
+        "Domains": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "URLs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Subnets": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "IPs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Emails": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Total": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "protoUUID": {
+      "type": "object",
+      "properties": {
+        "Value": {
+          "type": "string"
         }
       }
     },

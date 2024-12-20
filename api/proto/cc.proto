@@ -31,13 +31,25 @@ service ControlCenter {
     };
   };
 
+  rpc EvaluateJobs(TargetsEvaluationMessage) returns (TargetsEvaluationResult) {
+    option (google.api.http) = {
+      post: "/v1/jobs/evaluate"
+      body: "*"
+    };
+  };
+
   rpc GetJobs(JobsQueryFilter) returns (Jobs) {
     option (google.api.http) = {
       get: "/v1/jobs"
     };
   };
-}
 
+  rpc GetNewUUID(google.protobuf.Empty) returns (UUID) {
+    option (google.api.http) = {
+      get: "/v1/uuid"
+    };
+  };
+}
 
 message Jobs {
   repeated Job Jobs = 1;
@@ -63,17 +75,39 @@ message Job {
 }
 
 message JobsQueryFilter {
-  repeated JobType Types = 1;
-  optional bool IsSent = 2;
+  optional uint64 ID = 1;
 
-  optional uint64 CreatedBy = 3;
-  optional string ErrorText = 4;
+  repeated JobType Types = 2;
+  optional bool IsSent = 3;
 
-  optional google.protobuf.Timestamp CreatedAfter = 5;
-  optional google.protobuf.Timestamp CreatedBefore = 6;
+  optional uint64 CreatedBy = 4;
+  optional string ErrorText = 5;
 
-  uint64 Limit = 7;
-  uint64 Offset = 8;
+  optional google.protobuf.Timestamp CreatedAfter = 6;
+  optional google.protobuf.Timestamp CreatedBefore = 7;
+
+  uint64 Limit = 8;
+  uint64 Offset = 9;
+}
+
+message TargetsEvaluationMessage {
+  string Body = 1;
+}
+
+message TargetsEvaluationResult {
+  uint64 Domains = 1;
+  uint64 URLs = 2;
+  uint64 Subnets = 3;
+  uint64 IPs = 4;
+  uint64 Emails = 5;
+
+  uint64 Total = 6;
+
+  repeated string Errors = 7;
+}
+
+message UUID {
+  string Value = 1;
 }
 
 enum JobType {

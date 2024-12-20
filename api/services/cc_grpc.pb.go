@@ -22,7 +22,9 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	ControlCenter_GetFleet_FullMethodName      = "/proto.ControlCenter/GetFleet"
 	ControlCenter_CreatePingJob_FullMethodName = "/proto.ControlCenter/CreatePingJob"
+	ControlCenter_EvaluateJobs_FullMethodName  = "/proto.ControlCenter/EvaluateJobs"
 	ControlCenter_GetJobs_FullMethodName       = "/proto.ControlCenter/GetJobs"
+	ControlCenter_GetNewUUID_FullMethodName    = "/proto.ControlCenter/GetNewUUID"
 )
 
 // ControlCenterClient is the client API for ControlCenter service.
@@ -31,7 +33,9 @@ const (
 type ControlCenterClient interface {
 	GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error)
 	CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	EvaluateJobs(ctx context.Context, in *TargetsEvaluationMessage, opts ...grpc.CallOption) (*TargetsEvaluationResult, error)
 	GetJobs(ctx context.Context, in *JobsQueryFilter, opts ...grpc.CallOption) (*Jobs, error)
+	GetNewUUID(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UUID, error)
 }
 
 type controlCenterClient struct {
@@ -62,10 +66,30 @@ func (c *controlCenterClient) CreatePingJob(ctx context.Context, in *PingOptions
 	return out, nil
 }
 
+func (c *controlCenterClient) EvaluateJobs(ctx context.Context, in *TargetsEvaluationMessage, opts ...grpc.CallOption) (*TargetsEvaluationResult, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TargetsEvaluationResult)
+	err := c.cc.Invoke(ctx, ControlCenter_EvaluateJobs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *controlCenterClient) GetJobs(ctx context.Context, in *JobsQueryFilter, opts ...grpc.CallOption) (*Jobs, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Jobs)
 	err := c.cc.Invoke(ctx, ControlCenter_GetJobs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *controlCenterClient) GetNewUUID(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UUID, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UUID)
+	err := c.cc.Invoke(ctx, ControlCenter_GetNewUUID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +102,9 @@ func (c *controlCenterClient) GetJobs(ctx context.Context, in *JobsQueryFilter, 
 type ControlCenterServer interface {
 	GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error)
 	CreatePingJob(context.Context, *PingOptions) (*emptypb.Empty, error)
+	EvaluateJobs(context.Context, *TargetsEvaluationMessage) (*TargetsEvaluationResult, error)
 	GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error)
+	GetNewUUID(context.Context, *emptypb.Empty) (*UUID, error)
 	mustEmbedUnimplementedControlCenterServer()
 }
 
@@ -95,8 +121,14 @@ func (UnimplementedControlCenterServer) GetFleet(context.Context, *FleetQueryFil
 func (UnimplementedControlCenterServer) CreatePingJob(context.Context, *PingOptions) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePingJob not implemented")
 }
+func (UnimplementedControlCenterServer) EvaluateJobs(context.Context, *TargetsEvaluationMessage) (*TargetsEvaluationResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EvaluateJobs not implemented")
+}
 func (UnimplementedControlCenterServer) GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetJobs not implemented")
+}
+func (UnimplementedControlCenterServer) GetNewUUID(context.Context, *emptypb.Empty) (*UUID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNewUUID not implemented")
 }
 func (UnimplementedControlCenterServer) mustEmbedUnimplementedControlCenterServer() {}
 func (UnimplementedControlCenterServer) testEmbeddedByValue()                       {}
@@ -155,6 +187,24 @@ func _ControlCenter_CreatePingJob_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ControlCenter_EvaluateJobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TargetsEvaluationMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlCenterServer).EvaluateJobs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ControlCenter_EvaluateJobs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlCenterServer).EvaluateJobs(ctx, req.(*TargetsEvaluationMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ControlCenter_GetJobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(JobsQueryFilter)
 	if err := dec(in); err != nil {
@@ -169,6 +219,24 @@ func _ControlCenter_GetJobs_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ControlCenterServer).GetJobs(ctx, req.(*JobsQueryFilter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ControlCenter_GetNewUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlCenterServer).GetNewUUID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ControlCenter_GetNewUUID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlCenterServer).GetNewUUID(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -189,8 +257,16 @@ var ControlCenter_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ControlCenter_CreatePingJob_Handler,
 		},
 		{
+			MethodName: "EvaluateJobs",
+			Handler:    _ControlCenter_EvaluateJobs_Handler,
+		},
+		{
 			MethodName: "GetJobs",
 			Handler:    _ControlCenter_GetJobs_Handler,
+		},
+		{
+			MethodName: "GetNewUUID",
+			Handler:    _ControlCenter_GetNewUUID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
