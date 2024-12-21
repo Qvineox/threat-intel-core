@@ -98,12 +98,6 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "IsSent",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
             "name": "CreatedBy",
             "in": "query",
             "required": false,

@@ -75,19 +75,18 @@ message Job {
 }
 
 message JobsQueryFilter {
-  optional uint64 ID = 1;
+  uint64 ID = 1;
 
   repeated JobType Types = 2;
-  optional bool IsSent = 3;
 
-  optional uint64 CreatedBy = 4;
-  optional string ErrorText = 5;
+  uint64 CreatedBy = 3;
+  string ErrorText = 4;
 
-  optional google.protobuf.Timestamp CreatedAfter = 6;
-  optional google.protobuf.Timestamp CreatedBefore = 7;
+  google.protobuf.Timestamp CreatedAfter = 5;
+  google.protobuf.Timestamp CreatedBefore = 6;
 
-  uint64 Limit = 8;
-  uint64 Offset = 9;
+  uint64 Limit = 7;
+  uint64 Offset = 8;
 }
 
 message TargetsEvaluationMessage {
