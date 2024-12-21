@@ -10,6 +10,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "options.proto";
 import "fleet.proto";
+import "ping.proto";
 
 option go_package = "threat-intel-core/api/proto/services";
 
@@ -47,6 +48,12 @@ service ControlCenter {
   rpc GetNewUUID(google.protobuf.Empty) returns (UUID) {
     option (google.api.http) = {
       get: "/v1/uuid"
+    };
+  };
+
+  rpc GetPingResults(PingResultsQueryFilter) returns (PingResults) {
+    option (google.api.http) = {
+      get: "/v1/results/ping"
     };
   };
 }

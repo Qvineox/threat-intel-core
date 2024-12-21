@@ -209,6 +209,66 @@
         ]
       }
     },
+    "/v1/results/ping": {
+      "get": {
+        "operationId": "ControlCenter_GetPingResults",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoPingResults"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "IP",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ResolvedName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Response",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "RT_HOST_UNKNOWN",
+                "RT_HOST_UNREACHABLE",
+                "RT_FAILED",
+                "RT_TIMEOUT",
+                "RT_SUCCEEDED"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "JobID",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ControlCenter"
+        ]
+      }
+    },
     "/v1/uuid": {
       "get": {
         "operationId": "ControlCenter_GetNewUUID",
@@ -413,6 +473,56 @@
         }
       }
     },
+    "protoPingResult": {
+      "type": "object",
+      "properties": {
+        "IP": {
+          "type": "string"
+        },
+        "ResolvedName": {
+          "type": "string"
+        },
+        "Response": {
+          "$ref": "#/definitions/protoResponseType"
+        },
+        "PacketsSent": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "PacketsLoss": {
+          "type": "number",
+          "format": "float"
+        },
+        "MinRttMs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "MaxRttMs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "AvgRttMs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "JobID": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "protoPingResults": {
+      "type": "object",
+      "properties": {
+        "Results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protoPingResult"
+          }
+        }
+      }
+    },
     "protoPriority": {
       "type": "string",
       "enum": [
@@ -422,6 +532,17 @@
         "P_CRITICAL"
       ],
       "default": "P_LOW"
+    },
+    "protoResponseType": {
+      "type": "string",
+      "enum": [
+        "RT_HOST_UNKNOWN",
+        "RT_HOST_UNREACHABLE",
+        "RT_FAILED",
+        "RT_TIMEOUT",
+        "RT_SUCCEEDED"
+      ],
+      "default": "RT_HOST_UNKNOWN"
     },
     "protoTargetsEvaluationMessage": {
       "type": "object",

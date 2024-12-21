@@ -24,6 +24,20 @@ message PingResult {
   optional uint64 MinRttMs = 6;
   optional uint64 MaxRttMs = 7;
   optional uint64 AvgRttMs = 8;
+
+  optional uint64 JobID = 9;
+}
+
+message PingResults {
+  repeated PingResult Results = 1;
+}
+
+message PingResultsQueryFilter {
+  string IP = 1;
+  string ResolvedName = 2;
+  repeated ResponseType Response = 3;
+
+  uint64 JobID = 4;
 }
 
 enum ResponseType {

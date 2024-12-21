@@ -20,11 +20,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ControlCenter_GetFleet_FullMethodName      = "/proto.ControlCenter/GetFleet"
-	ControlCenter_CreatePingJob_FullMethodName = "/proto.ControlCenter/CreatePingJob"
-	ControlCenter_EvaluateJobs_FullMethodName  = "/proto.ControlCenter/EvaluateJobs"
-	ControlCenter_GetJobs_FullMethodName       = "/proto.ControlCenter/GetJobs"
-	ControlCenter_GetNewUUID_FullMethodName    = "/proto.ControlCenter/GetNewUUID"
+	ControlCenter_GetFleet_FullMethodName       = "/proto.ControlCenter/GetFleet"
+	ControlCenter_CreatePingJob_FullMethodName  = "/proto.ControlCenter/CreatePingJob"
+	ControlCenter_EvaluateJobs_FullMethodName   = "/proto.ControlCenter/EvaluateJobs"
+	ControlCenter_GetJobs_FullMethodName        = "/proto.ControlCenter/GetJobs"
+	ControlCenter_GetNewUUID_FullMethodName     = "/proto.ControlCenter/GetNewUUID"
+	ControlCenter_GetPingResults_FullMethodName = "/proto.ControlCenter/GetPingResults"
 )
 
 // ControlCenterClient is the client API for ControlCenter service.
@@ -36,6 +37,7 @@ type ControlCenterClient interface {
 	EvaluateJobs(ctx context.Context, in *TargetsEvaluationMessage, opts ...grpc.CallOption) (*TargetsEvaluationResult, error)
 	GetJobs(ctx context.Context, in *JobsQueryFilter, opts ...grpc.CallOption) (*Jobs, error)
 	GetNewUUID(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UUID, error)
+	GetPingResults(ctx context.Context, in *PingResultsQueryFilter, opts ...grpc.CallOption) (*PingResults, error)
 }
 
 type controlCenterClient struct {
@@ -96,6 +98,16 @@ func (c *controlCenterClient) GetNewUUID(ctx context.Context, in *emptypb.Empty,
 	return out, nil
 }
 
+func (c *controlCenterClient) GetPingResults(ctx context.Context, in *PingResultsQueryFilter, opts ...grpc.CallOption) (*PingResults, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PingResults)
+	err := c.cc.Invoke(ctx, ControlCenter_GetPingResults_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ControlCenterServer is the server API for ControlCenter service.
 // All implementations must embed UnimplementedControlCenterServer
 // for forward compatibility.
@@ -105,6 +117,7 @@ type ControlCenterServer interface {
 	EvaluateJobs(context.Context, *TargetsEvaluationMessage) (*TargetsEvaluationResult, error)
 	GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error)
 	GetNewUUID(context.Context, *emptypb.Empty) (*UUID, error)
+	GetPingResults(context.Context, *PingResultsQueryFilter) (*PingResults, error)
 	mustEmbedUnimplementedControlCenterServer()
 }
 
@@ -129,6 +142,9 @@ func (UnimplementedControlCenterServer) GetJobs(context.Context, *JobsQueryFilte
 }
 func (UnimplementedControlCenterServer) GetNewUUID(context.Context, *emptypb.Empty) (*UUID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNewUUID not implemented")
+}
+func (UnimplementedControlCenterServer) GetPingResults(context.Context, *PingResultsQueryFilter) (*PingResults, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPingResults not implemented")
 }
 func (UnimplementedControlCenterServer) mustEmbedUnimplementedControlCenterServer() {}
 func (UnimplementedControlCenterServer) testEmbeddedByValue()                       {}
@@ -241,6 +257,24 @@ func _ControlCenter_GetNewUUID_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ControlCenter_GetPingResults_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PingResultsQueryFilter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlCenterServer).GetPingResults(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ControlCenter_GetPingResults_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlCenterServer).GetPingResults(ctx, req.(*PingResultsQueryFilter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ControlCenter_ServiceDesc is the grpc.ServiceDesc for ControlCenter service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -267,6 +301,10 @@ var ControlCenter_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetNewUUID",
 			Handler:    _ControlCenter_GetNewUUID_Handler,
+		},
+		{
+			MethodName: "GetPingResults",
+			Handler:    _ControlCenter_GetPingResults_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
