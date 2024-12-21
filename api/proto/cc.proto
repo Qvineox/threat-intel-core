@@ -20,7 +20,7 @@ option go_package = "threat-intel-core/api/proto/services";
 service ControlCenter {
   rpc GetFleet(FleetQueryFilter) returns (Fleet) {
     option (google.api.http) = {
-      get: "/v1/fleet"
+      get: "/v1/fleet",
     };
   };
 
