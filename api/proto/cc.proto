@@ -21,39 +21,39 @@ option go_package = "threat-intel-core/api/proto/services";
 service ControlCenter {
   rpc GetFleet(FleetQueryFilter) returns (Fleet) {
     option (google.api.http) = {
-      get: "/v1/fleet",
+      get: "/api/v1/fleet",
     };
   };
 
   rpc CreatePingJob(PingOptions) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post: "/v1/jobs/ping"
+      post: "/api/v1/jobs/ping"
       body: "*"
     };
   };
 
   rpc EvaluateJobs(TargetsEvaluationMessage) returns (TargetsEvaluationResult) {
     option (google.api.http) = {
-      post: "/v1/jobs/evaluate"
+      post: "/api/v1/jobs/evaluate"
       body: "*"
     };
   };
 
   rpc GetJobs(JobsQueryFilter) returns (Jobs) {
     option (google.api.http) = {
-      get: "/v1/jobs"
+      get: "/api/v1/jobs"
     };
   };
 
   rpc GetNewUUID(google.protobuf.Empty) returns (UUID) {
     option (google.api.http) = {
-      get: "/v1/uuid"
+      get: "/api/v1/uuid"
     };
   };
 
   rpc GetPingResults(PingResultsQueryFilter) returns (PingResults) {
     option (google.api.http) = {
-      get: "/v1/results/ping"
+      get: "/api/v1/results/ping"
     };
   };
 }

@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/v1/fleet": {
+    "/api/v1/fleet": {
       "get": {
         "operationId": "ControlCenter_GetFleet",
         "responses": {
@@ -59,7 +59,7 @@
         ]
       }
     },
-    "/v1/jobs": {
+    "/api/v1/jobs": {
       "get": {
         "operationId": "ControlCenter_GetJobs",
         "responses": {
@@ -144,7 +144,7 @@
         ]
       }
     },
-    "/v1/jobs/evaluate": {
+    "/api/v1/jobs/evaluate": {
       "post": {
         "operationId": "ControlCenter_EvaluateJobs",
         "responses": {
@@ -176,7 +176,7 @@
         ]
       }
     },
-    "/v1/jobs/ping": {
+    "/api/v1/jobs/ping": {
       "post": {
         "operationId": "ControlCenter_CreatePingJob",
         "responses": {
@@ -209,7 +209,7 @@
         ]
       }
     },
-    "/v1/results/ping": {
+    "/api/v1/results/ping": {
       "get": {
         "operationId": "ControlCenter_GetPingResults",
         "responses": {
@@ -269,7 +269,7 @@
         ]
       }
     },
-    "/v1/uuid": {
+    "/api/v1/uuid": {
       "get": {
         "operationId": "ControlCenter_GetNewUUID",
         "responses": {

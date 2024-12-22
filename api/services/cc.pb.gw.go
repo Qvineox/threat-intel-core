@@ -210,7 +210,7 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetFleet", runtime.WithHTTPPathPattern("/v1/fleet"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetFleet", runtime.WithHTTPPathPattern("/api/v1/fleet"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -230,7 +230,7 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/CreatePingJob", runtime.WithHTTPPathPattern("/v1/jobs/ping"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/CreatePingJob", runtime.WithHTTPPathPattern("/api/v1/jobs/ping"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -250,7 +250,7 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/EvaluateJobs", runtime.WithHTTPPathPattern("/v1/jobs/evaluate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/EvaluateJobs", runtime.WithHTTPPathPattern("/api/v1/jobs/evaluate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -270,7 +270,7 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetJobs", runtime.WithHTTPPathPattern("/v1/jobs"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetJobs", runtime.WithHTTPPathPattern("/api/v1/jobs"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -290,7 +290,7 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetNewUUID", runtime.WithHTTPPathPattern("/v1/uuid"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetNewUUID", runtime.WithHTTPPathPattern("/api/v1/uuid"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -310,7 +310,7 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetPingResults", runtime.WithHTTPPathPattern("/v1/results/ping"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetPingResults", runtime.WithHTTPPathPattern("/api/v1/results/ping"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -368,7 +368,7 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetFleet", runtime.WithHTTPPathPattern("/v1/fleet"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetFleet", runtime.WithHTTPPathPattern("/api/v1/fleet"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -385,7 +385,7 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/CreatePingJob", runtime.WithHTTPPathPattern("/v1/jobs/ping"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/CreatePingJob", runtime.WithHTTPPathPattern("/api/v1/jobs/ping"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -402,7 +402,7 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/EvaluateJobs", runtime.WithHTTPPathPattern("/v1/jobs/evaluate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/EvaluateJobs", runtime.WithHTTPPathPattern("/api/v1/jobs/evaluate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -419,7 +419,7 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetJobs", runtime.WithHTTPPathPattern("/v1/jobs"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetJobs", runtime.WithHTTPPathPattern("/api/v1/jobs"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -436,7 +436,7 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetNewUUID", runtime.WithHTTPPathPattern("/v1/uuid"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetNewUUID", runtime.WithHTTPPathPattern("/api/v1/uuid"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -453,7 +453,7 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetPingResults", runtime.WithHTTPPathPattern("/v1/results/ping"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetPingResults", runtime.WithHTTPPathPattern("/api/v1/results/ping"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -470,12 +470,12 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 }
 
 var (
-	pattern_ControlCenter_GetFleet_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "fleet"}, ""))
-	pattern_ControlCenter_CreatePingJob_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "jobs", "ping"}, ""))
-	pattern_ControlCenter_EvaluateJobs_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "jobs", "evaluate"}, ""))
-	pattern_ControlCenter_GetJobs_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "jobs"}, ""))
-	pattern_ControlCenter_GetNewUUID_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "uuid"}, ""))
-	pattern_ControlCenter_GetPingResults_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "results", "ping"}, ""))
+	pattern_ControlCenter_GetFleet_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "fleet"}, ""))
+	pattern_ControlCenter_CreatePingJob_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "jobs", "ping"}, ""))
+	pattern_ControlCenter_EvaluateJobs_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "jobs", "evaluate"}, ""))
+	pattern_ControlCenter_GetJobs_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "jobs"}, ""))
+	pattern_ControlCenter_GetNewUUID_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "uuid"}, ""))
+	pattern_ControlCenter_GetPingResults_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "results", "ping"}, ""))
 )
 
 var (
