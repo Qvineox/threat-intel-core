@@ -12,7 +12,7 @@ type Config struct {
 }
 
 func (config Config) String() string {
-	return config.DatabaseConnection.String() + config.REST.String() + config.RemoteProcedures.String() + config.Security.String() + config.ServiceDiscovery.String() + config.Logging.String() + "---"
+	return config.DatabaseConnection.String() + config.REST.String() + config.RemoteProcedures.String() + config.Security.String() + config.ServiceDiscovery.String() + config.Logging.String() + "\n---"
 
 }
 
