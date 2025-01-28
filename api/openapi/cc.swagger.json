@@ -549,6 +549,12 @@
       "properties": {
         "Body": {
           "type": "string"
+        },
+        "allowForking": {
+          "type": "boolean"
+        },
+        "allowReserved": {
+          "type": "boolean"
         }
       }
     },
