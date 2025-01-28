@@ -99,8 +99,8 @@ message JobsQueryFilter {
 message TargetsEvaluationMessage {
   string Body = 1;
 
-  bool allowForking = 2;
-  bool allowReserved = 3;
+  bool AllowForking = 2;
+  bool AllowReserved = 3;
 }
 
 message TargetsEvaluationResult {

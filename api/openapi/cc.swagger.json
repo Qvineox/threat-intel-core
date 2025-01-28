@@ -550,10 +550,10 @@
         "Body": {
           "type": "string"
         },
-        "allowForking": {
+        "AllowForking": {
           "type": "boolean"
         },
-        "allowReserved": {
+        "AllowReserved": {
           "type": "boolean"
         }
       }
