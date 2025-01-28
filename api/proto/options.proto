@@ -24,8 +24,8 @@ message Timings {
 }
 
 message Labels {
-  Priority priority = 1;
-  AssignmentMode assignmentMode = 2;
+  Priority Priority = 1;
+  AssignmentMode AssignmentMode = 2;
 
   bool Shuffle = 3;
 }
