@@ -446,7 +446,7 @@
         "assignmentMode": {
           "$ref": "#/definitions/protoAssignmentMode"
         },
-        "shuffle": {
+        "Shuffle": {
           "type": "boolean"
         }
       }
@@ -454,21 +454,27 @@
     "protoOptions": {
       "type": "object",
       "properties": {
-        "targets": {
+        "Targets": {
           "type": "array",
           "items": {
             "type": "string"
           }
+        },
+        "AllowForking": {
+          "type": "boolean"
+        },
+        "AllowReserved": {
+          "type": "boolean"
         }
       }
     },
     "protoPingOptions": {
       "type": "object",
       "properties": {
-        "default": {
+        "Default": {
           "$ref": "#/definitions/protoOptions"
         },
-        "labels": {
+        "Labels": {
           "$ref": "#/definitions/protoLabels"
         }
       }
