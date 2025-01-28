@@ -113,6 +113,7 @@ message TargetsEvaluationResult {
   uint64 Total = 6;
 
   repeated string Errors = 7;
+  repeated string Targets = 8;
 }
 
 message UUID {
