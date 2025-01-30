@@ -183,8 +183,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "object",
-              "properties": {}
+              "$ref": "#/definitions/protoID"
             }
           },
           "default": {
@@ -381,6 +380,15 @@
       },
       "title": "Fleet describes all bots and coordinators in a system"
     },
+    "protoID": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
     "protoJob": {
       "type": "object",
       "properties": {
@@ -440,10 +448,10 @@
     "protoLabels": {
       "type": "object",
       "properties": {
-        "priority": {
+        "Priority": {
           "$ref": "#/definitions/protoPriority"
         },
-        "assignmentMode": {
+        "AssignmentMode": {
           "$ref": "#/definitions/protoAssignmentMode"
         },
         "Shuffle": {

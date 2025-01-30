@@ -33,7 +33,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ControlCenterClient interface {
 	GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error)
-	CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*ID, error)
 	EvaluateJobs(ctx context.Context, in *TargetsEvaluationMessage, opts ...grpc.CallOption) (*TargetsEvaluationResult, error)
 	GetJobs(ctx context.Context, in *JobsQueryFilter, opts ...grpc.CallOption) (*Jobs, error)
 	GetNewUUID(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UUID, error)
@@ -58,9 +58,9 @@ func (c *controlCenterClient) GetFleet(ctx context.Context, in *FleetQueryFilter
 	return out, nil
 }
 
-func (c *controlCenterClient) CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *controlCenterClient) CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*ID, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(ID)
 	err := c.cc.Invoke(ctx, ControlCenter_CreatePingJob_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -113,7 +113,7 @@ func (c *controlCenterClient) GetPingResults(ctx context.Context, in *PingResult
 // for forward compatibility.
 type ControlCenterServer interface {
 	GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error)
-	CreatePingJob(context.Context, *PingOptions) (*emptypb.Empty, error)
+	CreatePingJob(context.Context, *PingOptions) (*ID, error)
 	EvaluateJobs(context.Context, *TargetsEvaluationMessage) (*TargetsEvaluationResult, error)
 	GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error)
 	GetNewUUID(context.Context, *emptypb.Empty) (*UUID, error)
@@ -131,7 +131,7 @@ type UnimplementedControlCenterServer struct{}
 func (UnimplementedControlCenterServer) GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFleet not implemented")
 }
-func (UnimplementedControlCenterServer) CreatePingJob(context.Context, *PingOptions) (*emptypb.Empty, error) {
+func (UnimplementedControlCenterServer) CreatePingJob(context.Context, *PingOptions) (*ID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePingJob not implemented")
 }
 func (UnimplementedControlCenterServer) EvaluateJobs(context.Context, *TargetsEvaluationMessage) (*TargetsEvaluationResult, error) {

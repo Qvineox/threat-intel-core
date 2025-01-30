@@ -25,7 +25,7 @@ service ControlCenter {
     };
   };
 
-  rpc CreatePingJob(PingOptions) returns (google.protobuf.Empty) {
+  rpc CreatePingJob(PingOptions) returns (ID) {
     option (google.api.http) = {
       post: "/api/v1/jobs/ping"
       body: "*"
@@ -114,6 +114,10 @@ message TargetsEvaluationResult {
 
   repeated string Errors = 7;
   repeated string Targets = 8;
+}
+
+message ID {
+  uint64 ID = 1;
 }
 
 message UUID {
