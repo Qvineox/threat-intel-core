@@ -20,10 +20,8 @@ service Coordinator {
 }
 
 message JobStream {
-  uint64 JobID = 1;
-  
   oneof Options {
-    PingOptions Ping = 2;
+    PingOptions Ping = 1;
   }
 }
 
