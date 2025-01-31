@@ -68,17 +68,18 @@ message Job {
   // Type described in entities package
   JobType Type = 2;
 
-  // IsSent defines if job has been sent to processing
-  bool IsSent = 3;
+  // IsAllocated defines if job has been sent to processing
+  bool IsAllocated = 3;
+  bool IsDone = 4;
 
   // Full job parameters and targets as requested in job, stored as JSON binary
-  bytes Options = 4;
+  bytes Options = 5;
 
-  optional string ErrorText = 5;
-  optional uint64 CreatedBy = 6;
+  optional string ErrorText = 6;
+  optional uint64 CreatedBy = 7;
 
-  google.protobuf.Timestamp CreatedAt = 7;
-  google.protobuf.Timestamp UpdatedAt = 8;
+  google.protobuf.Timestamp CreatedAt = 8;
+  google.protobuf.Timestamp UpdatedAt = 9;
 }
 
 message JobsQueryFilter {

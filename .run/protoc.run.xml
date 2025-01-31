@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="protoc" type="CompoundRunConfigurationType">
+    <toRun name="auth" type="ShConfigurationType" />
+    <toRun name="cc" type="ShConfigurationType" />
+    <toRun name="collector" type="ShConfigurationType" />
+    <toRun name="coordinator" type="ShConfigurationType" />
+    <toRun name="fleet" type="ShConfigurationType" />
+    <toRun name="options" type="ShConfigurationType" />
+    <toRun name="ping" type="ShConfigurationType" />
+    <toRun name="protoc grpc_gw cc" type="ShConfigurationType" />
+    <toRun name="protoc open_api cc" type="ShConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

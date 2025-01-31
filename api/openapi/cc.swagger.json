@@ -261,6 +261,20 @@
             "required": false,
             "type": "string",
             "format": "uint64"
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "Offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
           }
         ],
         "tags": [
@@ -400,9 +414,12 @@
           "$ref": "#/definitions/protoJobType",
           "title": "Type described in entities package"
         },
-        "IsSent": {
+        "IsAllocated": {
           "type": "boolean",
-          "title": "IsSent defines if job has been sent to processing"
+          "title": "IsAllocated defines if job has been sent to processing"
+        },
+        "IsDone": {
+          "type": "boolean"
         },
         "Options": {
           "type": "string",

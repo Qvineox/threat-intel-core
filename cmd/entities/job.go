@@ -37,8 +37,8 @@ type Job struct {
 	ID   *uint64 `json:"ID" gorm:"primary_key"`
 	Type JobType `json:"Type" gorm:"column:type;index;not null;comment:Job type"`
 
-	IsSent *bool `json:"IsSent" gorm:"column:is_sent;type:boolean;not null;default:false;comment:Is job sent to processing unit"`
-	IsDone *bool `json:"IsDone" gorm:"column:is_done;type:boolean;not null;default:false;comment:Is job was finished"`
+	IsAllocated *bool `json:"IsAllocated" gorm:"column:is_allocated;type:boolean;not null;default:false;comment:Is job sent to processing unit"`
+	IsDone      *bool `json:"IsDone" gorm:"column:is_done;type:boolean;not null;default:false;comment:Is job was finished"`
 	//State JobState `json:"State" gorm:"column:state;not null;type:varchar(10);comment:Current job state"`
 
 	Priority Priority       `json:"Priority" gorm:"column:priority;comment:Job relative priority.\n0 to 3 (higher is better)"`

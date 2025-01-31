@@ -26,6 +26,9 @@ type PingResult struct {
 	MaxRttMs *uint64 `json:"MaxRttMs" gorm:"column:max_rtt_ms;type:numeric(6);comment:Max round trip in milliseconds"`
 	AvgRttMs *uint64 `json:"AvgRttMs" gorm:"column:avg_rtt_ms;type:numeric(6);comment:Average round trip in milliseconds"`
 
+	JobID *uint64 `json:"JobID" gorm:"column:job_id;index;comment:Original job ID"`
+	Job   *Job    `json:"Job" gorm:"foreignKey:JobID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
+
 	// CreatedAt date of data collection
 	CreatedAt time.Time `json:"CreatedAt" gorm:"column:created_at;index:,sort:desc"`
 
