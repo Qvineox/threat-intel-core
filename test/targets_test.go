@@ -46,7 +46,7 @@ func TestTargets(t *testing.T) {
 			"уцаьзфып.вп.r1-u",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 5)
 	})
@@ -57,7 +57,7 @@ func TestTargets(t *testing.T) {
 			"y!a.ru",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.Error(t, err)
 		require.Empty(t, queue.Targets)
 	})
@@ -69,7 +69,7 @@ func TestTargets(t *testing.T) {
 			"2001:4860:4860::8888/32",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 3)
 	})
@@ -81,7 +81,7 @@ func TestTargets(t *testing.T) {
 			"2001:4860:4860::8888",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.Error(t, err)
 		require.Empty(t, queue.Targets)
 	})
@@ -99,7 +99,7 @@ func TestTargets(t *testing.T) {
 			"https://2001:4860:4860::8888/test",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 9)
 	})
@@ -117,7 +117,7 @@ func TestTargets(t *testing.T) {
 			"https://2001:4860:4860::8888/test",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, true, false)
+		queue, err := targets.NewScanTargetQueue(hosts, true, false, nil)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 9)
 
@@ -138,7 +138,7 @@ func TestTargets(t *testing.T) {
 			"/pass@mail.yandex.ru",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.Error(t, err)
 		require.Empty(t, queue.Targets)
 	})
@@ -149,7 +149,7 @@ func TestTargets(t *testing.T) {
 			"yarlrusman@gmail.mail.com",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 2)
 	})
@@ -159,7 +159,7 @@ func TestTargets(t *testing.T) {
 			"test@@mail.ru",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.Error(t, err)
 		require.Empty(t, queue.Targets)
 	})
@@ -170,7 +170,7 @@ func TestTargets(t *testing.T) {
 			"yarlrusman@yandex.mail.ru",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, true, false)
+		queue, err := targets.NewScanTargetQueue(hosts, true, false, nil)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 2)
 
@@ -189,7 +189,7 @@ func TestTargets(t *testing.T) {
 			"yarlrusman@yandex.ru",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 4)
 
@@ -208,7 +208,7 @@ func TestTargets(t *testing.T) {
 			"212.121.122.0",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, false, false)
+		queue, err := targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.Error(t, err)
 		require.Len(t, queue.Targets, 1)
 
@@ -220,7 +220,7 @@ func TestTargets(t *testing.T) {
 			"212.121.122.0",
 		}
 
-		queue, err = targets.NewScanTargetQueue(hosts, false, false)
+		queue, err = targets.NewScanTargetQueue(hosts, false, false, nil)
 		require.Error(t, err)
 		require.Len(t, queue.Targets, 2)
 	})
@@ -233,7 +233,31 @@ func TestTargets(t *testing.T) {
 			"ya.ru",
 		}
 
-		queue, err := targets.NewScanTargetQueue(hosts, true, false)
+		queue, err := targets.NewScanTargetQueue(hosts, true, false, nil)
+		require.NoError(t, err)
+		require.Len(t, queue.Targets, 4)
+
+		hosts = []string{
+			"https://ya.ru",
+			"212.122.32.0/16",
+		}
+
+		err = queue.Enqueue(hosts, true)
+		require.NoError(t, err)
+		require.Len(t, queue.Targets, 6)
+	})
+
+	t.Run("scan target queue with job id", func(t *testing.T) {
+		hosts := []string{
+			"https://yandex.ru",
+			"https://212.122.32.36/path",
+			"212.122.32.12/32",
+			"ya.ru",
+		}
+
+		var jobID uint64 = 6
+
+		queue, err := targets.NewScanTargetQueue(hosts, true, false, &jobID)
 		require.NoError(t, err)
 		require.Len(t, queue.Targets, 4)
 

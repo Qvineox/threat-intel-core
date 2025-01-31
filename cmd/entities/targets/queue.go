@@ -2,6 +2,7 @@ package targets
 
 import (
 	"errors"
+	"gitlab.domsnail.ru/domsnail/threat-intel-core/cmd/entities"
 	"log/slog"
 	"net"
 	"net/netip"
@@ -14,13 +15,15 @@ type ScanTargetQueue struct {
 	addForked   bool
 	useReserved bool
 
+	jobID *uint64
+
 	sync.Mutex
 }
 
 // NewScanTargetQueue creates new queue for a scanner, automatically generates targets with type from string slice.
-// AllowForking defines if domain or ip should be extracted from host.
-// AllowReserved defines if queue should contain reserved IP addresses.
-func NewScanTargetQueue(from []string, allowForking, allowReserved bool) (*ScanTargetQueue, error) {
+// allowForking defines if domain or ip should be extracted from host.
+// allowReserved defines if queue should contain reserved IP addresses.
+func NewScanTargetQueue(from []string, allowForking, allowReserved bool, jobID *uint64) (*ScanTargetQueue, error) {
 	if len(from) == 0 {
 		return nil, errors.New("empty target list")
 	}
@@ -32,6 +35,7 @@ func NewScanTargetQueue(from []string, allowForking, allowReserved bool) (*ScanT
 	queue.Targets = make([]*ScanTarget, 0, len(from))
 	queue.addForked = allowForking
 	queue.useReserved = allowReserved
+	queue.jobID = jobID
 
 	for _, t := range from {
 		t_, err = NewScanTarget(AutoTypeScanTarget(t, queue.addForked))
@@ -75,7 +79,7 @@ func (queue *ScanTargetQueue) Enqueue(from []string, allowForking bool) error {
 	return nil
 }
 
-func (queue *ScanTargetQueue) Output(outputChan chan string) {
+func (queue *ScanTargetQueue) Output(outputChan chan entities.Task) {
 	queue.Lock()
 
 	for _, t := range queue.Targets {
@@ -98,7 +102,11 @@ func (queue *ScanTargetQueue) Output(outputChan chan string) {
 					break
 				}
 
-				outputChan <- addr.String()
+				outputChan <- entities.Task{
+					Target: addr.String(),
+					JobID:  queue.jobID,
+				}
+
 				addr = addr.Next()
 			}
 
@@ -106,17 +114,29 @@ func (queue *ScanTargetQueue) Output(outputChan chan string) {
 		}
 
 		if t.Domain != nil {
-			outputChan <- *t.Domain
+			outputChan <- entities.Task{
+				Target: *t.Domain,
+				JobID:  queue.jobID,
+			}
+
 			t.Domain = nil
 		}
 
 		if t.Mailbox != nil {
-			outputChan <- t.Mailbox.Address
+			outputChan <- entities.Task{
+				Target: t.Mailbox.Address,
+				JobID:  queue.jobID,
+			}
+
 			t.Mailbox = nil
 		}
 
 		if t.URL != nil {
-			outputChan <- t.URL.String()
+			outputChan <- entities.Task{
+				Target: t.URL.String(),
+				JobID:  queue.jobID,
+			}
+
 			t.URL = nil
 		}
 	}
