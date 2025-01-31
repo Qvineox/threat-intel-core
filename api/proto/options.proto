@@ -15,6 +15,8 @@ message Options {
 
   bool AllowForking = 2;
   bool AllowReserved = 3;
+
+  bool Shuffle = 4;
 }
 
 message Timings {
@@ -27,7 +29,7 @@ message Labels {
   Priority Priority = 1;
   AssignmentMode AssignmentMode = 2;
 
-  bool Shuffle = 3;
+  optional uint64 JobID = 3;
 }
 
 enum Priority {

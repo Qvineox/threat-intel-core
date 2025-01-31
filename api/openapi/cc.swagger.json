@@ -471,8 +471,9 @@
         "AssignmentMode": {
           "$ref": "#/definitions/protoAssignmentMode"
         },
-        "Shuffle": {
-          "type": "boolean"
+        "JobID": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
@@ -489,6 +490,9 @@
           "type": "boolean"
         },
         "AllowReserved": {
+          "type": "boolean"
+        },
+        "Shuffle": {
           "type": "boolean"
         }
       }
