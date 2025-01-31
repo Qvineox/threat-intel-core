@@ -68,9 +68,11 @@ message Job {
   // Type described in entities package
   JobType Type = 2;
 
-  // IsAllocated defines if job has been sent to processing
+  // IsAllocated defines if job has been sent to coordinator
   bool IsAllocated = 3;
-  bool IsDone = 4;
+
+  // IsStarted defines if job has been successfully started by bots
+  bool IsStarted = 4;
 
   // Full job parameters and targets as requested in job, stored as JSON binary
   bytes Options = 5;
@@ -87,14 +89,17 @@ message JobsQueryFilter {
 
   repeated JobType Types = 2;
 
-  uint64 CreatedBy = 3;
-  string ErrorText = 4;
+  optional bool IsAllocated = 3;
+  optional bool IsStarted = 4;
 
-  google.protobuf.Timestamp CreatedAfter = 5;
-  google.protobuf.Timestamp CreatedBefore = 6;
+  uint64 CreatedBy = 5;
+  string ErrorText = 6;
 
-  uint64 Limit = 7;
-  uint64 Offset = 8;
+  google.protobuf.Timestamp CreatedAfter = 7;
+  google.protobuf.Timestamp CreatedBefore = 8;
+
+  uint64 Limit = 9;
+  uint64 Offset = 10;
 }
 
 message TargetsEvaluationMessage {

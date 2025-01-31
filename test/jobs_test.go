@@ -22,7 +22,7 @@ func TestJobs(t *testing.T) {
 		require.NotNil(t, job)
 
 		require.Nil(t, job.IsAllocated)
-		require.Nil(t, job.IsDone)
+		require.Nil(t, job.IsStarted)
 		require.EqualValues(t, entities.JOB_TYPE_PING, job.Type)
 		require.NotZero(t, job.CreatedAt)
 		require.Nil(t, job.CreatedBy)

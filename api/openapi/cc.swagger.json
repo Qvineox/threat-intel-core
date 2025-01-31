@@ -98,6 +98,18 @@
             "collectionFormat": "multi"
           },
           {
+            "name": "IsAllocated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "IsStarted",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
             "name": "CreatedBy",
             "in": "query",
             "required": false,
@@ -416,10 +428,11 @@
         },
         "IsAllocated": {
           "type": "boolean",
-          "title": "IsAllocated defines if job has been sent to processing"
+          "title": "IsAllocated defines if job has been sent to coordinator"
         },
-        "IsDone": {
-          "type": "boolean"
+        "IsStarted": {
+          "type": "boolean",
+          "title": "IsStarted defines if job has been successfully started by bots"
         },
         "Options": {
           "type": "string",
