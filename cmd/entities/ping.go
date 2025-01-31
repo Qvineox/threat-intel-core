@@ -59,6 +59,7 @@ func NewPingResultFromProto(r *services.PingResult, createdBy *string) (*PingRes
 		MaxRttMs:     r.MaxRttMs,
 		AvgRttMs:     r.AvgRttMs,
 		CreatedAt:    time.Now(),
+		JobID:        r.JobID,
 		CreatedBy:    createdBy,
 	}, nil
 }
