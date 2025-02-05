@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gitlab.domsnail.ru/domsnail/threat-intel-core/cmd/entities"
 	"log/slog"
+	"math/rand/v2"
 	"net"
 	"net/netip"
 	"sync"
@@ -14,6 +15,7 @@ type ScanTargetQueue struct {
 
 	addForked   bool
 	useReserved bool
+	shuffle     bool
 
 	jobID *uint64
 
@@ -23,7 +25,7 @@ type ScanTargetQueue struct {
 // NewScanTargetQueue creates new queue for a scanner, automatically generates targets with type from string slice.
 // allowForking defines if domain or ip should be extracted from host.
 // allowReserved defines if queue should contain reserved IP addresses.
-func NewScanTargetQueue(from []string, allowForking, allowReserved bool, jobID *uint64) (*ScanTargetQueue, error) {
+func NewScanTargetQueue(from []string, shuffle, allowForking, allowReserved bool, jobID *uint64) (*ScanTargetQueue, error) {
 	if len(from) == 0 {
 		return nil, errors.New("empty target list")
 	}
@@ -35,6 +37,8 @@ func NewScanTargetQueue(from []string, allowForking, allowReserved bool, jobID *
 	queue.Targets = make([]*ScanTarget, 0, len(from))
 	queue.addForked = allowForking
 	queue.useReserved = allowReserved
+	queue.shuffle = shuffle
+
 	queue.jobID = jobID
 
 	for _, t := range from {
@@ -48,6 +52,12 @@ func NewScanTargetQueue(from []string, allowForking, allowReserved bool, jobID *
 
 	if err != nil {
 		return queue, errors.New("failed to create scan queue: " + err.Error())
+	}
+
+	if queue.shuffle {
+		rand.Shuffle(len(queue.Targets), func(i, j int) {
+			queue.Targets[i], queue.Targets[j] = queue.Targets[j], queue.Targets[i]
+		})
 	}
 
 	return queue, nil
@@ -90,24 +100,10 @@ func (queue *ScanTargetQueue) Output(outputChan chan entities.Task) {
 				continue
 			}
 
-			p = p.Masked()
-			addr := p.Addr()
-
-			if addr.AsSlice()[3] == 0 {
-				addr = addr.Next()
-			}
-
-			for {
-				if !p.Contains(addr) {
-					break
-				}
-
-				outputChan <- entities.Task{
-					Target: addr.String(),
-					JobID:  queue.jobID,
-				}
-
-				addr = addr.Next()
+			if queue.shuffle {
+				queue.outputIPsShuffled(p, outputChan)
+			} else {
+				queue.outputIPs(p, outputChan)
 			}
 
 			t.IPNet = nil
@@ -171,4 +167,67 @@ func (queue *ScanTargetQueue) produceIPs(network net.IPNet, outputChan chan stri
 	}
 
 	return nil
+}
+
+func (queue *ScanTargetQueue) outputIPs(p netip.Prefix, outputChan chan entities.Task) {
+	p = p.Masked()
+	addr := p.Addr()
+
+	if addr.AsSlice()[3] == 0 {
+		addr = addr.Next()
+	}
+
+	for {
+		if !p.Contains(addr) {
+			break
+		}
+
+		outputChan <- entities.Task{
+			Target: addr.String(),
+			JobID:  queue.jobID,
+		}
+
+		addr = addr.Next()
+	}
+}
+
+const shuffleBucketCap = 1024
+
+func (queue *ScanTargetQueue) outputIPsShuffled(p netip.Prefix, outputChan chan entities.Task) {
+	var bucket []netip.Addr
+
+	p = p.Masked()
+	addr := p.Addr()
+
+	if addr.AsSlice()[3] == 0 {
+		addr = addr.Next()
+	}
+
+	keepGoing := true
+	for keepGoing {
+		for i := 0; i < shuffleBucketCap; i++ {
+			if !p.Contains(addr) {
+				keepGoing = false
+				break
+			}
+
+			bucket = append(bucket, addr)
+			addr = addr.Next()
+		}
+
+		rand.Shuffle(len(bucket), func(i, j int) {
+			bucket[i], bucket[j] = bucket[j], bucket[i]
+		})
+
+		for _, v := range bucket {
+			outputChan <- entities.Task{
+				Target: v.String(),
+				JobID:  queue.jobID,
+			}
+		}
+
+		// clear slice with memory allocation
+		// ref: https://yourbasic.org/golang/clear-slice/
+		bucket = bucket[:0]
+	}
 }
