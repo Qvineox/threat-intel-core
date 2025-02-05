@@ -65,6 +65,8 @@ func (j *Job) ToProto() *services.Job {
 		Type:        services.JobType(j.Type),
 		IsAllocated: *j.IsAllocated,
 		IsStarted:   *j.IsStarted,
+		Mode:        services.AssignmentMode(j.Mode),
+		Priority:    services.Priority(j.Priority),
 		Options:     j.Options,
 		ErrorText:   j.ErrorText,
 		CreatedBy:   j.CreatedBy,

@@ -465,6 +465,12 @@
           "type": "boolean",
           "title": "IsStarted defines if job has been successfully started by bots"
         },
+        "Mode": {
+          "$ref": "#/definitions/protoAssignmentMode"
+        },
+        "Priority": {
+          "$ref": "#/definitions/protoPriority"
+        },
         "Options": {
           "type": "string",
           "format": "byte",

@@ -80,14 +80,17 @@ message Job {
   // IsStarted defines if job has been successfully started by bots
   bool IsStarted = 4;
 
+  AssignmentMode Mode = 5;
+  Priority Priority = 6;
+
   // Full job parameters and targets as requested in job, stored as JSON binary
-  bytes Options = 5;
+  bytes Options = 7;
 
-  optional string ErrorText = 6;
-  optional uint64 CreatedBy = 7;
+  optional string ErrorText = 8;
+  optional uint64 CreatedBy = 9;
 
-  google.protobuf.Timestamp CreatedAt = 8;
-  google.protobuf.Timestamp UpdatedAt = 9;
+  google.protobuf.Timestamp CreatedAt = 10;
+  google.protobuf.Timestamp UpdatedAt = 11;
 }
 
 message JobSummary {
