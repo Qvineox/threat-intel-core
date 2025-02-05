@@ -45,6 +45,12 @@ service ControlCenter {
     };
   };
 
+  rpc GetJobSummaryByUUID(UUID) returns (JobSummary) {
+    option (google.api.http) = {
+      get: "/api/v1/jobs/{Value}/summary"
+    };
+  };
+
   rpc GetNewUUID(google.protobuf.Empty) returns (UUID) {
     option (google.api.http) = {
       get: "/api/v1/uuid"
@@ -84,6 +90,15 @@ message Job {
   google.protobuf.Timestamp UpdatedAt = 9;
 }
 
+message JobSummary {
+  uint64 ID = 1;
+
+  uint64 ScansTotal = 2;
+
+  optional google.protobuf.Timestamp StartedAt = 3;
+  optional google.protobuf.Timestamp EndedAt = 4;
+}
+
 message JobsQueryFilter {
   uint64 ID = 1;
 
@@ -100,6 +115,10 @@ message JobsQueryFilter {
 
   uint64 Limit = 9;
   uint64 Offset = 10;
+}
+
+message JobQueryFilter {
+  string JobUUID = 1;
 }
 
 message TargetsEvaluationMessage {

@@ -220,6 +220,36 @@
         ]
       }
     },
+    "/api/v1/jobs/{Value}/summary": {
+      "get": {
+        "operationId": "ControlCenter_GetJobSummaryByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoJobSummary"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Value",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ControlCenter"
+        ]
+      }
+    },
     "/api/v1/results/ping": {
       "get": {
         "operationId": "ControlCenter_GetPingResults",
@@ -451,6 +481,27 @@
           "format": "date-time"
         },
         "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "protoJobSummary": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "ScansTotal": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "StartedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "EndedAt": {
           "type": "string",
           "format": "date-time"
         }

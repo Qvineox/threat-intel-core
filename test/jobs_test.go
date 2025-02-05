@@ -10,14 +10,22 @@ import (
 
 func TestJobs(t *testing.T) {
 	t.Run("ping job creation", func(t *testing.T) {
-		opt := &services.PingOptions{Default: &services.Options{Targets: nil}}
+		opt := &services.PingOptions{
+			Default: &services.Options{
+				Targets: nil,
+			},
+			Labels: &services.Labels{
+				Priority:       0,
+				AssignmentMode: 1,
+				JobID:          nil,
+			}}
 
-		job, err := entities.NewPingJobFromProto(opt, nil, 0, 1)
+		job, err := entities.NewPingJobFromProto(opt, nil)
 		require.Error(t, err)
 		require.Nil(t, job)
 
 		opt = &services.PingOptions{Default: &services.Options{Targets: make([]string, 0)}}
-		job, err = entities.NewPingJobFromProto(opt, nil, 0, 1)
+		job, err = entities.NewPingJobFromProto(opt, nil)
 		require.NoError(t, err)
 		require.NotNil(t, job)
 
@@ -30,16 +38,16 @@ func TestJobs(t *testing.T) {
 		var userID uint64 = 1
 
 		opt = &services.PingOptions{Default: &services.Options{Targets: []string{"ya.ru", "192.168.31.0/24"}}}
-		job, err = entities.NewPingJobFromProto(opt, &userID, 0, 1)
+		job, err = entities.NewPingJobFromProto(opt, &userID)
 		require.NoError(t, err)
 		require.NotNil(t, job)
 
-		var options_ services.PingOptions
+		var options_ services.Options
 
 		err = json.Unmarshal(job.Options, &options_)
 		require.NotNil(t, job)
 
-		require.EqualValues(t, opt.Default.Targets, options_.Default.Targets)
+		require.EqualValues(t, opt.Default.Targets, options_.Targets)
 		require.EqualValues(t, *job.CreatedBy, userID)
 	})
 
@@ -47,7 +55,7 @@ func TestJobs(t *testing.T) {
 		opt := &services.PingOptions{Default: &services.Options{Targets: []string{"ya.ru", "192.168.31.0/24"}}}
 		var userID uint64 = 1
 
-		job, err := entities.NewPingJobFromProto(opt, &userID, 0, 1)
+		job, err := entities.NewPingJobFromProto(opt, &userID)
 		require.NoError(t, err)
 		require.NotNil(t, job)
 	})

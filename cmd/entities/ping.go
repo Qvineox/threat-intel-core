@@ -36,6 +36,20 @@ type PingResult struct {
 	CreatedBy *string `json:"CreatedBy" gorm:"column:created_by;index;comment:Ping bot identity recovered from response metadata"`
 }
 
+func (pr *PingResult) ToProto() *services.PingResult {
+	return &services.PingResult{
+		IP:           pr.IP.IPNet.String(),
+		ResolvedName: pr.ResolvedName,
+		Response:     services.ResponseType(pr.ResponseType),
+		PacketsSent:  pr.PacketsSent,
+		PacketsLoss:  pr.PacketsLoss,
+		MinRttMs:     pr.MinRttMs,
+		MaxRttMs:     pr.MaxRttMs,
+		AvgRttMs:     pr.AvgRttMs,
+		JobID:        pr.JobID,
+	}
+}
+
 func NewPingResultFromProto(r *services.PingResult, createdBy *string) (*PingResult, error) {
 	uuidV7, err := uuid.NewV7()
 	if err != nil {
@@ -64,6 +78,6 @@ func NewPingResultFromProto(r *services.PingResult, createdBy *string) (*PingRes
 	}, nil
 }
 
-func (p PingResult) String() string {
-	return fmt.Sprintf("PING-{%s, %s, %d}", p.UUID.String(), p.IP.IPNet.String(), p.ResponseType)
+func (pr *PingResult) String() string {
+	return fmt.Sprintf("PING-{%s, %s, %d}", pr.UUID.String(), pr.IP.IPNet.String(), pr.ResponseType)
 }

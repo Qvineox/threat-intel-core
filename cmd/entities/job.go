@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gitlab.domsnail.ru/domsnail/threat-intel-core/api/services"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/datatypes"
 	"sort"
 	"time"
@@ -58,25 +59,44 @@ func (j *Job) String() string {
 	return fmt.Sprintf("JOB-%d (%d)", *j.ID, j.Type)
 }
 
-func NewPingJobFromProto(desc *services.PingOptions, createdBy *uint64, p services.Priority, m services.AssignmentMode) (*Job, error) {
+func (j *Job) ToProto() *services.Job {
+	return &services.Job{
+		ID:          j.ID,
+		Type:        services.JobType(j.Type),
+		IsAllocated: *j.IsAllocated,
+		IsStarted:   *j.IsStarted,
+		Options:     j.Options,
+		ErrorText:   j.ErrorText,
+		CreatedBy:   j.CreatedBy,
+		CreatedAt:   timestamppb.New(j.CreatedAt),
+		UpdatedAt:   timestamppb.New(j.UpdatedAt),
+	}
+}
+
+func NewPingJobFromProto(desc *services.PingOptions, createdBy *uint64) (*Job, error) {
 	if desc == nil || desc.Default == nil || desc.Default.Targets == nil {
 		return nil, fmt.Errorf("targets not found")
 	}
 
-	body, err := json.Marshal(desc)
+	body, err := json.Marshal(desc.Default)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Job{
+	j := &Job{
 		Type:      JOB_TYPE_PING,
-		Priority:  Priority(p),
-		Mode:      AssignmentMode(m),
 		Options:   body,
 		ErrorText: nil,
 		CreatedBy: createdBy,
 		CreatedAt: time.Now(),
-	}, nil
+	}
+
+	if desc.Labels != nil {
+		j.Priority = Priority(desc.Labels.Priority)
+		j.Mode = AssignmentMode(desc.Labels.AssignmentMode)
+	}
+
+	return j, nil
 }
 
 func (j *Job) Error(err error) {
@@ -89,4 +109,22 @@ func SortJobsByPriority(jobs []Job) {
 	sort.Slice(jobs, func(i, j int) bool {
 		return jobs[i].Priority > jobs[j].Priority
 	})
+}
+
+// JobSummary additional summary data about Job
+type JobSummary struct {
+	ID         uint64 `json:"ID" gorm:"column:id"`
+	ScansTotal uint64 `json:"ScansTotal" gorm:"column:scans_total"`
+
+	StartedAt time.Time `json:"StartedAt" gorm:"column:started_at"`
+	EndedAt   time.Time `json:"EndedAt" gorm:"column:ended_at"`
+}
+
+func (js *JobSummary) ToProto() *services.JobSummary {
+	return &services.JobSummary{
+		ID:         js.ID,
+		ScansTotal: js.ScansTotal,
+		StartedAt:  timestamppb.New(js.StartedAt),
+		EndedAt:    timestamppb.New(js.EndedAt),
+	}
 }
