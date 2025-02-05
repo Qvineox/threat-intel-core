@@ -356,7 +356,7 @@ func TestTargets(t *testing.T) {
 
 		slog.Info(fmt.Sprintf("total targets: %d", len(outputTargets)))
 
-		require.True(t, outputTargets[2] != "212.122.0.1" || outputTargets[3] != "212.122.0.2" || outputTargets[4] != "212.122.0.3")
+		require.False(t, outputTargets[2] == "212.122.0.1" && outputTargets[3] == "212.122.0.2" && outputTargets[4] == "212.122.0.3")
 
 		require.Len(t, outputTargets, 65537)
 	})
