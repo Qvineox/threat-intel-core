@@ -220,9 +220,9 @@
         ]
       }
     },
-    "/api/v1/jobs/{Value}/summary": {
+    "/api/v1/jobs/{ID}/summary": {
       "get": {
-        "operationId": "ControlCenter_GetJobSummaryByUUID",
+        "operationId": "ControlCenter_GetJobSummaryByID",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -239,10 +239,11 @@
         },
         "parameters": [
           {
-            "name": "Value",
+            "name": "ID",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "format": "uint64"
           }
         ],
         "tags": [

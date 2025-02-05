@@ -20,13 +20,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ControlCenter_GetFleet_FullMethodName            = "/proto.ControlCenter/GetFleet"
-	ControlCenter_CreatePingJob_FullMethodName       = "/proto.ControlCenter/CreatePingJob"
-	ControlCenter_EvaluateJobs_FullMethodName        = "/proto.ControlCenter/EvaluateJobs"
-	ControlCenter_GetJobs_FullMethodName             = "/proto.ControlCenter/GetJobs"
-	ControlCenter_GetJobSummaryByUUID_FullMethodName = "/proto.ControlCenter/GetJobSummaryByUUID"
-	ControlCenter_GetNewUUID_FullMethodName          = "/proto.ControlCenter/GetNewUUID"
-	ControlCenter_GetPingResults_FullMethodName      = "/proto.ControlCenter/GetPingResults"
+	ControlCenter_GetFleet_FullMethodName          = "/proto.ControlCenter/GetFleet"
+	ControlCenter_CreatePingJob_FullMethodName     = "/proto.ControlCenter/CreatePingJob"
+	ControlCenter_EvaluateJobs_FullMethodName      = "/proto.ControlCenter/EvaluateJobs"
+	ControlCenter_GetJobs_FullMethodName           = "/proto.ControlCenter/GetJobs"
+	ControlCenter_GetJobSummaryByID_FullMethodName = "/proto.ControlCenter/GetJobSummaryByID"
+	ControlCenter_GetNewUUID_FullMethodName        = "/proto.ControlCenter/GetNewUUID"
+	ControlCenter_GetPingResults_FullMethodName    = "/proto.ControlCenter/GetPingResults"
 )
 
 // ControlCenterClient is the client API for ControlCenter service.
@@ -37,7 +37,7 @@ type ControlCenterClient interface {
 	CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*ID, error)
 	EvaluateJobs(ctx context.Context, in *TargetsEvaluationMessage, opts ...grpc.CallOption) (*TargetsEvaluationResult, error)
 	GetJobs(ctx context.Context, in *JobsQueryFilter, opts ...grpc.CallOption) (*Jobs, error)
-	GetJobSummaryByUUID(ctx context.Context, in *UUID, opts ...grpc.CallOption) (*JobSummary, error)
+	GetJobSummaryByID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*JobSummary, error)
 	GetNewUUID(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UUID, error)
 	GetPingResults(ctx context.Context, in *PingResultsQueryFilter, opts ...grpc.CallOption) (*PingResults, error)
 }
@@ -90,10 +90,10 @@ func (c *controlCenterClient) GetJobs(ctx context.Context, in *JobsQueryFilter, 
 	return out, nil
 }
 
-func (c *controlCenterClient) GetJobSummaryByUUID(ctx context.Context, in *UUID, opts ...grpc.CallOption) (*JobSummary, error) {
+func (c *controlCenterClient) GetJobSummaryByID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*JobSummary, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(JobSummary)
-	err := c.cc.Invoke(ctx, ControlCenter_GetJobSummaryByUUID_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ControlCenter_GetJobSummaryByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ type ControlCenterServer interface {
 	CreatePingJob(context.Context, *PingOptions) (*ID, error)
 	EvaluateJobs(context.Context, *TargetsEvaluationMessage) (*TargetsEvaluationResult, error)
 	GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error)
-	GetJobSummaryByUUID(context.Context, *UUID) (*JobSummary, error)
+	GetJobSummaryByID(context.Context, *ID) (*JobSummary, error)
 	GetNewUUID(context.Context, *emptypb.Empty) (*UUID, error)
 	GetPingResults(context.Context, *PingResultsQueryFilter) (*PingResults, error)
 	mustEmbedUnimplementedControlCenterServer()
@@ -153,8 +153,8 @@ func (UnimplementedControlCenterServer) EvaluateJobs(context.Context, *TargetsEv
 func (UnimplementedControlCenterServer) GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetJobs not implemented")
 }
-func (UnimplementedControlCenterServer) GetJobSummaryByUUID(context.Context, *UUID) (*JobSummary, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetJobSummaryByUUID not implemented")
+func (UnimplementedControlCenterServer) GetJobSummaryByID(context.Context, *ID) (*JobSummary, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetJobSummaryByID not implemented")
 }
 func (UnimplementedControlCenterServer) GetNewUUID(context.Context, *emptypb.Empty) (*UUID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNewUUID not implemented")
@@ -255,20 +255,20 @@ func _ControlCenter_GetJobs_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ControlCenter_GetJobSummaryByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UUID)
+func _ControlCenter_GetJobSummaryByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ControlCenterServer).GetJobSummaryByUUID(ctx, in)
+		return srv.(ControlCenterServer).GetJobSummaryByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ControlCenter_GetJobSummaryByUUID_FullMethodName,
+		FullMethod: ControlCenter_GetJobSummaryByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ControlCenterServer).GetJobSummaryByUUID(ctx, req.(*UUID))
+		return srv.(ControlCenterServer).GetJobSummaryByID(ctx, req.(*ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -333,8 +333,8 @@ var ControlCenter_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ControlCenter_GetJobs_Handler,
 		},
 		{
-			MethodName: "GetJobSummaryByUUID",
-			Handler:    _ControlCenter_GetJobSummaryByUUID_Handler,
+			MethodName: "GetJobSummaryByID",
+			Handler:    _ControlCenter_GetJobSummaryByID_Handler,
 		},
 		{
 			MethodName: "GetNewUUID",

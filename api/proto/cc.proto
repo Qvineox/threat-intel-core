@@ -45,9 +45,9 @@ service ControlCenter {
     };
   };
 
-  rpc GetJobSummaryByUUID(UUID) returns (JobSummary) {
+  rpc GetJobSummaryByID(ID) returns (JobSummary) {
     option (google.api.http) = {
-      get: "/api/v1/jobs/{Value}/summary"
+      get: "/api/v1/jobs/{ID}/summary"
     };
   };
 
