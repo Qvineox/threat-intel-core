@@ -191,7 +191,11 @@ func (queue *ScanTargetQueue) outputIPs(p netip.Prefix, outputChan chan entities
 	}
 }
 
-const shuffleBucketCap = 1024
+// 256		for 24-bit subnet
+// 65536 	for 16-bit subnet
+// 16777214	for  8-bit subnet
+
+const shuffleBucketCap = 65536
 
 func (queue *ScanTargetQueue) outputIPsShuffled(p netip.Prefix, outputChan chan entities.Task) {
 	var bucket []netip.Addr
