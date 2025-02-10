@@ -21,7 +21,7 @@ type Cluster struct {
 
 func NewClusterFromProto(p *services.Cluster) (*Cluster, error) {
 	c := &Cluster{
-		ID:          &p.ID,
+		ID:          p.ID,
 		Name:        p.GetName(),
 		Description: p.GetDescription(),
 		IsActive:    p.GetIsActive(),
@@ -37,7 +37,7 @@ func NewClusterFromProto(p *services.Cluster) (*Cluster, error) {
 
 func (c *Cluster) ToProto() *services.Cluster {
 	return &services.Cluster{
-		ID:          *c.ID,
+		ID:          c.ID,
 		Name:        c.Name,
 		Description: c.Description,
 		IsActive:    c.IsActive,
