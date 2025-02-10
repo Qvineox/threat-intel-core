@@ -27,7 +27,7 @@ message Bot {
 
   BotState State = 3;
 
-  string ClusterUUID = 4;
+  uint64 ClusterID = 4;
 
   google.protobuf.Timestamp CreatedAt = 5;
   google.protobuf.Timestamp LastCheckAt = 6;
