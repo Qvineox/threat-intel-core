@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Coordinator_Register_FullMethodName = "/proto.Coordinator/Register"
-	Coordinator_Connect_FullMethodName  = "/proto.Coordinator/Connect"
-	Coordinator_GetFleet_FullMethodName = "/proto.Coordinator/GetFleet"
+	Coordinator_Register_FullMethodName      = "/proto.Coordinator/Register"
+	Coordinator_Connect_FullMethodName       = "/proto.Coordinator/Connect"
+	Coordinator_GetFleet_FullMethodName      = "/proto.Coordinator/GetFleet"
+	Coordinator_CreateCluster_FullMethodName = "/proto.Coordinator/CreateCluster"
 )
 
 // CoordinatorClient is the client API for Coordinator service.
@@ -33,6 +34,7 @@ type CoordinatorClient interface {
 	// procedure established bidirectional connection that allow bot to collect jobs from coordinator
 	Connect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BotState, JobStream], error)
 	GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error)
+	CreateCluster(ctx context.Context, in *Cluster, opts ...grpc.CallOption) (*Cluster, error)
 }
 
 type coordinatorClient struct {
@@ -76,6 +78,16 @@ func (c *coordinatorClient) GetFleet(ctx context.Context, in *FleetQueryFilter, 
 	return out, nil
 }
 
+func (c *coordinatorClient) CreateCluster(ctx context.Context, in *Cluster, opts ...grpc.CallOption) (*Cluster, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Cluster)
+	err := c.cc.Invoke(ctx, Coordinator_CreateCluster_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CoordinatorServer is the server API for Coordinator service.
 // All implementations must embed UnimplementedCoordinatorServer
 // for forward compatibility.
@@ -85,6 +97,7 @@ type CoordinatorServer interface {
 	// procedure established bidirectional connection that allow bot to collect jobs from coordinator
 	Connect(grpc.BidiStreamingServer[BotState, JobStream]) error
 	GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error)
+	CreateCluster(context.Context, *Cluster) (*Cluster, error)
 	mustEmbedUnimplementedCoordinatorServer()
 }
 
@@ -103,6 +116,9 @@ func (UnimplementedCoordinatorServer) Connect(grpc.BidiStreamingServer[BotState,
 }
 func (UnimplementedCoordinatorServer) GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFleet not implemented")
+}
+func (UnimplementedCoordinatorServer) CreateCluster(context.Context, *Cluster) (*Cluster, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCluster not implemented")
 }
 func (UnimplementedCoordinatorServer) mustEmbedUnimplementedCoordinatorServer() {}
 func (UnimplementedCoordinatorServer) testEmbeddedByValue()                     {}
@@ -168,6 +184,24 @@ func _Coordinator_GetFleet_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Coordinator_CreateCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Cluster)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).CreateCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_CreateCluster_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).CreateCluster(ctx, req.(*Cluster))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Coordinator_ServiceDesc is the grpc.ServiceDesc for Coordinator service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -182,6 +216,10 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFleet",
 			Handler:    _Coordinator_GetFleet_Handler,
+		},
+		{
+			MethodName: "CreateCluster",
+			Handler:    _Coordinator_CreateCluster_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

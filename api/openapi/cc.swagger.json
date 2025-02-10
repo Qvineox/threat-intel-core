@@ -65,6 +65,38 @@
         ]
       }
     },
+    "/api/v1/fleet/cluster": {
+      "put": {
+        "operationId": "ControlCenter_CreateCluster",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoCluster"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoCluster"
+            }
+          }
+        ],
+        "tags": [
+          "ControlCenter"
+        ]
+      }
+    },
     "/api/v1/jobs": {
       "get": {
         "operationId": "ControlCenter_GetJobs",

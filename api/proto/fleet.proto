@@ -56,7 +56,7 @@ message Collector {
 }
 
 message Cluster {
-  uint64 ID = 1;
+  optional uint64 ID = 1;
 
   string Name = 2;
   string Description = 3;

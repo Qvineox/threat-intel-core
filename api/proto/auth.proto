@@ -1,6 +1,7 @@
 syntax = "proto3";
 package proto;
 
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 import "user.proto";
@@ -36,6 +37,24 @@ service AuthService {
       post: "/v1/auth/me"
     };
   };
+
+  rpc CreateBotToken(AuthTokenOptions) returns (AuthToken) {
+    option (google.api.http) = {
+      post: "/v1/auth/token/bot"
+    };
+  }
+
+  rpc CreateClientToken(AuthTokenOptions) returns (AuthToken) {
+    option (google.api.http) = {
+      post: "/v1/auth/token/client"
+    };
+  }
+
+  rpc CreateAdminToken(AuthTokenOptions) returns (AuthToken) {
+    option (google.api.http) = {
+      post: "/v1/auth/token/admin"
+    };
+  }
 }
 
 message LoginMessage {
@@ -49,9 +68,28 @@ message Tokens {
 }
 
 message RefreshToken {
-  string Data = 1;
+  string JWT = 1;
 }
 
 message AuthToken {
-  string Data = 1;
+  string JWT = 1;
 }
+
+message AuthTokenOptions {
+  string Subject = 1;
+
+  optional Permissions Permissions = 2;
+  google.protobuf.Timestamp ExpiresAt = 3;
+}
+
+message Permissions {
+  UserPermissions User = 1;
+  AdminPermissions Admin = 2;
+  BotPermissions Bot = 3;
+}
+
+message UserPermissions {}
+
+message AdminPermissions {}
+
+message BotPermissions {}

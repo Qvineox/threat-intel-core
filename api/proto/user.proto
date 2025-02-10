@@ -39,7 +39,7 @@ service UserService {
 
 message UsersQueryFilter {
   uint64 Username = 1;
-  uint64 Fullname = 2;
+  uint64 FullName = 2;
   uint64 Email = 3;
 }
 
@@ -47,7 +47,7 @@ message User {
   string UUID = 1;
   uint64 Username = 2;
 
-  optional string Fullname = 3;
+  optional string FullName = 3;
   optional string Email = 4;
 }
 

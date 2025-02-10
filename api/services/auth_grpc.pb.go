@@ -20,10 +20,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_Login_FullMethodName   = "/proto.AuthService/Login"
-	AuthService_Logout_FullMethodName  = "/proto.AuthService/Logout"
-	AuthService_Refresh_FullMethodName = "/proto.AuthService/Refresh"
-	AuthService_Me_FullMethodName      = "/proto.AuthService/Me"
+	AuthService_Login_FullMethodName             = "/proto.AuthService/Login"
+	AuthService_Logout_FullMethodName            = "/proto.AuthService/Logout"
+	AuthService_Refresh_FullMethodName           = "/proto.AuthService/Refresh"
+	AuthService_Me_FullMethodName                = "/proto.AuthService/Me"
+	AuthService_CreateBotToken_FullMethodName    = "/proto.AuthService/CreateBotToken"
+	AuthService_CreateClientToken_FullMethodName = "/proto.AuthService/CreateClientToken"
+	AuthService_CreateAdminToken_FullMethodName  = "/proto.AuthService/CreateAdminToken"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -34,6 +37,9 @@ type AuthServiceClient interface {
 	Logout(ctx context.Context, in *AuthToken, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Refresh(ctx context.Context, in *RefreshToken, opts ...grpc.CallOption) (*Tokens, error)
 	Me(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*User, error)
+	CreateBotToken(ctx context.Context, in *AuthTokenOptions, opts ...grpc.CallOption) (*AuthToken, error)
+	CreateClientToken(ctx context.Context, in *AuthTokenOptions, opts ...grpc.CallOption) (*AuthToken, error)
+	CreateAdminToken(ctx context.Context, in *AuthTokenOptions, opts ...grpc.CallOption) (*AuthToken, error)
 }
 
 type authServiceClient struct {
@@ -84,6 +90,36 @@ func (c *authServiceClient) Me(ctx context.Context, in *emptypb.Empty, opts ...g
 	return out, nil
 }
 
+func (c *authServiceClient) CreateBotToken(ctx context.Context, in *AuthTokenOptions, opts ...grpc.CallOption) (*AuthToken, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AuthToken)
+	err := c.cc.Invoke(ctx, AuthService_CreateBotToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) CreateClientToken(ctx context.Context, in *AuthTokenOptions, opts ...grpc.CallOption) (*AuthToken, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AuthToken)
+	err := c.cc.Invoke(ctx, AuthService_CreateClientToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) CreateAdminToken(ctx context.Context, in *AuthTokenOptions, opts ...grpc.CallOption) (*AuthToken, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AuthToken)
+	err := c.cc.Invoke(ctx, AuthService_CreateAdminToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
@@ -92,6 +128,9 @@ type AuthServiceServer interface {
 	Logout(context.Context, *AuthToken) (*emptypb.Empty, error)
 	Refresh(context.Context, *RefreshToken) (*Tokens, error)
 	Me(context.Context, *emptypb.Empty) (*User, error)
+	CreateBotToken(context.Context, *AuthTokenOptions) (*AuthToken, error)
+	CreateClientToken(context.Context, *AuthTokenOptions) (*AuthToken, error)
+	CreateAdminToken(context.Context, *AuthTokenOptions) (*AuthToken, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -113,6 +152,15 @@ func (UnimplementedAuthServiceServer) Refresh(context.Context, *RefreshToken) (*
 }
 func (UnimplementedAuthServiceServer) Me(context.Context, *emptypb.Empty) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Me not implemented")
+}
+func (UnimplementedAuthServiceServer) CreateBotToken(context.Context, *AuthTokenOptions) (*AuthToken, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBotToken not implemented")
+}
+func (UnimplementedAuthServiceServer) CreateClientToken(context.Context, *AuthTokenOptions) (*AuthToken, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateClientToken not implemented")
+}
+func (UnimplementedAuthServiceServer) CreateAdminToken(context.Context, *AuthTokenOptions) (*AuthToken, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAdminToken not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
@@ -207,6 +255,60 @@ func _AuthService_Me_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_CreateBotToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthTokenOptions)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).CreateBotToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_CreateBotToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).CreateBotToken(ctx, req.(*AuthTokenOptions))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_CreateClientToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthTokenOptions)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).CreateClientToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_CreateClientToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).CreateClientToken(ctx, req.(*AuthTokenOptions))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_CreateAdminToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthTokenOptions)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).CreateAdminToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_CreateAdminToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).CreateAdminToken(ctx, req.(*AuthTokenOptions))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -229,6 +331,18 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Me",
 			Handler:    _AuthService_Me_Handler,
+		},
+		{
+			MethodName: "CreateBotToken",
+			Handler:    _AuthService_CreateBotToken_Handler,
+		},
+		{
+			MethodName: "CreateClientToken",
+			Handler:    _AuthService_CreateClientToken_Handler,
+		},
+		{
+			MethodName: "CreateAdminToken",
+			Handler:    _AuthService_CreateAdminToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -20,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	ControlCenter_CreateCluster_FullMethodName     = "/proto.ControlCenter/CreateCluster"
 	ControlCenter_GetFleet_FullMethodName          = "/proto.ControlCenter/GetFleet"
 	ControlCenter_CreatePingJob_FullMethodName     = "/proto.ControlCenter/CreatePingJob"
 	ControlCenter_EvaluateJobs_FullMethodName      = "/proto.ControlCenter/EvaluateJobs"
@@ -33,6 +34,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ControlCenterClient interface {
+	CreateCluster(ctx context.Context, in *Cluster, opts ...grpc.CallOption) (*Cluster, error)
 	GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error)
 	CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*ID, error)
 	EvaluateJobs(ctx context.Context, in *TargetsEvaluationMessage, opts ...grpc.CallOption) (*TargetsEvaluationResult, error)
@@ -48,6 +50,16 @@ type controlCenterClient struct {
 
 func NewControlCenterClient(cc grpc.ClientConnInterface) ControlCenterClient {
 	return &controlCenterClient{cc}
+}
+
+func (c *controlCenterClient) CreateCluster(ctx context.Context, in *Cluster, opts ...grpc.CallOption) (*Cluster, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Cluster)
+	err := c.cc.Invoke(ctx, ControlCenter_CreateCluster_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *controlCenterClient) GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error) {
@@ -124,6 +136,7 @@ func (c *controlCenterClient) GetPingResults(ctx context.Context, in *PingResult
 // All implementations must embed UnimplementedControlCenterServer
 // for forward compatibility.
 type ControlCenterServer interface {
+	CreateCluster(context.Context, *Cluster) (*Cluster, error)
 	GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error)
 	CreatePingJob(context.Context, *PingOptions) (*ID, error)
 	EvaluateJobs(context.Context, *TargetsEvaluationMessage) (*TargetsEvaluationResult, error)
@@ -141,6 +154,9 @@ type ControlCenterServer interface {
 // pointer dereference when methods are called.
 type UnimplementedControlCenterServer struct{}
 
+func (UnimplementedControlCenterServer) CreateCluster(context.Context, *Cluster) (*Cluster, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCluster not implemented")
+}
 func (UnimplementedControlCenterServer) GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFleet not implemented")
 }
@@ -181,6 +197,24 @@ func RegisterControlCenterServer(s grpc.ServiceRegistrar, srv ControlCenterServe
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&ControlCenter_ServiceDesc, srv)
+}
+
+func _ControlCenter_CreateCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Cluster)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlCenterServer).CreateCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ControlCenter_CreateCluster_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlCenterServer).CreateCluster(ctx, req.(*Cluster))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ControlCenter_GetFleet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -316,6 +350,10 @@ var ControlCenter_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.ControlCenter",
 	HandlerType: (*ControlCenterServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateCluster",
+			Handler:    _ControlCenter_CreateCluster_Handler,
+		},
 		{
 			MethodName: "GetFleet",
 			Handler:    _ControlCenter_GetFleet_Handler,

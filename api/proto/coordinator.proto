@@ -4,6 +4,7 @@ package proto;
 import "google/protobuf/empty.proto";
 import "fleet.proto";
 import "options.proto";
+import "auth.proto";
 
 option go_package = "threat-intel-core/api/proto/services";
 
@@ -17,6 +18,8 @@ service Coordinator {
   rpc Connect(stream BotState) returns (stream JobStream);
 
   rpc GetFleet(FleetQueryFilter) returns (Fleet);
+  
+  rpc CreateCluster(Cluster) returns (Cluster);
 }
 
 message JobStream {
@@ -29,7 +32,7 @@ message BotRegistrationData {
   string Identity = 1;
   BotType Type = 2;
 
-  optional string BotToken = 3;
+  optional AuthToken Token = 3;
 
   // BotRegistrationData has to contain BotToken in metadata
 }
