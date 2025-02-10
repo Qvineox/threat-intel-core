@@ -9,6 +9,7 @@ type Config struct {
 	Security           TLS
 	ServiceDiscovery   Services
 	Logging            Logging
+	Auth               Auth
 }
 
 func (config Config) String() string {
@@ -24,5 +25,6 @@ func NewConfigFromEnv() (config Config) {
 		Security:           NewTLSConfigFromEnv(),
 		ServiceDiscovery:   NewServicesConfigFromEnv(),
 		Logging:            NewLoggingConfigFromEnv(),
+		Auth:               NewAuthConfigFromEnv(),
 	}
 }

@@ -52,6 +52,12 @@
               ]
             },
             "collectionFormat": "multi"
+          },
+          {
+            "name": "ClusterUUID",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -371,6 +377,9 @@
         "State": {
           "$ref": "#/definitions/protoBotState"
         },
+        "ClusterUUID": {
+          "type": "string"
+        },
         "CreatedAt": {
           "type": "string",
           "format": "date-time"
@@ -399,12 +408,49 @@
         }
       }
     },
+    "protoBotToken": {
+      "type": "object",
+      "properties": {
+        "JWT": {
+          "type": "string"
+        }
+      }
+    },
     "protoBotType": {
       "type": "string",
       "enum": [
         "BOT_PING"
       ],
       "default": "BOT_PING"
+    },
+    "protoCluster": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "IsActive": {
+          "type": "boolean"
+        },
+        "Token": {
+          "$ref": "#/definitions/protoBotToken"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     },
     "protoCollector": {
       "type": "object",
@@ -432,6 +478,13 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/protoCollector"
+          }
+        },
+        "Clusters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protoCluster"
           }
         }
       },

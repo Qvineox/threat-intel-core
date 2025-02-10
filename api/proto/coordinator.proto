@@ -11,7 +11,7 @@ option go_package = "threat-intel-core/api/proto/services";
 
 service Coordinator {
   // procedure allows bot to register itself in a system
-  rpc Register(BotRegistrationData) returns (google.protobuf.Empty);
+  rpc Register(BotRegistrationData) returns (BotRegistrationConfirmMessage);
 
   // procedure established bidirectional connection that allow bot to collect jobs from coordinator
   rpc Connect(stream BotState) returns (stream JobStream);
@@ -28,4 +28,12 @@ message JobStream {
 message BotRegistrationData {
   string Identity = 1;
   BotType Type = 2;
+
+  optional string BotToken = 3;
+
+  // BotRegistrationData has to contain BotToken in metadata
+}
+
+message BotRegistrationConfirmMessage {
+  uint64 ClusterID = 1;
 }

@@ -10,12 +10,15 @@ option go_package = "threat-intel-core/api/proto/services";
 message FleetQueryFilter {
   bool ActiveOnly = 1;
   repeated BotType ShowTypes = 2;
+
+  optional string ClusterUUID = 3;
 }
 
 // Fleet describes all bots and coordinators in a system
 message Fleet {
   repeated Bot Bots = 1;
   repeated Collector Collectors = 2;
+  repeated Cluster Clusters = 3;
 }
 
 message Bot {
@@ -23,6 +26,8 @@ message Bot {
   BotType Type = 2;
 
   BotState State = 3;
+
+  string ClusterUUID = 4;
 
   google.protobuf.Timestamp CreatedAt = 5;
   google.protobuf.Timestamp LastCheckAt = 6;
@@ -37,6 +42,10 @@ message BotState {
   uint64 TasksLeft = 4;
 }
 
+message BotToken {
+  string JWT = 1;
+}
+
 enum BotType {
   BOT_PING = 0;
 }
@@ -44,4 +53,17 @@ enum BotType {
 message Collector {
   string Identity = 1;
   bool IsActive = 3;
+}
+
+message Cluster {
+  uint64 ID = 1;
+
+  string Name = 2;
+  string Description = 3;
+  bool IsActive = 4;
+
+  optional BotToken Token = 5;
+
+  google.protobuf.Timestamp CreatedAt = 6;
+  google.protobuf.Timestamp UpdatedAt = 7;
 }

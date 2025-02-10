@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -30,7 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoordinatorClient interface {
 	// procedure allows bot to register itself in a system
-	Register(ctx context.Context, in *BotRegistrationData, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Register(ctx context.Context, in *BotRegistrationData, opts ...grpc.CallOption) (*BotRegistrationConfirmMessage, error)
 	// procedure established bidirectional connection that allow bot to collect jobs from coordinator
 	Connect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BotState, JobStream], error)
 	GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error)
@@ -44,9 +43,9 @@ func NewCoordinatorClient(cc grpc.ClientConnInterface) CoordinatorClient {
 	return &coordinatorClient{cc}
 }
 
-func (c *coordinatorClient) Register(ctx context.Context, in *BotRegistrationData, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *coordinatorClient) Register(ctx context.Context, in *BotRegistrationData, opts ...grpc.CallOption) (*BotRegistrationConfirmMessage, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(BotRegistrationConfirmMessage)
 	err := c.cc.Invoke(ctx, Coordinator_Register_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -82,7 +81,7 @@ func (c *coordinatorClient) GetFleet(ctx context.Context, in *FleetQueryFilter, 
 // for forward compatibility.
 type CoordinatorServer interface {
 	// procedure allows bot to register itself in a system
-	Register(context.Context, *BotRegistrationData) (*emptypb.Empty, error)
+	Register(context.Context, *BotRegistrationData) (*BotRegistrationConfirmMessage, error)
 	// procedure established bidirectional connection that allow bot to collect jobs from coordinator
 	Connect(grpc.BidiStreamingServer[BotState, JobStream]) error
 	GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error)
@@ -96,7 +95,7 @@ type CoordinatorServer interface {
 // pointer dereference when methods are called.
 type UnimplementedCoordinatorServer struct{}
 
-func (UnimplementedCoordinatorServer) Register(context.Context, *BotRegistrationData) (*emptypb.Empty, error) {
+func (UnimplementedCoordinatorServer) Register(context.Context, *BotRegistrationData) (*BotRegistrationConfirmMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
 func (UnimplementedCoordinatorServer) Connect(grpc.BidiStreamingServer[BotState, JobStream]) error {
