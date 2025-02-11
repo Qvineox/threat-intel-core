@@ -46,10 +46,8 @@ unit tests:
   script:
     - go mod tidy
     - go run gotest.tools/gotestsum@latest --junitfile report.xml --format testname
-    
-    # ref: https://stackoverflow.com/questions/33444968/how-to-get-all-packages-code-coverage-together-in-go
 
-    - go test -v -coverpkg=./... -coverprofile=profile.cov ./...
+    - go test -v -coverprofile=profile.cov ./...
     - go tool cover -func profile.cov
   coverage: '/\(statements\)(?:\s+)?(\d+(?:\.\d+)?%)/'
   artifacts:
