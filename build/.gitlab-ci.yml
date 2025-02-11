@@ -47,7 +47,7 @@ unit tests:
     - go mod tidy
     - go run gotest.tools/gotestsum@latest --junitfile report.xml --format testname
 
-    - go test -v -coverprofile=profile.cov ./...
+    - go test -v -coverprofile=profile.cov ./cmd/...
     - go tool cover -func profile.cov
   coverage: '/\(statements\)(?:\s+)?(\d+(?:\.\d+)?%)/'
   artifacts:
