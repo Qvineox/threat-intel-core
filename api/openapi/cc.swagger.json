@@ -409,8 +409,9 @@
         "State": {
           "$ref": "#/definitions/protoBotState"
         },
-        "ClusterUUID": {
-          "type": "string"
+        "ClusterID": {
+          "type": "string",
+          "format": "uint64"
         },
         "CreatedAt": {
           "type": "string",

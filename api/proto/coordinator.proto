@@ -18,7 +18,7 @@ service Coordinator {
   rpc Connect(stream BotState) returns (stream JobStream);
 
   rpc GetFleet(FleetQueryFilter) returns (Fleet);
-  
+
   rpc CreateCluster(Cluster) returns (Cluster);
 }
 
@@ -38,5 +38,5 @@ message BotRegistrationData {
 }
 
 message BotRegistrationConfirmMessage {
-  uint64 ClusterID = 1;
+  string Subject = 1;
 }
