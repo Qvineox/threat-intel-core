@@ -15,9 +15,9 @@ const tokenDomain = "test.domsnail.ru"
 func TestTokens(t *testing.T) {
 	issuer := auth.NewIssuer(
 		[]byte(tokenSecret),
-		jwt.SigningMethodHS256,
 		tokenDomain,
 		[]string{"test cases"},
+		jwt.SigningMethodHS256,
 	)
 
 	var tokenStr string
@@ -79,9 +79,9 @@ func TestTokens(t *testing.T) {
 	t.Run("other secret token validation", func(t *testing.T) {
 		issuer_ := auth.NewIssuer(
 			[]byte("test"),
-			jwt.SigningMethodHS256,
 			"test.other.ru",
 			[]string{"error test cases"},
+			jwt.SigningMethodHS256,
 		)
 
 		tokenStr_, err := issuer_.IssueToken(
@@ -97,9 +97,9 @@ func TestTokens(t *testing.T) {
 	t.Run("other domain issuer token validation", func(t *testing.T) {
 		issuer_ := auth.NewIssuer(
 			[]byte(tokenSecret),
-			jwt.SigningMethodHS256,
 			"test.other.ru",
 			[]string{"error test cases"},
+			jwt.SigningMethodHS256,
 		)
 
 		tokenStr_, err := issuer_.IssueToken(

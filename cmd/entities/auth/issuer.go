@@ -14,7 +14,7 @@ type Issuer struct {
 	audience []string
 }
 
-func NewIssuer(secret []byte, method jwt.SigningMethod, domain string, audience []string) *Issuer {
+func NewIssuer(secret []byte, domain string, audience []string, method jwt.SigningMethod) *Issuer {
 	return &Issuer{
 		secret:   secret,
 		method:   method,

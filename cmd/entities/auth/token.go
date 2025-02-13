@@ -21,7 +21,7 @@ type Token struct {
 
 	// Timestamps
 	NotBefore time.Time `json:"nbf"`
-	IssuedAt  time.Time `json:"ias"`
+	IssuedAt  time.Time `json:"iat"`
 	ExpiresAt time.Time `json:"exp"`
 
 	// Custom permissions model
