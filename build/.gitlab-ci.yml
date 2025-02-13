@@ -36,6 +36,7 @@ unit tests:
   image: golang:1.23.3
   only:
     refs:
+      - tags
       - main
       - test
   environment:
@@ -44,33 +45,11 @@ unit tests:
     - .go-cache
   script:
     - go mod tidy
-    - go get gotest.tools/gotestsum@latest
+    - go run gotest.tools/gotestsum@latest --junitfile report.xml --format testname
 
-    - cd test
-    - go run gotest.tools/gotestsum --junitfile report.xml
-    - go test $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
-  artifacts:
-    reports:
-      junit: report.xml
-    expire_in: 2 days
-    when: always
-
-# tests for releasing version
-unit tests for release:
-  stage: test
-  image: golang:1.23.3
-  only:
-    refs:
-      - tags
-  environment:
-    name: Test
-  extends:
-    - .go-cache
-  script:
-    - go mod tidy
-    - go get gotest.tools/gotestsum@latest
-    - cd test
-    - go run gotest.tools/gotestsum --junitfile report.xml
+    - go test -v -coverprofile=profile.cov ./...
+    - go tool cover -func profile.cov
+  coverage: '/\(statements\)(?:\s+)?(\d+(?:\.\d+)?%)/'
   artifacts:
     reports:
       junit: report.xml
@@ -85,7 +64,7 @@ publish package:
     refs:
       - tags
   needs:
-    - job: unit tests for release
+    - job: unit tests
   variables:
     PACKAGE_NAME: 'threat-intel-core'
     VERSION: ${CI_COMMIT_TAG:1}
