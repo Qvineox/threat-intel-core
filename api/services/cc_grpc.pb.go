@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	ControlCenter_CreateCluster_FullMethodName     = "/proto.ControlCenter/CreateCluster"
 	ControlCenter_GetFleet_FullMethodName          = "/proto.ControlCenter/GetFleet"
+	ControlCenter_GetPoolStats_FullMethodName      = "/proto.ControlCenter/GetPoolStats"
 	ControlCenter_CreatePingJob_FullMethodName     = "/proto.ControlCenter/CreatePingJob"
 	ControlCenter_EvaluateJobs_FullMethodName      = "/proto.ControlCenter/EvaluateJobs"
 	ControlCenter_GetJobs_FullMethodName           = "/proto.ControlCenter/GetJobs"
@@ -36,6 +37,7 @@ const (
 type ControlCenterClient interface {
 	CreateCluster(ctx context.Context, in *Cluster, opts ...grpc.CallOption) (*Cluster, error)
 	GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error)
+	GetPoolStats(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*JobPoolStats, error)
 	CreatePingJob(ctx context.Context, in *PingOptions, opts ...grpc.CallOption) (*ID, error)
 	EvaluateJobs(ctx context.Context, in *TargetsEvaluationMessage, opts ...grpc.CallOption) (*TargetsEvaluationResult, error)
 	GetJobs(ctx context.Context, in *JobsQueryFilter, opts ...grpc.CallOption) (*Jobs, error)
@@ -66,6 +68,16 @@ func (c *controlCenterClient) GetFleet(ctx context.Context, in *FleetQueryFilter
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Fleet)
 	err := c.cc.Invoke(ctx, ControlCenter_GetFleet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *controlCenterClient) GetPoolStats(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*JobPoolStats, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(JobPoolStats)
+	err := c.cc.Invoke(ctx, ControlCenter_GetPoolStats_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -138,6 +150,7 @@ func (c *controlCenterClient) GetPingResults(ctx context.Context, in *PingResult
 type ControlCenterServer interface {
 	CreateCluster(context.Context, *Cluster) (*Cluster, error)
 	GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error)
+	GetPoolStats(context.Context, *emptypb.Empty) (*JobPoolStats, error)
 	CreatePingJob(context.Context, *PingOptions) (*ID, error)
 	EvaluateJobs(context.Context, *TargetsEvaluationMessage) (*TargetsEvaluationResult, error)
 	GetJobs(context.Context, *JobsQueryFilter) (*Jobs, error)
@@ -159,6 +172,9 @@ func (UnimplementedControlCenterServer) CreateCluster(context.Context, *Cluster)
 }
 func (UnimplementedControlCenterServer) GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFleet not implemented")
+}
+func (UnimplementedControlCenterServer) GetPoolStats(context.Context, *emptypb.Empty) (*JobPoolStats, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPoolStats not implemented")
 }
 func (UnimplementedControlCenterServer) CreatePingJob(context.Context, *PingOptions) (*ID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePingJob not implemented")
@@ -231,6 +247,24 @@ func _ControlCenter_GetFleet_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ControlCenterServer).GetFleet(ctx, req.(*FleetQueryFilter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ControlCenter_GetPoolStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlCenterServer).GetPoolStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ControlCenter_GetPoolStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlCenterServer).GetPoolStats(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -357,6 +391,10 @@ var ControlCenter_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFleet",
 			Handler:    _ControlCenter_GetFleet_Handler,
+		},
+		{
+			MethodName: "GetPoolStats",
+			Handler:    _ControlCenter_GetPoolStats_Handler,
 		},
 		{
 			MethodName: "CreatePingJob",

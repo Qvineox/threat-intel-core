@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -22,6 +23,7 @@ const (
 	Coordinator_Register_FullMethodName      = "/proto.Coordinator/Register"
 	Coordinator_Connect_FullMethodName       = "/proto.Coordinator/Connect"
 	Coordinator_GetFleet_FullMethodName      = "/proto.Coordinator/GetFleet"
+	Coordinator_GetPoolStats_FullMethodName  = "/proto.Coordinator/GetPoolStats"
 	Coordinator_CreateCluster_FullMethodName = "/proto.Coordinator/CreateCluster"
 )
 
@@ -34,6 +36,7 @@ type CoordinatorClient interface {
 	// procedure established bidirectional connection that allow bot to collect jobs from coordinator
 	Connect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[BotState, JobStream], error)
 	GetFleet(ctx context.Context, in *FleetQueryFilter, opts ...grpc.CallOption) (*Fleet, error)
+	GetPoolStats(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*JobPoolStats, error)
 	CreateCluster(ctx context.Context, in *Cluster, opts ...grpc.CallOption) (*Cluster, error)
 }
 
@@ -78,6 +81,16 @@ func (c *coordinatorClient) GetFleet(ctx context.Context, in *FleetQueryFilter, 
 	return out, nil
 }
 
+func (c *coordinatorClient) GetPoolStats(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*JobPoolStats, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(JobPoolStats)
+	err := c.cc.Invoke(ctx, Coordinator_GetPoolStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *coordinatorClient) CreateCluster(ctx context.Context, in *Cluster, opts ...grpc.CallOption) (*Cluster, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Cluster)
@@ -97,6 +110,7 @@ type CoordinatorServer interface {
 	// procedure established bidirectional connection that allow bot to collect jobs from coordinator
 	Connect(grpc.BidiStreamingServer[BotState, JobStream]) error
 	GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error)
+	GetPoolStats(context.Context, *emptypb.Empty) (*JobPoolStats, error)
 	CreateCluster(context.Context, *Cluster) (*Cluster, error)
 	mustEmbedUnimplementedCoordinatorServer()
 }
@@ -116,6 +130,9 @@ func (UnimplementedCoordinatorServer) Connect(grpc.BidiStreamingServer[BotState,
 }
 func (UnimplementedCoordinatorServer) GetFleet(context.Context, *FleetQueryFilter) (*Fleet, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFleet not implemented")
+}
+func (UnimplementedCoordinatorServer) GetPoolStats(context.Context, *emptypb.Empty) (*JobPoolStats, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPoolStats not implemented")
 }
 func (UnimplementedCoordinatorServer) CreateCluster(context.Context, *Cluster) (*Cluster, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCluster not implemented")
@@ -184,6 +201,24 @@ func _Coordinator_GetFleet_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Coordinator_GetPoolStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServer).GetPoolStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coordinator_GetPoolStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServer).GetPoolStats(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Coordinator_CreateCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Cluster)
 	if err := dec(in); err != nil {
@@ -216,6 +251,10 @@ var Coordinator_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFleet",
 			Handler:    _Coordinator_GetFleet_Handler,
+		},
+		{
+			MethodName: "GetPoolStats",
+			Handler:    _Coordinator_GetPoolStats_Handler,
 		},
 		{
 			MethodName: "CreateCluster",

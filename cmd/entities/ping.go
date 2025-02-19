@@ -33,7 +33,7 @@ type PingResult struct {
 	CreatedAt time.Time `json:"CreatedAt" gorm:"column:created_at;index:,sort:desc"`
 
 	// CreatedBy is the identity of a bot
-	CreatedBy *string `json:"CreatedBy" gorm:"column:created_by;index;comment:Ping bot identity recovered from response metadata"`
+	CreatedBy *string `json:"CreatedBy" gorm:"column:created_by;index;comment:Ping bot identity (cluster ID) recovered from response metadata"`
 }
 
 func (pr *PingResult) ToProto() *services.PingResult {

@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/fleet": {
+    "/api/v1/coordinator/fleet": {
       "get": {
         "operationId": "ControlCenter_GetFleet",
         "responses": {
@@ -60,6 +60,28 @@
             "type": "string"
           }
         ],
+        "tags": [
+          "ControlCenter"
+        ]
+      }
+    },
+    "/api/v1/coordinator/pool": {
+      "get": {
+        "operationId": "ControlCenter_GetPoolStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoJobPoolStats"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
         "tags": [
           "ControlCenter"
         ]
@@ -576,6 +598,37 @@
         "UpdatedAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "protoJobPoolStats": {
+      "type": "object",
+      "properties": {
+        "TotalJobs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "TotalAssignedJobs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "TotalUnassignedJobs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "TotalUnassignedJobsByType": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uint64"
+          }
+        },
+        "TotalAssignedJobsByType": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uint64"
+          }
         }
       }
     },

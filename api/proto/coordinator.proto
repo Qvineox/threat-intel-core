@@ -18,6 +18,7 @@ service Coordinator {
   rpc Connect(stream BotState) returns (stream JobStream);
 
   rpc GetFleet(FleetQueryFilter) returns (Fleet);
+  rpc GetPoolStats(google.protobuf.Empty) returns (JobPoolStats);
 
   rpc CreateCluster(Cluster) returns (Cluster);
 }
@@ -39,4 +40,13 @@ message BotRegistrationData {
 
 message BotRegistrationConfirmMessage {
   string Subject = 1;
+}
+
+message JobPoolStats {
+  uint64 TotalJobs = 1;
+  uint64 TotalAssignedJobs = 2;
+  uint64 TotalUnassignedJobs = 3;
+
+  map<uint64, uint64> TotalUnassignedJobsByType = 4;
+  map<uint64, uint64> TotalAssignedJobsByType = 5;
 }

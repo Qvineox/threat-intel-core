@@ -8,6 +8,7 @@ import "google/api/annotations.proto";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "coordinator.proto";
 import "options.proto";
 import "fleet.proto";
 import "ping.proto";
@@ -28,7 +29,13 @@ service ControlCenter {
 
   rpc GetFleet(FleetQueryFilter) returns (Fleet) {
     option (google.api.http) = {
-      get: "/api/v1/fleet",
+      get: "/api/v1/coordinator/fleet",
+    };
+  };
+
+  rpc GetPoolStats(google.protobuf.Empty) returns (JobPoolStats) {
+    option (google.api.http) = {
+      get: "/api/v1/coordinator/pool",
     };
   };
 

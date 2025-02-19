@@ -92,6 +92,24 @@ func local_request_ControlCenter_GetFleet_0(ctx context.Context, marshaler runti
 	return msg, metadata, err
 }
 
+func request_ControlCenter_GetPoolStats_0(ctx context.Context, marshaler runtime.Marshaler, client ControlCenterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq emptypb.Empty
+		metadata runtime.ServerMetadata
+	)
+	msg, err := client.GetPoolStats(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ControlCenter_GetPoolStats_0(ctx context.Context, marshaler runtime.Marshaler, server ControlCenterServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq emptypb.Empty
+		metadata runtime.ServerMetadata
+	)
+	msg, err := server.GetPoolStats(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_ControlCenter_CreatePingJob_0(ctx context.Context, marshaler runtime.Marshaler, client ControlCenterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq PingOptions
@@ -290,7 +308,7 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetFleet", runtime.WithHTTPPathPattern("/api/v1/fleet"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetFleet", runtime.WithHTTPPathPattern("/api/v1/coordinator/fleet"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -303,6 +321,26 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 			return
 		}
 		forward_ControlCenter_GetFleet_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_ControlCenter_GetPoolStats_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetPoolStats", runtime.WithHTTPPathPattern("/api/v1/coordinator/pool"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ControlCenter_GetPoolStats_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ControlCenter_GetPoolStats_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPost, pattern_ControlCenter_CreatePingJob_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -485,7 +523,7 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetFleet", runtime.WithHTTPPathPattern("/api/v1/fleet"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetFleet", runtime.WithHTTPPathPattern("/api/v1/coordinator/fleet"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -497,6 +535,23 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 			return
 		}
 		forward_ControlCenter_GetFleet_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_ControlCenter_GetPoolStats_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetPoolStats", runtime.WithHTTPPathPattern("/api/v1/coordinator/pool"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ControlCenter_GetPoolStats_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ControlCenter_GetPoolStats_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPost, pattern_ControlCenter_CreatePingJob_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -605,7 +660,8 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 var (
 	pattern_ControlCenter_CreateCluster_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "fleet", "cluster"}, ""))
-	pattern_ControlCenter_GetFleet_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "fleet"}, ""))
+	pattern_ControlCenter_GetFleet_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "coordinator", "fleet"}, ""))
+	pattern_ControlCenter_GetPoolStats_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "coordinator", "pool"}, ""))
 	pattern_ControlCenter_CreatePingJob_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "jobs", "ping"}, ""))
 	pattern_ControlCenter_EvaluateJobs_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "jobs", "evaluate"}, ""))
 	pattern_ControlCenter_GetJobs_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "jobs"}, ""))
@@ -617,6 +673,7 @@ var (
 var (
 	forward_ControlCenter_CreateCluster_0     = runtime.ForwardResponseMessage
 	forward_ControlCenter_GetFleet_0          = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetPoolStats_0      = runtime.ForwardResponseMessage
 	forward_ControlCenter_CreatePingJob_0     = runtime.ForwardResponseMessage
 	forward_ControlCenter_EvaluateJobs_0      = runtime.ForwardResponseMessage
 	forward_ControlCenter_GetJobs_0           = runtime.ForwardResponseMessage
