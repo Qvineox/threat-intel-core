@@ -1,0 +1,48 @@
+syntax = "proto3";
+package proto;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "options.proto";
+
+option go_package = "threat-intel-core/api/proto/services";
+
+message ScanStatisticsQueryFilter {
+  JobType JobType = 1;
+
+  google.protobuf.Timestamp After = 2;
+  google.protobuf.Timestamp Before = 3;
+}
+
+message ScanStatistics {
+  oneof Data {
+    PingScanStatistics Ping = 1;
+  }
+}
+
+message CommonStatistics {
+  uint64 TotalScans = 1;
+  uint64 SuccessfulScans = 2;
+  uint64 FailedScans = 3;
+
+  uint64 DistinctIPs = 4;
+}
+
+message PingScanStatistics {
+  CommonStatistics Common = 1;
+}
+
+message CoverageStatisticsQueryFilter {
+  JobType JobType = 1;
+
+  google.protobuf.Timestamp After = 2;
+  google.protobuf.Timestamp Before = 3;
+}
+
+message CoverageStatistics {
+  uint64 TotalScans = 1; // scanned in a time frame
+  uint64 DistinctIPs = 2;
+
+  uint64 PercentOfSavedIPs = 3; // percentage of scanned IP addresses to total amount of distinct IPs already saved in a system
+  uint64 PercentOfTotalIPs = 4; // percentage of scanned IP addresses to total amount of available IPs
+}

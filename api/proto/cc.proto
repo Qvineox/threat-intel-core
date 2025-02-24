@@ -9,6 +9,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "coordinator.proto";
+import "statistics.proto";
 import "options.proto";
 import "fleet.proto";
 import "ping.proto";
@@ -76,6 +77,18 @@ service ControlCenter {
       get: "/api/v1/results/ping"
     };
   };
+
+  rpc GetScansStatistics(ScanStatisticsQueryFilter) returns (ScanStatistics) {
+    option (google.api.http) = {
+      get: "/api/v1/statistics/scans/{JobType}"
+    };
+  }
+
+  rpc GetCoverageStatistics(CoverageStatisticsQueryFilter) returns (CoverageStatistics) {
+    option (google.api.http) = {
+      get: "/api/v1/statistics/coverage/{JobType}"
+    };
+  }
 }
 
 message Jobs {
@@ -158,14 +171,11 @@ message TargetsEvaluationResult {
   repeated string Targets = 8;
 }
 
+
 message ID {
   uint64 ID = 1;
 }
 
 message UUID {
   string Value = 1;
-}
-
-enum JobType {
-  JOB_TYPE_PING = 0;
 }

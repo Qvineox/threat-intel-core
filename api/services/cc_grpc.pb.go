@@ -20,15 +20,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ControlCenter_CreateCluster_FullMethodName     = "/proto.ControlCenter/CreateCluster"
-	ControlCenter_GetFleet_FullMethodName          = "/proto.ControlCenter/GetFleet"
-	ControlCenter_GetPoolStats_FullMethodName      = "/proto.ControlCenter/GetPoolStats"
-	ControlCenter_CreatePingJob_FullMethodName     = "/proto.ControlCenter/CreatePingJob"
-	ControlCenter_EvaluateJobs_FullMethodName      = "/proto.ControlCenter/EvaluateJobs"
-	ControlCenter_GetJobs_FullMethodName           = "/proto.ControlCenter/GetJobs"
-	ControlCenter_GetJobSummaryByID_FullMethodName = "/proto.ControlCenter/GetJobSummaryByID"
-	ControlCenter_GetNewUUID_FullMethodName        = "/proto.ControlCenter/GetNewUUID"
-	ControlCenter_GetPingResults_FullMethodName    = "/proto.ControlCenter/GetPingResults"
+	ControlCenter_CreateCluster_FullMethodName         = "/proto.ControlCenter/CreateCluster"
+	ControlCenter_GetFleet_FullMethodName              = "/proto.ControlCenter/GetFleet"
+	ControlCenter_GetPoolStats_FullMethodName          = "/proto.ControlCenter/GetPoolStats"
+	ControlCenter_CreatePingJob_FullMethodName         = "/proto.ControlCenter/CreatePingJob"
+	ControlCenter_EvaluateJobs_FullMethodName          = "/proto.ControlCenter/EvaluateJobs"
+	ControlCenter_GetJobs_FullMethodName               = "/proto.ControlCenter/GetJobs"
+	ControlCenter_GetJobSummaryByID_FullMethodName     = "/proto.ControlCenter/GetJobSummaryByID"
+	ControlCenter_GetNewUUID_FullMethodName            = "/proto.ControlCenter/GetNewUUID"
+	ControlCenter_GetPingResults_FullMethodName        = "/proto.ControlCenter/GetPingResults"
+	ControlCenter_GetScansStatistics_FullMethodName    = "/proto.ControlCenter/GetScansStatistics"
+	ControlCenter_GetCoverageStatistics_FullMethodName = "/proto.ControlCenter/GetCoverageStatistics"
 )
 
 // ControlCenterClient is the client API for ControlCenter service.
@@ -44,6 +46,8 @@ type ControlCenterClient interface {
 	GetJobSummaryByID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*JobSummary, error)
 	GetNewUUID(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UUID, error)
 	GetPingResults(ctx context.Context, in *PingResultsQueryFilter, opts ...grpc.CallOption) (*PingResults, error)
+	GetScansStatistics(ctx context.Context, in *ScanStatisticsQueryFilter, opts ...grpc.CallOption) (*ScanStatistics, error)
+	GetCoverageStatistics(ctx context.Context, in *CoverageStatisticsQueryFilter, opts ...grpc.CallOption) (*CoverageStatistics, error)
 }
 
 type controlCenterClient struct {
@@ -144,6 +148,26 @@ func (c *controlCenterClient) GetPingResults(ctx context.Context, in *PingResult
 	return out, nil
 }
 
+func (c *controlCenterClient) GetScansStatistics(ctx context.Context, in *ScanStatisticsQueryFilter, opts ...grpc.CallOption) (*ScanStatistics, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ScanStatistics)
+	err := c.cc.Invoke(ctx, ControlCenter_GetScansStatistics_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *controlCenterClient) GetCoverageStatistics(ctx context.Context, in *CoverageStatisticsQueryFilter, opts ...grpc.CallOption) (*CoverageStatistics, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CoverageStatistics)
+	err := c.cc.Invoke(ctx, ControlCenter_GetCoverageStatistics_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ControlCenterServer is the server API for ControlCenter service.
 // All implementations must embed UnimplementedControlCenterServer
 // for forward compatibility.
@@ -157,6 +181,8 @@ type ControlCenterServer interface {
 	GetJobSummaryByID(context.Context, *ID) (*JobSummary, error)
 	GetNewUUID(context.Context, *emptypb.Empty) (*UUID, error)
 	GetPingResults(context.Context, *PingResultsQueryFilter) (*PingResults, error)
+	GetScansStatistics(context.Context, *ScanStatisticsQueryFilter) (*ScanStatistics, error)
+	GetCoverageStatistics(context.Context, *CoverageStatisticsQueryFilter) (*CoverageStatistics, error)
 	mustEmbedUnimplementedControlCenterServer()
 }
 
@@ -193,6 +219,12 @@ func (UnimplementedControlCenterServer) GetNewUUID(context.Context, *emptypb.Emp
 }
 func (UnimplementedControlCenterServer) GetPingResults(context.Context, *PingResultsQueryFilter) (*PingResults, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPingResults not implemented")
+}
+func (UnimplementedControlCenterServer) GetScansStatistics(context.Context, *ScanStatisticsQueryFilter) (*ScanStatistics, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetScansStatistics not implemented")
+}
+func (UnimplementedControlCenterServer) GetCoverageStatistics(context.Context, *CoverageStatisticsQueryFilter) (*CoverageStatistics, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCoverageStatistics not implemented")
 }
 func (UnimplementedControlCenterServer) mustEmbedUnimplementedControlCenterServer() {}
 func (UnimplementedControlCenterServer) testEmbeddedByValue()                       {}
@@ -377,6 +409,42 @@ func _ControlCenter_GetPingResults_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ControlCenter_GetScansStatistics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ScanStatisticsQueryFilter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlCenterServer).GetScansStatistics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ControlCenter_GetScansStatistics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlCenterServer).GetScansStatistics(ctx, req.(*ScanStatisticsQueryFilter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ControlCenter_GetCoverageStatistics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CoverageStatisticsQueryFilter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlCenterServer).GetCoverageStatistics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ControlCenter_GetCoverageStatistics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlCenterServer).GetCoverageStatistics(ctx, req.(*CoverageStatisticsQueryFilter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ControlCenter_ServiceDesc is the grpc.ServiceDesc for ControlCenter service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -419,6 +487,14 @@ var ControlCenter_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPingResults",
 			Handler:    _ControlCenter_GetPingResults_Handler,
+		},
+		{
+			MethodName: "GetScansStatistics",
+			Handler:    _ControlCenter_GetScansStatistics_Handler,
+		},
+		{
+			MethodName: "GetCoverageStatistics",
+			Handler:    _ControlCenter_GetCoverageStatistics_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -45,3 +45,6 @@ enum AssignmentMode {
   BM_NON_BUSY = 2; // wait for the first bot to be released
 }
 
+enum JobType {
+  JOB_TYPE_PING = 0;
+}

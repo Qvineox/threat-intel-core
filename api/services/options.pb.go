@@ -121,6 +121,49 @@ func (AssignmentMode) EnumDescriptor() ([]byte, []int) {
 	return file_options_proto_rawDescGZIP(), []int{1}
 }
 
+type JobType int32
+
+const (
+	JobType_JOB_TYPE_PING JobType = 0
+)
+
+// Enum value maps for JobType.
+var (
+	JobType_name = map[int32]string{
+		0: "JOB_TYPE_PING",
+	}
+	JobType_value = map[string]int32{
+		"JOB_TYPE_PING": 0,
+	}
+)
+
+func (x JobType) Enum() *JobType {
+	p := new(JobType)
+	*p = x
+	return p
+}
+
+func (x JobType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (JobType) Descriptor() protoreflect.EnumDescriptor {
+	return file_options_proto_enumTypes[2].Descriptor()
+}
+
+func (JobType) Type() protoreflect.EnumType {
+	return &file_options_proto_enumTypes[2]
+}
+
+func (x JobType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use JobType.Descriptor instead.
+func (JobType) EnumDescriptor() ([]byte, []int) {
+	return file_options_proto_rawDescGZIP(), []int{2}
+}
+
 type PingOptions struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Default       *Options               `protobuf:"bytes,1,opt,name=Default,proto3" json:"Default,omitempty"`
@@ -403,10 +446,12 @@ var file_options_proto_rawDesc = []byte{
 	0x4d, 0x6f, 0x64, 0x65, 0x12, 0x12, 0x0a, 0x0e, 0x42, 0x4d, 0x5f, 0x4c, 0x45, 0x41, 0x53, 0x54,
 	0x5f, 0x54, 0x41, 0x53, 0x4b, 0x53, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x42, 0x4d, 0x5f, 0x45,
 	0x56, 0x45, 0x4e, 0x10, 0x01, 0x12, 0x0f, 0x0a, 0x0b, 0x42, 0x4d, 0x5f, 0x4e, 0x4f, 0x4e, 0x5f,
-	0x42, 0x55, 0x53, 0x59, 0x10, 0x02, 0x42, 0x26, 0x5a, 0x24, 0x74, 0x68, 0x72, 0x65, 0x61, 0x74,
-	0x2d, 0x69, 0x6e, 0x74, 0x65, 0x6c, 0x2d, 0x63, 0x6f, 0x72, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x42, 0x55, 0x53, 0x59, 0x10, 0x02, 0x2a, 0x1c, 0x0a, 0x07, 0x4a, 0x6f, 0x62, 0x54, 0x79, 0x70,
+	0x65, 0x12, 0x11, 0x0a, 0x0d, 0x4a, 0x4f, 0x42, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x50, 0x49,
+	0x4e, 0x47, 0x10, 0x00, 0x42, 0x26, 0x5a, 0x24, 0x74, 0x68, 0x72, 0x65, 0x61, 0x74, 0x2d, 0x69,
+	0x6e, 0x74, 0x65, 0x6c, 0x2d, 0x63, 0x6f, 0x72, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -421,19 +466,20 @@ func file_options_proto_rawDescGZIP() []byte {
 	return file_options_proto_rawDescData
 }
 
-var file_options_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_options_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_options_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_options_proto_goTypes = []any{
 	(Priority)(0),       // 0: proto.Priority
 	(AssignmentMode)(0), // 1: proto.AssignmentMode
-	(*PingOptions)(nil), // 2: proto.PingOptions
-	(*Options)(nil),     // 3: proto.Options
-	(*Timings)(nil),     // 4: proto.Timings
-	(*Labels)(nil),      // 5: proto.Labels
+	(JobType)(0),        // 2: proto.JobType
+	(*PingOptions)(nil), // 3: proto.PingOptions
+	(*Options)(nil),     // 4: proto.Options
+	(*Timings)(nil),     // 5: proto.Timings
+	(*Labels)(nil),      // 6: proto.Labels
 }
 var file_options_proto_depIdxs = []int32{
-	3, // 0: proto.PingOptions.Default:type_name -> proto.Options
-	5, // 1: proto.PingOptions.Labels:type_name -> proto.Labels
+	4, // 0: proto.PingOptions.Default:type_name -> proto.Options
+	6, // 1: proto.PingOptions.Labels:type_name -> proto.Labels
 	0, // 2: proto.Labels.Priority:type_name -> proto.Priority
 	1, // 3: proto.Labels.AssignmentMode:type_name -> proto.AssignmentMode
 	4, // [4:4] is the sub-list for method output_type
@@ -454,7 +500,7 @@ func file_options_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_options_proto_rawDesc,
-			NumEnums:      2,
+			NumEnums:      3,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,

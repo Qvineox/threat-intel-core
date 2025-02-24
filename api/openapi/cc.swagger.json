@@ -385,6 +385,100 @@
         ]
       }
     },
+    "/api/v1/statistics/coverage/{JobType}": {
+      "get": {
+        "operationId": "ControlCenter_GetCoverageStatistics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoCoverageStatistics"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "JobType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "JOB_TYPE_PING"
+            ]
+          },
+          {
+            "name": "After",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "Before",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "ControlCenter"
+        ]
+      }
+    },
+    "/api/v1/statistics/scans/{JobType}": {
+      "get": {
+        "operationId": "ControlCenter_GetScansStatistics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoScanStatistics"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "JobType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "JOB_TYPE_PING"
+            ]
+          },
+          {
+            "name": "After",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "Before",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "ControlCenter"
+        ]
+      }
+    },
     "/api/v1/uuid": {
       "get": {
         "operationId": "ControlCenter_GetNewUUID",
@@ -515,6 +609,51 @@
         },
         "IsActive": {
           "type": "boolean"
+        }
+      }
+    },
+    "protoCommonStatistics": {
+      "type": "object",
+      "properties": {
+        "TotalScans": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "SuccessfulScans": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "FailedScans": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "DistinctIPs": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "protoCoverageStatistics": {
+      "type": "object",
+      "properties": {
+        "TotalScans": {
+          "type": "string",
+          "format": "uint64",
+          "title": "scanned in a time frame"
+        },
+        "DistinctIPs": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "PercentOfSavedIPs": {
+          "type": "string",
+          "format": "uint64",
+          "title": "percentage of scanned IP addresses to total amount of distinct IPs already saved in a system"
+        },
+        "PercentOfTotalIPs": {
+          "type": "string",
+          "format": "uint64",
+          "title": "percentage of scanned IP addresses to total amount of available IPs"
         }
       }
     },
@@ -768,6 +907,14 @@
         }
       }
     },
+    "protoPingScanStatistics": {
+      "type": "object",
+      "properties": {
+        "Common": {
+          "$ref": "#/definitions/protoCommonStatistics"
+        }
+      }
+    },
     "protoPriority": {
       "type": "string",
       "enum": [
@@ -788,6 +935,14 @@
         "RT_SUCCEEDED"
       ],
       "default": "RT_HOST_UNKNOWN"
+    },
+    "protoScanStatistics": {
+      "type": "object",
+      "properties": {
+        "Ping": {
+          "$ref": "#/definitions/protoPingScanStatistics"
+        }
+      }
     },
     "protoTargetsEvaluationMessage": {
       "type": "object",

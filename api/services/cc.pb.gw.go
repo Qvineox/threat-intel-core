@@ -276,6 +276,114 @@ func local_request_ControlCenter_GetPingResults_0(ctx context.Context, marshaler
 	return msg, metadata, err
 }
 
+var filter_ControlCenter_GetScansStatistics_0 = &utilities.DoubleArray{Encoding: map[string]int{"JobType": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_ControlCenter_GetScansStatistics_0(ctx context.Context, marshaler runtime.Marshaler, client ControlCenterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ScanStatisticsQueryFilter
+		metadata runtime.ServerMetadata
+		e        int32
+		err      error
+	)
+	val, ok := pathParams["JobType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "JobType")
+	}
+	e, err = runtime.Enum(val, JobType_value)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "JobType", err)
+	}
+	protoReq.JobType = JobType(e)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ControlCenter_GetScansStatistics_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.GetScansStatistics(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ControlCenter_GetScansStatistics_0(ctx context.Context, marshaler runtime.Marshaler, server ControlCenterServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ScanStatisticsQueryFilter
+		metadata runtime.ServerMetadata
+		e        int32
+		err      error
+	)
+	val, ok := pathParams["JobType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "JobType")
+	}
+	e, err = runtime.Enum(val, JobType_value)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "JobType", err)
+	}
+	protoReq.JobType = JobType(e)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ControlCenter_GetScansStatistics_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.GetScansStatistics(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+var filter_ControlCenter_GetCoverageStatistics_0 = &utilities.DoubleArray{Encoding: map[string]int{"JobType": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_ControlCenter_GetCoverageStatistics_0(ctx context.Context, marshaler runtime.Marshaler, client ControlCenterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CoverageStatisticsQueryFilter
+		metadata runtime.ServerMetadata
+		e        int32
+		err      error
+	)
+	val, ok := pathParams["JobType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "JobType")
+	}
+	e, err = runtime.Enum(val, JobType_value)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "JobType", err)
+	}
+	protoReq.JobType = JobType(e)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ControlCenter_GetCoverageStatistics_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.GetCoverageStatistics(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ControlCenter_GetCoverageStatistics_0(ctx context.Context, marshaler runtime.Marshaler, server ControlCenterServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CoverageStatisticsQueryFilter
+		metadata runtime.ServerMetadata
+		e        int32
+		err      error
+	)
+	val, ok := pathParams["JobType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "JobType")
+	}
+	e, err = runtime.Enum(val, JobType_value)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "JobType", err)
+	}
+	protoReq.JobType = JobType(e)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ControlCenter_GetCoverageStatistics_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.GetCoverageStatistics(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterControlCenterHandlerServer registers the http handlers for service ControlCenter to "mux".
 // UnaryRPC     :call ControlCenterServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -461,6 +569,46 @@ func RegisterControlCenterHandlerServer(ctx context.Context, mux *runtime.ServeM
 			return
 		}
 		forward_ControlCenter_GetPingResults_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_ControlCenter_GetScansStatistics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetScansStatistics", runtime.WithHTTPPathPattern("/api/v1/statistics/scans/{JobType}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ControlCenter_GetScansStatistics_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ControlCenter_GetScansStatistics_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_ControlCenter_GetCoverageStatistics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ControlCenter/GetCoverageStatistics", runtime.WithHTTPPathPattern("/api/v1/statistics/coverage/{JobType}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ControlCenter_GetCoverageStatistics_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ControlCenter_GetCoverageStatistics_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -655,29 +803,67 @@ func RegisterControlCenterHandlerClient(ctx context.Context, mux *runtime.ServeM
 		}
 		forward_ControlCenter_GetPingResults_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_ControlCenter_GetScansStatistics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetScansStatistics", runtime.WithHTTPPathPattern("/api/v1/statistics/scans/{JobType}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ControlCenter_GetScansStatistics_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ControlCenter_GetScansStatistics_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_ControlCenter_GetCoverageStatistics_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ControlCenter/GetCoverageStatistics", runtime.WithHTTPPathPattern("/api/v1/statistics/coverage/{JobType}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ControlCenter_GetCoverageStatistics_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ControlCenter_GetCoverageStatistics_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
-	pattern_ControlCenter_CreateCluster_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "fleet", "cluster"}, ""))
-	pattern_ControlCenter_GetFleet_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "coordinator", "fleet"}, ""))
-	pattern_ControlCenter_GetPoolStats_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "coordinator", "pool"}, ""))
-	pattern_ControlCenter_CreatePingJob_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "jobs", "ping"}, ""))
-	pattern_ControlCenter_EvaluateJobs_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "jobs", "evaluate"}, ""))
-	pattern_ControlCenter_GetJobs_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "jobs"}, ""))
-	pattern_ControlCenter_GetJobSummaryByID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "jobs", "ID", "summary"}, ""))
-	pattern_ControlCenter_GetNewUUID_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "uuid"}, ""))
-	pattern_ControlCenter_GetPingResults_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "results", "ping"}, ""))
+	pattern_ControlCenter_CreateCluster_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "fleet", "cluster"}, ""))
+	pattern_ControlCenter_GetFleet_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "coordinator", "fleet"}, ""))
+	pattern_ControlCenter_GetPoolStats_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "coordinator", "pool"}, ""))
+	pattern_ControlCenter_CreatePingJob_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "jobs", "ping"}, ""))
+	pattern_ControlCenter_EvaluateJobs_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "jobs", "evaluate"}, ""))
+	pattern_ControlCenter_GetJobs_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "jobs"}, ""))
+	pattern_ControlCenter_GetJobSummaryByID_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "jobs", "ID", "summary"}, ""))
+	pattern_ControlCenter_GetNewUUID_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "uuid"}, ""))
+	pattern_ControlCenter_GetPingResults_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "results", "ping"}, ""))
+	pattern_ControlCenter_GetScansStatistics_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "statistics", "scans", "JobType"}, ""))
+	pattern_ControlCenter_GetCoverageStatistics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "statistics", "coverage", "JobType"}, ""))
 )
 
 var (
-	forward_ControlCenter_CreateCluster_0     = runtime.ForwardResponseMessage
-	forward_ControlCenter_GetFleet_0          = runtime.ForwardResponseMessage
-	forward_ControlCenter_GetPoolStats_0      = runtime.ForwardResponseMessage
-	forward_ControlCenter_CreatePingJob_0     = runtime.ForwardResponseMessage
-	forward_ControlCenter_EvaluateJobs_0      = runtime.ForwardResponseMessage
-	forward_ControlCenter_GetJobs_0           = runtime.ForwardResponseMessage
-	forward_ControlCenter_GetJobSummaryByID_0 = runtime.ForwardResponseMessage
-	forward_ControlCenter_GetNewUUID_0        = runtime.ForwardResponseMessage
-	forward_ControlCenter_GetPingResults_0    = runtime.ForwardResponseMessage
+	forward_ControlCenter_CreateCluster_0         = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetFleet_0              = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetPoolStats_0          = runtime.ForwardResponseMessage
+	forward_ControlCenter_CreatePingJob_0         = runtime.ForwardResponseMessage
+	forward_ControlCenter_EvaluateJobs_0          = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetJobs_0               = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetJobSummaryByID_0     = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetNewUUID_0            = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetPingResults_0        = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetScansStatistics_0    = runtime.ForwardResponseMessage
+	forward_ControlCenter_GetCoverageStatistics_0 = runtime.ForwardResponseMessage
 )
