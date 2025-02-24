@@ -6,8 +6,8 @@ type CoverageStatistics struct {
 	TotalScans  uint64 `json:"total_scans" gorm:"total_scans"`
 	DistinctIPs uint64 `json:"distinct_ips" gorm:"column:distinct_ips"`
 
-	PercentOfTotalIPs uint64 `json:"percent_of_total_ips" gorm:"column:percent_of_total_ips"`
-	PercentOfSavedIPs uint64 `json:"percent_of_saved_ips" gorm:"column:percent_of_saved_ips"`
+	PercentOfTotalIPs float32 `json:"percent_of_total_ips" gorm:"column:percent_of_total_ips"`
+	PercentOfSavedIPs float32 `json:"percent_of_saved_ips" gorm:"column:percent_of_saved_ips"`
 }
 
 func (stats CoverageStatistics) ToProto() *services.CoverageStatistics {

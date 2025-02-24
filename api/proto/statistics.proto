@@ -43,6 +43,6 @@ message CoverageStatistics {
   uint64 TotalScans = 1; // scanned in a time frame
   uint64 DistinctIPs = 2;
 
-  uint64 PercentOfSavedIPs = 3; // percentage of scanned IP addresses to total amount of distinct IPs already saved in a system
-  uint64 PercentOfTotalIPs = 4; // percentage of scanned IP addresses to total amount of available IPs
+  float PercentOfSavedIPs = 3; // percentage of scanned IP addresses to total amount of distinct IPs already saved in a system
+  float PercentOfTotalIPs = 4; // percentage of scanned IP addresses to total amount of available IPs
 }

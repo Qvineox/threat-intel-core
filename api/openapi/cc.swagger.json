@@ -646,13 +646,13 @@
           "format": "uint64"
         },
         "PercentOfSavedIPs": {
-          "type": "string",
-          "format": "uint64",
+          "type": "number",
+          "format": "float",
           "title": "percentage of scanned IP addresses to total amount of distinct IPs already saved in a system"
         },
         "PercentOfTotalIPs": {
-          "type": "string",
-          "format": "uint64",
+          "type": "number",
+          "format": "float",
           "title": "percentage of scanned IP addresses to total amount of available IPs"
         }
       }
