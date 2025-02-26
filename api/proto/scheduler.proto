@@ -28,22 +28,24 @@ message ScheduledRoutines {
 }
 
 message ScheduledRoutine {
-  optional string UUID = 1;
+  string UUID = 1;
 
   bool IsEnabled = 2;
+  bool IsRunning = 3;
 
-  string Name = 3;
-  string Group = 4;
-  string Description = 5;
+  string Name = 4;
+  string Group = 5;
+  string Description = 6;
 
   // https://crontab.guru/
-  string CRON = 6;
+  string CRON = 7;
 
-  google.protobuf.Timestamp NextRunAt = 7;
-  google.protobuf.Timestamp LastRunAt = 8;
-  google.protobuf.Timestamp LastSuccessfulRunAt = 9;
+  google.protobuf.Timestamp NextRunAt = 8;
+  optional google.protobuf.Timestamp LastRunAt = 9;
+  optional google.protobuf.Timestamp LastSuccessfulRunAt = 10;
 
-  string LastRunErrorText = 10;
+  string LastRunErrorText = 11;
+  string LastSuccessText = 12;
 }
 
 message RoutineRunOptions {
