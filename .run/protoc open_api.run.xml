@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="protoc open_api cc" type="ShConfigurationType" folderName="protoc open_api" activateToolWindowBeforeRun="false">
-    <option name="SCRIPT_TEXT" value="protoc --openapiv2_out=../openapi cc.proto" />
+  <configuration default="false" name="protoc open_api" type="ShConfigurationType" folderName="protoc open_api" activateToolWindowBeforeRun="false">
+    <option name="SCRIPT_TEXT" value="protoc --openapiv2_out=../openapi cc.proto scheduler.proto" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="" />
     <option name="SCRIPT_OPTIONS" value="" />

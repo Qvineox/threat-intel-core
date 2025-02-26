@@ -8,8 +8,9 @@
     <toRun name="options" type="ShConfigurationType" />
     <toRun name="ping" type="ShConfigurationType" />
     <toRun name="protoc grpc_gw cc" type="ShConfigurationType" />
-    <toRun name="protoc open_api cc" type="ShConfigurationType" />
-    <toRun name="statistics" type="ShConfigurationType" />
+    <toRun name="protoc grpc_gw scheduler" type="ShConfigurationType" />
+    <toRun name="scheduler" type="ShConfigurationType" />
+    <toRun name="telegram" type="ShConfigurationType" />
     <toRun name="user" type="ShConfigurationType" />
     <method v="2" />
   </configuration>

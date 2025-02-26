@@ -4,8 +4,6 @@ package proto;
 import "google/protobuf/api.proto";
 import "google/api/annotations.proto";
 
-// C:\Program Files\protoc-25.3-win64\include\google\api
-
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "coordinator.proto";

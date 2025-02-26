@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "threat-intel-core/api/proto/services";
+
+service TelegramAdminBotService {
+  rpc SendMessage(NewChatMessage) returns (google.protobuf.Empty);
+}
+
+message NewChatMessage {
+  int64 ChatID = 1;
+  optional int64 TopicID = 2;
+  string MessageBody = 3;
+}

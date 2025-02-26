@@ -1,0 +1,51 @@
+syntax = "proto3";
+package proto;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+import "google/api/annotations.proto";
+
+option go_package = "threat-intel-core/api/proto/services";
+
+service SchedulerService {
+  rpc GetScheduledRoutines(google.protobuf.Empty) returns (ScheduledRoutines) {
+    option (google.api.http) = {
+      get: "/api/v1/scheduler/routines"
+    };
+  };
+
+  rpc RunScheduledRoutine(RoutineRunOptions) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/api/v1/scheduler/routine/{UUID}"
+      body: "*"
+    };
+  };
+}
+
+message ScheduledRoutines {
+  repeated ScheduledRoutine Routines = 1;
+}
+
+message ScheduledRoutine {
+  optional string UUID = 1;
+
+  bool IsEnabled = 2;
+
+  string Name = 3;
+  string Group = 4;
+  string Description = 5;
+
+  // https://crontab.guru/
+  string CRON = 6;
+
+  google.protobuf.Timestamp NextRunAt = 7;
+  google.protobuf.Timestamp LastRunAt = 8;
+  google.protobuf.Timestamp LastSuccessfulRunAt = 9;
+
+  string LastRunErrorText = 10;
+}
+
+message RoutineRunOptions {
+  string UUID = 1;
+}
