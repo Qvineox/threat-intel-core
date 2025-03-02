@@ -44,7 +44,7 @@ message ScheduledRoutine {
   optional google.protobuf.Timestamp LastRunAt = 9;
   optional google.protobuf.Timestamp LastSuccessfulRunAt = 10;
 
-  string LastRunErrorText = 11;
+  string LastErrorText = 11;
   string LastSuccessText = 12;
 }
 

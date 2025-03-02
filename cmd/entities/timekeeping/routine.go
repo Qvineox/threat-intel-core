@@ -19,8 +19,8 @@ type ScheduledRoutine struct {
 
 	Cron string `json:"Cron"`
 
-	LastSuccessText  string `json:"LastSuccessText"`
-	LastRunErrorText string `json:"LastRunErrorText"`
+	LastSuccessText string `json:"LastSuccessText"`
+	LastErrorText   string `json:"LastErrorText"`
 
 	LastRunAt           *time.Time `json:"LastRunAt"`
 	LastSuccessfulRunAt *time.Time `json:"LastSuccessfulRunAt"`
@@ -31,16 +31,16 @@ type ScheduledRoutine struct {
 
 func (r ScheduledRoutine) ToProto() *services.ScheduledRoutine {
 	p := &services.ScheduledRoutine{
-		UUID:             r.UUID.String(),
-		IsEnabled:        r.IsEnabled,
-		IsRunning:        r.IsRunning,
-		Name:             r.Name,
-		Group:            r.Group,
-		Description:      r.Description,
-		CRON:             r.Cron,
-		NextRunAt:        timestamppb.New(r.NextRunAt),
-		LastSuccessText:  r.LastSuccessText,
-		LastRunErrorText: r.LastRunErrorText,
+		UUID:            r.UUID.String(),
+		IsEnabled:       r.IsEnabled,
+		IsRunning:       r.IsRunning,
+		Name:            r.Name,
+		Group:           r.Group,
+		Description:     r.Description,
+		CRON:            r.Cron,
+		NextRunAt:       timestamppb.New(r.NextRunAt),
+		LastSuccessText: r.LastSuccessText,
+		LastErrorText:   r.LastErrorText,
 	}
 
 	if r.LastRunAt != nil {
