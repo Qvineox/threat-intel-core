@@ -26,7 +26,7 @@ type ScheduledRoutine struct {
 	LastSuccessfulRunAt *time.Time `json:"LastSuccessfulRunAt"`
 	NextRunAt           time.Time  `json:"NextRunAt"`
 
-	Run *func() error `json:"-"`
+	Run *func() (text string, err error) `json:"-"`
 }
 
 func (r ScheduledRoutine) ToProto() *services.ScheduledRoutine {
