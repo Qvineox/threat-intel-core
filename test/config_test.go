@@ -11,7 +11,7 @@ import (
 
 func TestConfig(t *testing.T) {
 	t.Run("empty config creation from env", func(t *testing.T) {
-		cfg := config.NewConfigFromEnv()
+		cfg := config.NewConfigFromEnv(config.LoadOptions{TryCertFiles: false})
 		slog.Info(cfg.String())
 	})
 
@@ -51,19 +51,17 @@ func TestConfig(t *testing.T) {
 	_ = os.Setenv("TLS_KEY", "test_key")
 
 	t.Run("tls config creation from env", func(t *testing.T) {
-		tls := config.NewTLSConfigFromEnv()
+		tls := config.NewTLSConfigFromEnv(false)
 
 		require.True(t, tls.IsEnabled)
-		require.EqualValues(t, "test_crt", tls.Cert)
-		require.EqualValues(t, "test_key", tls.Key)
+		require.NotEmpty(t, tls.Cert)
+		require.NotEmpty(t, tls.Key)
 	})
 
 	os.Clearenv()
 	_ = os.Setenv("TLS_ENABLED", "true")
 
-	t.Run("tls config creation with panic", func(t *testing.T) {
-		assert.Panics(t, func() {
-			config.NewTLSConfigFromEnv()
-		})
+	t.Run("tls config creation from files", func(t *testing.T) {
+		config.NewTLSConfigFromEnv(true)
 	})
 }

@@ -15,13 +15,13 @@ stages:
       - go.sum
 
 .dind_build_setup:
-  image: docker:24.0.5
+  image: docker:28.0.1
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
   services:
-    - name: docker:24.0.5-dind
+    - name: docker:28.0.1-dind
       alias: docker
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -30,7 +30,7 @@ stages:
 
 unit tests:
   stage: test
-  image: golang:1.23.3
+  image: golang:1.24.0
   only:
     refs:
       - tags
@@ -41,6 +41,12 @@ unit tests:
   extends:
     - .go-cache
   script:
+    - mkdir tls
+    - touch tls/certificate.crt
+    - echo ${TLS_CRT_FILE} >> tls/certificate.crt
+    - touch tls/certificate.key
+    - echo ${TLS_KEY_FILE} >> tls/certificate.key
+
     - go mod tidy
     - go run gotest.tools/gotestsum@latest --junitfile report.xml --format testname
 
@@ -53,7 +59,7 @@ unit tests:
     expire_in: 2 days
     when: always
 
-trivy image scan:
+trivy filesystem scan:
   stage: security
   allow_failure: false
   image:
@@ -117,9 +123,9 @@ release tagged package:
     - job: unit tests
     - job: trivy image scan
   variables:
-    PACKAGE_NAME: 'threat-intel-core'
+    # PACKAGE_NAME: 'threat-intel-core'
     VERSION: ${CI_COMMIT_TAG:1}
-  release:                           
+  release:
     tag_name: ${CI_COMMIT_TAG:1}
     name: 'Release ${CI_COMMIT_TAG}'
     description: '${CI_COMMIT_MESSAGE}'
