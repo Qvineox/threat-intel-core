@@ -127,6 +127,6 @@ release_job:
   script:
     - echo "Running the release job."
   release:
-    tag_name: ${CI_COMMIT_TAG:1}
-    name: 'Release ${CI_COMMIT_TAG:1}'
+    tag_name: ${CI_COMMIT_TAG}
+    name: 'Release ${CI_COMMIT_TAG}'
     description: '${CI_COMMIT_MESSAGE}'
