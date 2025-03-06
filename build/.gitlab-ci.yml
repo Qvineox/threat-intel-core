@@ -41,11 +41,11 @@ unit_tests:
   extends:
     - .go_cache
   script:
-    - mkdir tls
-    - touch tls/certificate.crt
-    - echo ${TLS_CRT_FILE} >> tls/certificate.crt
-    - touch tls/certificate.key
-    - echo ${TLS_KEY_FILE} >> tls/certificate.key
+    - mkdir test/tls
+    - touch test/tls/certificate.crt
+    - echo ${TLS_CRT_FILE} >> test/tls/certificate.crt
+    - touch test/tls/certificate.key
+    - echo ${TLS_KEY_FILE} >> test/tls/certificate.key
 
     - go mod tidy
     - go run gotest.tools/gotestsum@latest --junitfile report.xml --format testname
