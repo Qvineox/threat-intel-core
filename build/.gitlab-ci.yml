@@ -49,12 +49,17 @@ unit_tests:
 
     - go test -v -coverprofile=profile.cov ./...
     - go tool cover -func profile.cov
+
+    # ref: https://docs.gitlab.com/user/application_security/dependency_scanning/dependency_scanning_sbom/
+    - go mod graph > go.graph
   coverage: '/\(statements\)(?:\s+)?(\d+(?:\.\d+)?%)/'
   artifacts:
+    paths: [ "**/go.graph" ]
     reports:
       junit: report.xml
     expire_in: 2 days
     when: always
+
 
 trivy_filesystem_scan:
   stage: test
