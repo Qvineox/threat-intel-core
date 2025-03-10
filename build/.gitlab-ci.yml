@@ -81,6 +81,8 @@ trivy_filesystem_scan:
     TRIVY_CACHE_DIR: ".trivycache/"
     TRIVY_INSECURE: "true"
   script:
+    - ls
+
     # trivy preparation: cache cleanup, vulnerability database update
     - trivy -v
     - trivy image --download-db-only --no-progress --cache-dir .trivycache/
