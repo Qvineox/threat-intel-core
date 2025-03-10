@@ -73,8 +73,6 @@ trivy_filesystem_scan:
   environment:
     name: Test
   variables:
-    GIT_STRATEGY: none
-
     TRIVY_USERNAME: "$CI_REGISTRY_USER"
     TRIVY_PASSWORD: "$CI_REGISTRY_PASSWORD"
     TRIVY_AUTH_URL: "$CI_REGISTRY"
