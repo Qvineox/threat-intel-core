@@ -28,6 +28,7 @@ stages:
   tags:
     - docker-in-docker
 
+
 unit_tests:
   stage: test
   image: golang:1.24.0
@@ -68,7 +69,7 @@ trivy_filesystem_scan:
     name: aquasec/trivy:latest
     entrypoint: [ "" ]
   rules:
-    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == "main"
   environment:
     name: Test
   variables:
@@ -96,7 +97,7 @@ trivy_filesystem_scan:
       fs .
 
     # formatting the original trivy scan file into all formats required for work
-    - trivy convert --format spdx-json --output gl-sbom-report.cdx.json "$CI_PROJECT_DIR/trivy_report_full.json"
+    - trivy convert --format spdx-json --output gl-sbom-go.cdx.json "$CI_PROJECT_DIR/trivy_report_full.json"
     - trivy convert --format table --output trivy_report_full.txt "$CI_PROJECT_DIR/trivy_report_full.json"
     - trivy convert --format template --template "@/contrib/gitlab.tpl" --output "$CI_PROJECT_DIR/gl-container-scanning-report.json" "$CI_PROJECT_DIR/trivy_report_full.json"
   cache:
@@ -107,12 +108,13 @@ trivy_filesystem_scan:
     expire_in: 2 week
     paths:
       - "$CI_PROJECT_DIR/gl-container-scanning-report.json"
-      - "$CI_PROJECT_DIR/gl-sbom-report.cdx.json"
+      - "$CI_PROJECT_DIR/gl-sbom-go.cdx.json"
       - "$CI_PROJECT_DIR/trivy_report_full.json"
       - "$CI_PROJECT_DIR/trivy_report_full.txt"
     reports:
       container_scanning: gl-container-scanning-report.json
-      cyclonedx: gl-sbom-report.cdx.json
+      cyclonedx: gl-sbom-go.cdx.json
+
 
 # ref: https://docs.gitlab.com/ee/ci/yaml/#release for available properties    
 # release only tagged builds
