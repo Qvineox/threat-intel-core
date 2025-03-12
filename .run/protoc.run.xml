@@ -7,6 +7,7 @@
     <toRun name="fleet" type="ShConfigurationType" />
     <toRun name="options" type="ShConfigurationType" />
     <toRun name="ping" type="ShConfigurationType" />
+    <toRun name="protoc grpc_gw auth" type="ShConfigurationType" />
     <toRun name="protoc grpc_gw cc" type="ShConfigurationType" />
     <toRun name="protoc grpc_gw scheduler" type="ShConfigurationType" />
     <toRun name="scheduler" type="ShConfigurationType" />
