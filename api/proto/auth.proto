@@ -23,12 +23,14 @@ service AuthService {
   rpc Logout(AuthToken) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post: "/api/v1/auth/logout"
+      body: "*"
     };
   };
 
   rpc Refresh(RefreshToken) returns (Tokens) {
     option (google.api.http) = {
       post: "/api/v1/auth/refresh"
+      body: "*"
     };
   };
 
@@ -41,18 +43,21 @@ service AuthService {
   rpc CreateBotToken(AuthTokenOptions) returns (AuthToken) {
     option (google.api.http) = {
       post: "/api/v1/auth/token/bot"
+      body: "*"
     };
   }
 
   rpc CreateClientToken(AuthTokenOptions) returns (AuthToken) {
     option (google.api.http) = {
       post: "/api/v1/auth/token/client"
+      body: "*"
     };
   }
 
   rpc CreateAdminToken(AuthTokenOptions) returns (AuthToken) {
     option (google.api.http) = {
       post: "/api/v1/auth/token/admin"
+      body: "*"
     };
   }
 }
